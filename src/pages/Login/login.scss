@@ -1,0 +1,48 @@
+.login{
+  background: #fff;
+  main{
+    font-size: 15px !important;
+    .from-login{
+      max-height: 100vh;
+      background: #111;
+       overflow: auto;
+      .a-link-form{
+        color: #29304273;
+        text-decoration: none !important;
+        transition: 0.2s;
+      }
+      .a-link-form:hover{
+        color: #293042;
+        text-decoration: none !important;
+        transition: 0.2s;
+      }
+      width: 55%;
+      height: 100vh;
+      background: #fff;
+      .imput-from{
+        box-shadow: none !important;
+        outline: none !important;
+        font-size: 14px;
+      }
+    }
+    .background{
+      width: 100%;
+      background: url('./../../assets/bg.png');
+      background-position: center;
+      background-size: 80%;
+      background-repeat: no-repeat;
+      height: 100vh;
+    }
+  }
+  @media (max-width: 992px) { 
+    .background{
+      display: none;
+    }
+    .from-login{
+      width: 100% !important;
+    } 
+  }
+  .h-45{
+    height: 45px;
+  }
+}

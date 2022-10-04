@@ -1,0 +1,42 @@
+.menu{
+  background: #293042;
+  min-height: 100vh;
+  overflow: auto;
+  direction:ltr;
+  max-width:260px;
+  min-width:260px;
+  color: rgba(255, 255, 255, 0.71);
+  font-size: 13px;
+  .logo{
+    padding: 18.4px 24px;
+    img{width: 150px;}
+    h4{font-size: 22px;}
+  }
+  .menu-link{
+    .nav{
+      .nav-link{
+        color: rgba(255, 255, 255, 0.504) !important;
+        font-size: 14px !important;
+        margin-bottom: 6px;
+        cursor: pointer;
+        .badge{
+          font-size: 10px;
+        }
+        .icon-hi{
+          font-size: 19px;
+          margin-top: -1.4px;
+        }
+      }.nav-link:hover{
+        color: rgb(255, 255, 255) !important;
+      }.nav-link.active{
+        color: rgb(255, 255, 255) !important;
+      }
+      .menu-sub{
+        margin-left: 46px;
+        .nav-link{
+          font-size: 14px !important;
+        }
+      }
+    }
+  }
+}
