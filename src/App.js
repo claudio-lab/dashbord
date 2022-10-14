@@ -1,10 +1,13 @@
 import React from 'react';
-import { 
-  BrowserRouter as 
-  Router, 
-  Routes, 
-  Route 
+import {
+  BrowserRouter as
+    Router,
+  Routes,
+  Route
 } from "react-router-dom";
+
+import { ToastContainer } from 'react';
+
 import './style/global.scss'
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -33,42 +36,49 @@ import Quadra from './pages/Quadra';
 import DetalheDocoment from './pages/DetalheDocoment';
 import DetalhesComunicado from './pages/DetalhesComunicado';
 import VerDocumento from './pages/VerDocumento';
+
+import { AuthProvider } from './components/contexts/AuthContext';
+
 function App() {
   return (
-    <> 
-    <Router>
-        <Routes>
-        <Route path="/*" element={<Erro400/>}/>
-          <Route path="/" element={<Login/>}/>
-          <Route path="/toRecover" element={<ToRecover/>}/>
-          <Route path="/changePassword" element={<ChangePassword/>}/>
-          <Route path="/dashboard" element={<Dashboard/>}/>
-          <Route path='/visitors' element={<Visitors/>}/> 
-          <Route path='/funcionario' element={<Funcionario/>}/>
-          <Route path='/detalheDocoment' element={<DetalheDocoment/>}/> 
-          <Route path='/detalhesComunicado' element={<DetalhesComunicado/>}/>
-          <Route path='/verDocumento' element={<VerDocumento/>}/>
-          <Route path='/employees' element={<Employees/>}/>
-          <Route path='/agregado' element={<Agregado/>}/>
-          <Route path='/residents' element={<Residents/>}/>
-          <Route path='/porters' element={<Porters/>}/>
-          <Route path='/documents_' element={<Documents_/>}/>
-          <Route path='/residentsc' element={<Residentsc/>}/>
-          <Route path='/typology' element={<Typology/>}/>
-          <Route path='/area' element={<Area/>}/>
-          <Route path='/quadra' element={<Quadra/>}/>
-          <Route path='/services_' element={<Services_/>}/> NoCondominio
-          <Route path='/agendadas' element={<Agendadas/>}/>
-          <Route path='/condominio' element={<NoCondominio/>}/>   
-          <Route path='/concluido' element={<Concluido/>}/>  
-          <Route path='/cancelados' element={<Cancelados/>}/> 
-          <Route path='/expiradas' element={<Expiradas/>}/>
-          <Route path='/user' element={<User/>}/>
-          <Route path="/announcement" element={<Announcement/>}/>
-        </Routes>
-      </Router>
+    <>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/*" element={<Erro400 />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/toRecover" element={<ToRecover />} />
+            <Route path="/changePassword" element={<ChangePassword />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path='/visitors' element={<Visitors />} />
+            <Route path='/funcionario' element={<Funcionario />} />
+            <Route path='/detalheDocoment' element={<DetalheDocoment />} />
+            <Route path='/detalhesComunicado' element={<DetalhesComunicado />} />
+            <Route path='/verDocumento' element={<VerDocumento />} />
+            <Route path='/employees' element={<Employees />} />
+            <Route path='/agregado' element={<Agregado />} />
+            <Route path='/residents' element={<Residents />} />
+            <Route path='/porters' element={<Porters />} />
+            <Route path='/documents_' element={<Documents_ />} />
+            <Route path='/residentsc' element={<Residentsc />} />
+            <Route path='/typology' element={<Typology />} />
+            <Route path='/area' element={<Area />} />
+            <Route path='/quadra' element={<Quadra />} />
+            <Route path='/services_' element={<Services_ />} /> NoCondominio
+            <Route path='/agendadas' element={<Agendadas />} />
+            <Route path='/condominio' element={<NoCondominio />} />
+            <Route path='/concluido' element={<Concluido />} />
+            <Route path='/cancelados' element={<Cancelados />} />
+            <Route path='/expiradas' element={<Expiradas />} />
+            <Route path='/user' element={<User />} />
+            <Route path="/announcement" element={<Announcement />} />
+          </Routes>
+        </Router>
+
+
+      </AuthProvider>
     </>
   );
-} 
+}
 
 export default App;
