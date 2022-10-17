@@ -42,8 +42,9 @@ import { AuthProvider } from './components/contexts/AuthContext';
 function App() {
   return (
     <>
-      <AuthProvider>
-        <Router>
+
+      <Router>
+        <AuthProvider>
           <Routes>
             <Route path="/*" element={<Erro400 />} />
             <Route path="/" element={<Login />} />
@@ -73,10 +74,8 @@ function App() {
             <Route path='/user' element={<User />} />
             <Route path="/announcement" element={<Announcement />} />
           </Routes>
-        </Router>
-
-
-      </AuthProvider>
+        </AuthProvider>
+      </Router>
     </>
   );
 }

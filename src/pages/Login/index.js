@@ -40,6 +40,7 @@ function Login() {
     event.preventDefault();
     try {
 
+
       if (!email) return toast.error("Email é obrigatório!");
       if (!passwordInput) return toast.error("A senha é obrigatória!");
 
@@ -48,8 +49,7 @@ function Login() {
         password: passwordInput
       }
 
-      console.log(data);
-      return;
+
 
       setLoading(true);
       signIn(data);
@@ -86,72 +86,11 @@ function Login() {
                   <h1>MonzoYetu</h1>
                   Bem vindo de volta! Por favor acesse sua conta
                 </div>
-                <Form className='mt-4' onSubmit={handleLogin}>
-                  {/*<div className="alert alert-danger mb-4  border-0" role="alert">
-                  <b>Senha</b> ou <b>email</b> inválido
-                </div>*/}
-                  <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Email </Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder="nome@endereco.com"
-                      className='border height-45 imput-from'
-                      required
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="formBasicPassword" className='mt-3'>
-                    <div className="d-flex justify-content-between">
-                      <Form.Label>Senha</Form.Label>
-                      <Form.Label><Link to="/toRecover" className='a-link-form'>Esqueceu a senha?</Link></Form.Label>
-                    </div>
-                    <div className="input-group">
-                      <Form.Control
-                        type={passwordType}
-                        onChange={handlePasswordChange}
-                        value={passwordInput}
-                        placeholder="Senha"
-                        className='border border-end-0 height-45 imput-from'
-                        required
-                      />
-                      <span className="btn border border-start-0 pt-2" onClick={togglePassword}>
-                        {passwordType === "password" ? <IoEye /> : <IoEyeOff />}
-                      </span>
-                    </div>
-                  </Form.Group>
-
-
-                  {
-                    !loading ?
-                      <>
-                        <div className='mt-4 d-grid'>
-                          <button
-                            variant="primary"
-                            type="submit"
-                            className='height-45 imput-from'
-                          >
-                            Entrar
-                          </button>
-
-                        </div>
-
-                      </>
-                      :
-                      <>
-                        <div className='mt-4 d-grid'>
-                          <Button
-                            variant="primary"
-                            disabled
-                            className='height-45 imput-from'
-                          >
-                            <Spinner animation="grow" className="me-2" size="sm" role="status"></Spinner>
-                            Entrando...
-                          </Button>
-
-                        </div>
-
-                      </>
-                  }
-                </Form>
+                <form onSubmit={handleLogin}>
+                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" placeholder="email" required />
+                  <input type="password" onChange={(e) => setPasswordInput(e.target.value)} className="form-control" placeholder="senha" required />
+                  <button type="submit" className="btn btn-primary mb-3">entrars</button>
+                </form>
               </div>
             </div>
           </div>
