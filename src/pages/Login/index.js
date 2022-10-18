@@ -82,14 +82,26 @@ function Login() {
           <div className="container pt-5 pb-5">
             <div className="row justify-content-center">
               <div className="col-lg-8">
-                <div className="">
+                <div className=" mb-3">
                   <h1>MonzoYetu</h1>
                   Bem vindo de volta! Por favor acesse sua conta
                 </div>
                 <form onSubmit={handleLogin}>
-                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" placeholder="email" required />
-                  <input type="password" onChange={(e) => setPasswordInput(e.target.value)} className="form-control" placeholder="senha" required />
-                  <button type="submit" className="btn btn-primary mb-3">entrars</button>
+                  <label>Email</label>
+                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control mt-1 border h-45 font-size-14 mb-3" placeholder="email" required />
+                  <div className="d-flex justify-content-between">
+                  <label>Senha</label>
+                  <Link to="/toRecover" className='a-link-form'>Esqueceu a senha?</Link>
+                  </div>
+                  <div className="input-group">
+                  <input type={passwordType} onChange={(e) => setPasswordInput(e.target.value)} value={passwordInput} className="form-control border-end-0 mt-1 border h-45 font-size-14 mb-3" placeholder="senha" required />
+                  <span className="btn border h-45 border-start-0 pt-2 mt-1" onClick={togglePassword}>
+                  { passwordType==="password"? <IoEye/> : <IoEyeOff/> }
+                  </span>
+                  </div>
+                  <div className='d-grid'>
+                    <button type="submit" className="btn btn-primary mb-3 h-45 font-size-14">Entrar</button>
+                  </div>
                 </form>
               </div>
             </div>
