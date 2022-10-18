@@ -19,11 +19,13 @@ import {
   IoAlertCircleOutline,
   IoPersonOutline
 } from "react-icons/io5";
+import { FaUserCheck } from 'react-icons/fa';
 import { MenuTop } from '../../components/MenuTop';
 import { Modal, Button, } from 'react-bootstrap';
 
 import './visita.scss';
 import {
+  Spinner,
   Collapse,
   Form
 } from 'react-bootstrap';
@@ -65,19 +67,55 @@ function Visitors() {
   useEffect(() => {
     setLoading(true);
     getAppointments();
-    console.log(appointments)
+
   }, []);
 
-
-
   async function getAppointments() {
-
-
     try {
       const response = await api.get('v1/list_visitas/1/0000');
-      if (response.data.successo) {
-        setAppointments(response.data.data);
+      setAppointments(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
       }
+      setLoading(false);
+    }
+  }
+
+  async function handlePrevPage(link) {
+    try {
+      setLoading(true);
+      const response = await api.get(link);
+      setAppointments(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleNextPage(link) {
+    try {
+      setLoading(true);
+      const response = await api.get(link);
+      setAppointments(response.data);
 
       setLoading(false);
     } catch (error) {
@@ -185,7 +223,7 @@ function Visitors() {
                           <th className='ps-4'>Avatar</th>
                           <th>Morador</th>
                           <th>Visitante</th>
-                          <th>Residencia</th>
+                          <th>Residência</th>
                           <th>Data</th>
                           <th>Estado</th>
                           <th className='text-right pe-4'>Detalhes</th>
@@ -193,43 +231,95 @@ function Visitors() {
                       </thead>
                       <tbody>
                         {
-                          appointments.map(appointment => (
-                            <tr>
-                              <th scope="row" className='ps-4'>
-                                <div className="vatar-tab">
-                                  <img src={marisa} alt="" />
-                                </div>
-                              </th>
-                              <td>{appointment.nome}</td>
-                              <td>Marco Mateus</td>
-                              <td>Q20 - t23</td>
-                              <td>20/09/2022</td>
-                              <td>
-                                <span className="badge rounded-pill estado-bg-primary">Agendado</span>
-                              </td>
-                              <td className='text-right pe-4'>
-                                <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
-                                  <IoEllipsisHorizontal />
-                                </Button>
-                              </td>
-                            </tr>
-                          ))
+                          !loading ?
+                            appointments?.data?.map(appointment => (
+                              <tr>
+                                <th scope="row" className='ps-4'>
+                                  <div className="vatar-tab">
+                                    <FaUserCheck />
+                                  </div>
+                                </th>
+                                <td>{appointment.nome_morador}</td>
+                                <td>{appointment.nome}</td>
+                                <td>{appointment.residencia_morador}</td>
+                                <td>{appointment.data}</td>
+                                <td>
+                                  {
+                                    (appointment.status === '0') ?
+                                      <span className="badge rounded-pill estado-bg-primary">Cancelado</span>
+                                      : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-primary">Expirado</span>
+                                        : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-primary">Agendado</span>
+                                          : (appointment.status === '3') ? <span className="badge rounded-pill estado-bg-primary">No condomínio</span>
+                                            : <span className="badge rounded-pill estado-bg-primary">Concluído</span>
+                                  }
+                                </td>
+                                <td className='text-right pe-4'>
+                                  <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
+                                    <IoEllipsisHorizontal />
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))
+                            :
+                            <>
+                              <tr>
+                                <td
+                                  colSpan={7}
+                                  className="text-center"
+                                >
+                                  <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                  />
+                                  Carregando...
+                                </td>
+
+                              </tr>
+                            </>
                         }
+
 
                       </tbody>
                     </table>
                   </div>
                   <div className="card-body pt-0">
                     <div className="d-flex justify-content-between">
-                      <div className='pt-2'>1-12 itens</div>
+                      <div className='pt-2'> {
+                        !loading ?
+
+                          appointments?.from + ' - ' + appointments?.to + '- ' + appointments?.total : '0 - 0 itens '
+
+                      }
+                        itens
+                      </div>
                       <div>
                         <nav className='nav-pagination'>
                           <ul className="pagination">
-                            <li className="page-item"><a className="page-link" href="#">&laquo;</a></li>
-                            <li className="page-item"><a className="page-link border-0 activee" href="#">1</a></li>
+                            {
+                              !loading ?
+
+                                appointments?.prev_page_url ?
+                                  <li className="page-item"><button className="page-link" onClick={() => handlePrevPage(appointments?.prev_page_url)} href="#">&laquo;</button></li>
+                                  : <li className="page-item"><button className="page-link">&laquo;</button></li>
+                                :
+                                <>
+                                  <li className="page-item"><button className="page-link">&laquo;</button></li>
+                                </>
+                            }
+
+                            {
+                              appointments?.next_page_url ?
+                                <li className="page-item"><button className="page-link" onClick={() => handleNextPage(appointments?.next_page_url)}>&raquo;</button></li>
+                                : <li className="page-item"><button className="page-link" >&raquo;</button></li>
+                            }
+
+                            {/*<li className="page-item"><a className="page-link border-0 activee" href="#">1</a></li>
                             <li className="page-item"><a className="page-link border-0" href="#">2</a></li>
                             <li className="page-item"><a className="page-link border-0" href="#">3</a></li>
-                            <li className="page-item"><a className="page-link" href="#">&raquo;</a></li>
+                            <li className="page-item"><a className="page-link" href="#">&raquo;</a></li>*/}
                           </ul>
                         </nav>
                       </div>

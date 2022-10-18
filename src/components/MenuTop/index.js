@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import {
-HiMenuAlt2,
-HiUser,
-HiOutlineLogin
+  HiMenuAlt2,
+  HiUser,
+  HiOutlineLogin
 } from "react-icons/hi";
 import matheus from './../../assets/photos/matheus.jpg'
+
+import { AuthContext, signOut } from './../contexts/AuthContext';
+
 import './menuTop.scss'
 export function MenuTop() {
+  const { user } = useContext(AuthContext);
+
   return (<nav className="navbar navbarTop bg-light ps-4 pe-4">
     <div className="container-fluid">
       <div className='d-flex'>
@@ -25,11 +30,13 @@ export function MenuTop() {
         </div>
         <Dropdown>
           <Dropdown.Toggle className='nameUser mt-2' id="dropdown-basic">
-            Matheus Marcos
+            {
+              user?.name
+            }
           </Dropdown.Toggle>
           <Dropdown.Menu className='dropUserMenu'>
-            <Dropdown.Item href="#/action-1"><HiUser className='me-1' /> Perfil</Dropdown.Item>
-            <Dropdown.Item href="#/action-2"><HiOutlineLogin className='me-1' /> Sair</Dropdown.Item>
+            <Dropdown.Item href="#/profile"><HiUser className='me-1' /> Perfil</Dropdown.Item>
+            <Dropdown.Item href="#/logout" onClick={() => signOut()}><HiOutlineLogin className='me-1' /> Sair</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </div>

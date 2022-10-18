@@ -10,11 +10,10 @@ let filedRequestQueue = [];
 export const api = axios.create({
   baseURL: 'https://webapi.monzoyetu.com/api',
   headers: {
-    Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd2ViYXBpLm1vbnpveWV0dS5jb21cL2FwaVwvdjFcL2xvZ2luIiwiaWF0IjoxNjY1OTgzMTM4LCJuYmYiOjE2NjU5ODMxMzgsImp0aSI6IklFcExCeTJ1S2dEVk5MOXoiLCJzdWIiOjk5LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.OfevTmTDDZLrWk3Q2gzo-7WY1j1JQDLHE-jlKBczbV0`
+    Authorization: `Bearer ${cookies['monzo.token']}`
   }
 });
 
-/*
 api.interceptors.response.use(response => {
   return response;
 }, (error) => {
@@ -22,7 +21,7 @@ api.interceptors.response.use(response => {
     //if (error.response.data?.title === 'Unauthorized') {
     cookies = parseCookies();
 
-    const { 'essca.token': token, 'essca.refreshToken': refreshToken } = cookies;
+    const { 'monzo.token': token, 'monzo.refreshToken': refreshToken } = cookies;
     const originalConfig = error.config;
 
     if (!isRefreshing) {
@@ -33,15 +32,15 @@ api.interceptors.response.use(response => {
       }).then((response) => {
         const { token } = response.data;
 
-        setCookie(undefined, 'essca.token', response.data.token, {
+        setCookie(undefined, 'monzo.token', token, {
           maxAge: 60 * 60 * 24 * 38,
           path: '/'
         });
 
-        setCookie(undefined, 'essca.token', response.data.token);
-        setCookie(undefined, 'essca.id', response.data.token);
+        setCookie(undefined, 'monzo.refreshToken', token);
+        //setCookie(undefined, 'monzo.id', response.data.dados?.objecto.id);
 
-        api.defaults.headers['Authorization'] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd2ViYXBpLm1vbnpveWV0dS5jb21cL2FwaVwvdjFcL2xvZ2luIiwiaWF0IjoxNjY1OTgzMTM4LCJuYmYiOjE2NjU5ODMxMzgsImp0aSI6IklFcExCeTJ1S2dEVk5MOXoiLCJzdWIiOjk5LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.OfevTmTDDZLrWk3Q2gzo-7WY1j1JQDLHE-jlKBczbV0`;
+        api.defaults.headers['Authorization'] = `Bearer ${token}`;
         filedRequestQueue.forEach(request => request.onSuccess(token));
         filedRequestQueue = [];
       })
@@ -57,7 +56,7 @@ api.interceptors.response.use(response => {
       return new Promise((resolve, reject) => {
         filedRequestQueue.push({
           onSuccess: (token) => {
-            originalConfig.headers['Authorization'] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd2ViYXBpLm1vbnpveWV0dS5jb21cL2FwaVwvdjFcL2xvZ2luIiwiaWF0IjoxNjY1OTgzMTM4LCJuYmYiOjE2NjU5ODMxMzgsImp0aSI6IklFcExCeTJ1S2dEVk5MOXoiLCJzdWIiOjk5LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.OfevTmTDDZLrWk3Q2gzo-7WY1j1JQDLHE-jlKBczbV0`;
+            originalConfig.headers['Authorization'] = `Bearer ${token}`;
 
             resolve(api(originalConfig));
           },
@@ -73,4 +72,4 @@ api.interceptors.response.use(response => {
   }
 
   return Promise.reject(error);
-});*/
+});
