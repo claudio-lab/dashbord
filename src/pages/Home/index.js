@@ -78,7 +78,7 @@ function Home() {
             <div className="container">
               <h4 className='mb-4'>Painel de controle</h4>
               <div className="row">
-                <div className="col-md-3">
+                <div className="col-lg-3 mb-4">
                   <div className="card">
                     <div className="card-body d-flex justify-content-between pb-3">
                       <div>
@@ -93,7 +93,7 @@ function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-3">
+                <div className="col-lg-3 mb-4">
                   <div className="card">
                     <div className="card-body pb-3 d-flex justify-content-between">
                     <div>
@@ -110,7 +110,7 @@ function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-3">
+                <div className="col-lg-3 mb-4">
                   <div className="card">
                     <div className="card-body d-flex justify-content-between pb-3">
                     <div>
@@ -127,7 +127,7 @@ function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-3">
+                <div className="col-lg-3 mb-4">
                   <div className="card">
                     <div className="card-body d-flex justify-content-between pb-3">
                     <div>
@@ -150,7 +150,7 @@ function Home() {
           <div className="dashbord  p-4">
             <div className="container">
               <div className="row">
-                <div className="col-md-8 mb-4">
+                <div className="col-lg-8 mb-4">
                   <div className="card border-0">
                     <div className="card-body">
                       <h5>Visitas -  2022</h5>
@@ -158,7 +158,7 @@ function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-4 mb-4">
+                <div className="col-lg-4 mb-4">
                 <div className="card border-0">
                     <div className="card-body">
                        <div className='d-flex justify-content-between'>

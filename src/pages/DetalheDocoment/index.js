@@ -60,7 +60,7 @@ function DetalheDocoment() {
         <MenuTop/>
       <div className="p-4">
           <div className="container">
-          <div className="card border-0 card-body">
+          <div className="card w-max-1200 border-0 card-body">
           <div className='d-flex justify-content-between'>
             <div>
               <Link to="/documents_" class="btn btn-primary btn-sm"><HiArrowSmLeft/> voltar</Link>

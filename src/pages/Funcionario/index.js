@@ -54,7 +54,7 @@ function Funcionario() {
         <MenuTop/>
       <div className="p-4">
           <div className="container">
-          <div className='d-flex justify-content-between'>
+          <div className='d-flex w-max-1200 justify-content-between'>
           <div><h4 className=''>Moradores</h4></div>
            <div>
            <Button
@@ -70,7 +70,7 @@ function Funcionario() {
         </Button>
           </div>            
           </div>
-          <Collapse in={open1}>
+          <Collapse className='w-max-1200' in={open1}>
             <div id="example-collapse-text">
               <div className="d-flex flex-row-reverse">
               <div className='d-flex'>

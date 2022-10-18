@@ -190,3 +190,14 @@ body{
 .height-45{
   height: 45px;
 }
+@media (max-width: 992px) { 
+  .card-table{
+    width: 1200px;
+  }
+  .navbarTop{
+    width: 1250px;
+  }
+  .w-max-1200{
+    width: 1200px;
+  }
+ }
