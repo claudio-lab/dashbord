@@ -282,7 +282,7 @@ function Visitors() {
                         }
 
 
-                      </tbody>
+                      </tbody> 
                     </table>
                   </div>
                   <div className="card-body pt-0">

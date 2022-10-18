@@ -130,7 +130,7 @@ body{
 .card-table{
   font-size: 13.5px;
   .table-h{
-    height: 70vh;
+    min-height: 60vh;
     table{
       thead{
         background: #f9fbfd;
