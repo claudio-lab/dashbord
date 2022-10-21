@@ -42,10 +42,7 @@ import { format } from 'date-fns';
 import { api } from './../../services/api';
 
 import marisa from './../../assets/photos/marisa.jpg'
-import chiao from './../../assets/photos/chiao.jpg'
-import cassia from './../../assets/photos/cassia.jpg'
-import matheus from './../../assets/photos/matheus.jpg'
-import paula from './../../assets/photos/paula.jpg'
+
 function Documents_() {
   const [open1, setOpen1] = useState(false);
 
@@ -192,7 +189,7 @@ function Documents_() {
                                 <td>{format(new Date(document.created_at), 'dd/MM/yyyy')}</td>
                                 <td><HiOutlinePaperClip className='HiDD' /></td>
                                 <td className='text-right pe-4'>
-                                  <Link to="/detalheDocoment" className='btn btn-light p-0 rounded-pill'><HiOutlineEye /></Link>
+                                  <Link to={`/documents/${document.id}`} className='btn btn-light p-0 rounded-pill'><HiOutlineEye /></Link>
                                 </td>
                               </tr>
                             ))

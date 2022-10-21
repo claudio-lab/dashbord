@@ -59,7 +59,7 @@ function Announcement() {
   async function getAnnouncements() {
     try {
       const response = await api.get('v1/list_comunicados/1');
-      setAnnouncements(response.data);
+      setAnnouncements(response.data.data?.comunicado);
 
       setLoading(false);
     } catch (error) {
@@ -190,7 +190,7 @@ function Announcement() {
                                 <td>{announcement.title}</td>
                                 <td>{format(new Date(announcement.created_at), 'dd/MM/yyyy')}</td>
                                 <td className='text-right pe-4'>
-                                  <Link to="/detalhesComunicado" className="p-0 rounded-pill btn btn-light"><HiOutlineEye /></Link>
+                                  <Link to={`/announcement/${announcement.id}`} className="p-0 rounded-pill btn btn-light"><HiOutlineEye /></Link>
                                 </td>
                               </tr>
                             ))
