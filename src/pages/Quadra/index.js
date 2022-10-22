@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu } from '../../components/Menu';
-import { 
+import {
   Link
 } from "react-router-dom";
-import { 
-  HiOutlineUserGroup, 
+import {
+  HiOutlineUserGroup,
   HiOutlineUsers,
   HiOutlineHome,
   HiOutlineViewGrid,
@@ -16,7 +16,7 @@ import {
   HiOutlineEye,
   HiOutlineUserCircle
 } from "react-icons/hi";
-import { 
+import {
   IoEllipsisHorizontal,
   IoCalendarOutline,
   IoPeopleOutline,
@@ -24,17 +24,22 @@ import {
   IoClipboardOutline,
   IoTimeOutline,
   IoAlertCircleOutline,
-  IoPersonOutline 
+  IoPersonOutline
 } from "react-icons/io5";
 import { MenuTop } from '../../components/MenuTop';
-import { Modal, Button,  } from 'react-bootstrap';
+import { Modal, Button, } from 'react-bootstrap';
 
-import {Card, 
-        Table,
-        Dropdown, 
-        Collapse,
-        Form 
+import {
+  Card,
+  Table,
+  Dropdown,
+  Collapse,
+  Form,
+  Spinner
 } from 'react-bootstrap';
+
+import { api } from './../../services/api';
+
 import marisa from './../../assets/photos/marisa.jpg'
 import chiao from './../../assets/photos/chiao.jpg'
 import cassia from './../../assets/photos/cassia.jpg'
@@ -44,177 +49,224 @@ import paula from './../../assets/photos/paula.jpg'
 
 function Quadra() {
   const [open1, setOpen1] = useState(false);
-  const [open2, setOpen2] = useState(false);
+
+  const [blocks, setBlocks] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getBlocks();
+
+  }, []);
+
+  async function getBlocks() {
+    try {
+      const response = await api.get('v1/listCategoria/1');
+      setBlocks(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handlePrevPage(link) {
+    try {
+      setLoading(true);
+      const response = await api.get(link);
+      setBlocks(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleNextPage(link) {
+    try {
+      setLoading(true);
+      const response = await api.get(link);
+      setBlocks(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="dashboard">
-    <main className='d-flex'>
-      <Menu/>
-      <section className='w-100 h-100 height-overflow'>
-        <MenuTop/>
-      <div className="p-4">
-          <div className="container">
-          <div className='d-flex w-max-1200 justify-content-between'>
-          <div><h4 className=''>Estrutura</h4></div>
-           <div>
-           <Button
-          onClick={() => setOpen1(!open1)}
-          className='btn-sm'
-          aria-expanded={open1}
-        >
-          <HiAdjustments/>
-        </Button>
+      <main className='d-flex'>
+        <Menu />
+        <section className='w-100 h-100 height-overflow'>
+          <MenuTop />
+          <div className="p-4">
+            <div className="container">
+              <div className='d-flex w-max-1200 justify-content-between'>
+                <div><h4 className=''>Estrutura</h4></div>
+                <div>
+                  <Button
+                    onClick={() => setOpen1(!open1)}
+                    className='btn-sm'
+                    aria-expanded={open1}
+                  >
+                    <HiAdjustments />
+                  </Button>
 
-        <Button className='btn-sm ms-1'>
-          <HiRefresh/>
-        </Button>
-          </div>            
-          </div>
-          <Collapse className='w-max-1200' in={open1}>
-            <div id="example-collapse-text">
-              <div className="d-flex flex-row-reverse">
-              <div className='d-flex'>
-              <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-              <input type="search" class="form-control border-0" placeholder="Pesquisar"/>
+                  <Button className='btn-sm ms-1'>
+                    <HiRefresh />
+                  </Button>
+                </div>
               </div>
-              <div className='mt-2 ms-2'>
-              <button type="button" class="btn btn-primary btn-sm"><HiOutlineSearch/></button>
-              </div>
-              <div className='mt-2 ms-2'>
-              <button type="button" class="btn btn-primary btn-sm"><HiOutlineEye/></button>
-              </div>
-              </div>
-              </div>
-            </div>
-          </Collapse>
+              <Collapse className='w-max-1200' in={open1}>
+                <div id="example-collapse-text">
+                  <div className="d-flex flex-row-reverse">
+                    <div className='d-flex'>
+                      <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
+                        <input type="search" class="form-control border-0" placeholder="Pesquisar" />
+                      </div>
+                      <div className='mt-2 ms-2'>
+                        <button type="button" class="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                      </div>
+                      <div className='mt-2 ms-2'>
+                        <button type="button" class="btn btn-primary btn-sm"><HiOutlineEye /></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Collapse>
 
-          <div className='mt-4'>
-          <div className="btn-group border-botton-right-0">
-              <Link to="/typology" className="btn border-botton-right-0 btn-light-tabs " >Tipologias</Link>
-              <Link to="/quadra" className="btn border-botton-right-0 btn-light-tabs active">Quadra</Link>
-            </div>
-          <div className="card border-0 border-botton-right-left-0 card-table">
-          <div className="card-body pb-2"></div>
-              <div className='table-h'>
-                <table className="table">
-                  <thead>
-                    <tr>
-                    <th className='ps-4'>Idenfiticador</th>
-                    <th>Nº de Residência</th>
-                      <th className='text-right pe-4'>Acções</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr> 
-                      <th scope="row" className='ps-4'>T3</th>
-                      <th>T3</th>
-                      <td className='text-right pe-4'>
-                      <Dropdown>
-                      <Dropdown.Toggle className="btn btn-light p-0 m-0 " id="dropdown-basic">
-                        <IoEllipsisHorizontal/>
-                      </Dropdown.Toggle>
+              <div className='mt-4'>
+                <div className="btn-group border-botton-right-0">
+                  <Link to="/typology" className="btn border-botton-right-0 btn-light-tabs " >Tipologias</Link>
+                  <Link to="/quadra" className="btn border-botton-right-0 btn-light-tabs active">Quadra</Link>
+                </div>
+                <div className="card border-0 border-botton-right-left-0 card-table">
+                  <div className="card-body pb-2"></div>
+                  <div className='table-h'>
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th className='ps-4'>Identificador</th>
+                          <th>Nº de Residência</th>
+                          <th className='text-right pe-4'>Acções</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          !loading ?
+                            blocks?.data?.map(block => (
+                              <tr key={block.id}>
+                                <th scope="row" className='ps-4'>{block.quadra}</th>
+                                <th>{block.total_residencia}</th>
+                                <td className='text-right pe-4'>
+                                  <Dropdown>
+                                    <Dropdown.Toggle className="btn btn-light p-0 m-0 " id="dropdown-basic">
+                                      <IoEllipsisHorizontal />
+                                    </Dropdown.Toggle>
 
-                      <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
-                        <Dropdown.Item href="#/action-1">Apagar</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Editar</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Detalhes</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" className='ps-4'>T5</th>
-                      <th>T3</th>
-                      <td className='text-right pe-4'>
-                         <Dropdown>
-                      <Dropdown.Toggle className="btn btn-light p-0 m-0 " id="dropdown-basic">
-                        <IoEllipsisHorizontal/>
-                      </Dropdown.Toggle>
+                                    <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
+                                      <Dropdown.Item href="#/action-1">Apagar</Dropdown.Item>
+                                      <Dropdown.Item href="#/action-2">Editar</Dropdown.Item>
+                                      <Dropdown.Item href="#/action-3">Detalhes</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </td>
+                              </tr>
+                            ))
+                            :
+                            <>
+                              <tr>
+                                <td
+                                  colSpan={3}
+                                  className="text-center"
+                                >
+                                  <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                  />
+                                  Carregando...
+                                </td>
 
-                      <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
-                        <Dropdown.Item href="#/action-1">Apagar</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Editar</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Detalhes</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>                      
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" className='ps-4'>T2</th>
-                      <th>T3</th>
-                      <td className='text-right pe-4'>
-                         <Dropdown>
-                      <Dropdown.Toggle className="btn btn-light p-0 m-0 " id="dropdown-basic">
-                        <IoEllipsisHorizontal/>
-                      </Dropdown.Toggle>
+                              </tr>
+                            </>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="card-body pt-0">
+                    <div className="d-flex justify-content-between">
+                      <div className='pt-2'>
+                        {
+                          !loading ?
 
-                      <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
-                        <Dropdown.Item href="#/action-1">Apagar</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Editar</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Detalhes</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>                      
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" className='ps-4'>T1</th>
-                      <th>T3</th>
-                      <td className='text-right pe-4'>
-                         <Dropdown>
-                      <Dropdown.Toggle className="btn btn-light p-0 m-0 " id="dropdown-basic">
-                        <IoEllipsisHorizontal/>
-                      </Dropdown.Toggle>
+                            blocks?.from + ' - ' + blocks?.to + '- ' + blocks?.total : '0 - 0 itens '
 
-                      <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
-                        <Dropdown.Item href="#/action-1">Apagar</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Editar</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Detalhes</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>                      
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" className='ps-4'>T2</th>
-                      <th>T3</th>
-                      <td className='text-right pe-4'>
-                         <Dropdown>
-                      <Dropdown.Toggle className="btn btn-light p-0 m-0 " id="dropdown-basic">
-                        <IoEllipsisHorizontal/>
-                      </Dropdown.Toggle>
+                        }
+                        itens
+                      </div>
+                      <div>
+                        <nav className='nav-pagination'>
+                          <ul className="pagination">
+                            {
+                              !loading ?
 
-                      <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
-                        <Dropdown.Item href="#/action-1">Apagar</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Editar</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Detalhes</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>                      
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="card-body pt-0">
-                <div className="d-flex justify-content-between">
-                  <div className='pt-2'>1-12 itens</div>
-                  <div>
-                  <nav className='nav-pagination'>
-                        <ul className="pagination">
-                          <li className="page-item"><a className="page-link" href="#">&laquo;</a></li>
-                          <li className="page-item"><a className="page-link border-0 activee" href="#">1</a></li>
-                          <li className="page-item"><a className="page-link border-0" href="#">2</a></li>
-                          <li className="page-item"><a className="page-link border-0" href="#">3</a></li>
-                          <li className="page-item"><a className="page-link" href="#">&raquo;</a></li>
-                        </ul>
-                      </nav>
+                                blocks?.prev_page_url ?
+                                  <li className="page-item"><button className="page-link" onClick={() => handlePrevPage(blocks?.prev_page_url)} href="#">&laquo;</button></li>
+                                  : <li className="page-item"><button className="page-link">&laquo;</button></li>
+                                :
+                                <>
+                                  <li className="page-item"><button className="page-link">&laquo;</button></li>
+                                </>
+                            }
+
+                            {
+                              blocks?.next_page_url ?
+                                <li className="page-item"><button className="page-link" onClick={() => handleNextPage(blocks?.next_page_url)}>&raquo;</button></li>
+                                : <li className="page-item"><button className="page-link" >&raquo;</button></li>
+                            }
+                          </ul>
+                        </nav>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
           </div>
-          </div>
-        </div>
-      </div>
-      </section>
-    </main>
-  </div>
+        </section>
+      </main>
+    </div>
   );
 }
 
