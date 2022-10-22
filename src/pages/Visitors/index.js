@@ -246,11 +246,11 @@ function Visitors() {
                                 <td>
                                   {
                                     (appointment.status === '0') ?
-                                      <span className="badge rounded-pill estado-bg-primary">Cancelado</span>
-                                      : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-primary">Expirado</span>
+                                      <span class="badge rounded-pill estado-bg-danger">Cancelado</span>
+                                      : (appointment.status === '1') ? <span class="badge rounded-pill estado-bg-warning">Expirado</span>
                                         : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-primary">Agendado</span>
-                                          : (appointment.status === '3') ? <span className="badge rounded-pill estado-bg-primary">No condomínio</span>
-                                            : <span className="badge rounded-pill estado-bg-primary">Concluído</span>
+                                          : (appointment.status === '3') ? <span class="badge rounded-pill estado-bg-secondary">No condomínio </span>
+                                            : <span class="badge rounded-pill estado-bg-success">Concluído</span>
                                   }
                                 </td>
                                 <td className='text-right pe-4'>
@@ -280,9 +280,7 @@ function Visitors() {
                               </tr>
                             </>
                         }
-
-
-                      </tbody> 
+                      </tbody>
                     </table>
                   </div>
                   <div className="card-body pt-0">
