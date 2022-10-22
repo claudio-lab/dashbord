@@ -14,6 +14,8 @@ import {
   HiRefresh,
   HiOutlineSearch,
   HiOutlineEye,
+  HiUser,
+  HiOutlinePlusSm,
   HiOutlineUserCircle
 } from "react-icons/hi";
 import { 
@@ -27,14 +29,14 @@ import {
   IoPersonOutline 
 } from "react-icons/io5";
 import { MenuTop } from '../../components/MenuTop';
-import { Modal, Button,  } from 'react-bootstrap';
-
 import {Card, 
         Table,
-        Spinner,
         Dropdown, 
+        Spinner,
         Collapse,
-        Form 
+        Form,
+        Modal,
+        Button  
 } from 'react-bootstrap';
 import marisa from './../../assets/photos/marisa.jpg'
 import chiao from './../../assets/photos/chiao.jpg'
@@ -47,7 +49,9 @@ function Funcionario() {
   const [open1, setOpen1] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   useEffect(() => {
     setLoading(true);
     getAppointments();
@@ -140,6 +144,9 @@ function Funcionario() {
 
         <Button className='btn-sm ms-1'>
           <HiRefresh/>
+        </Button>
+        <Button className='btn-sm ms-1' onClick={handleShow}>
+        <HiOutlinePlusSm/>
         </Button>
           </div>            
           </div>
@@ -318,6 +325,42 @@ function Funcionario() {
       </div>
       </section>
     </main>
+    {/*modal*/}
+    <Modal show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}>
+        <Modal.Header closeButton className='border-0'>
+          <h5 className='mt-3'>Adicionar Funcionario</h5>
+        </Modal.Header>
+        <Modal.Body className='pt-0'>
+          <form action="">
+            <label className='mt-2 mb-2'><b>Nome *</b></label>
+            <Form.Control type="text" placeholder="Nome de administrador" />
+            <label className='mt-2 mb-2'><b>Telefone *</b></label>
+            <Form.Control type="number" placeholder="Telefone" />
+            <label className='mt-2 mb-2'><b>Email *</b></label>
+            <Form.Control type="email" placeholder="Email" />
+            <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
+            <Form.Select aria-label="Default select example">
+              <option>Selecione</option>
+            </Form.Select>
+            <label className='mt-2 mb-2'><b>Senha *</b></label>
+            <Form.Control type="password" placeholder="Senha" />
+            <label className='mt-2 mb-2'><b>Confirma senha *</b></label>
+            <Form.Control type="password" placeholder="Confirma Senha" />
+          </form>
+        </Modal.Body>
+        <Modal.Footer className='border-0'>
+          <Button variant="secondary" onClick={handleClose} className='btn-sm'>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleClose} className='btn-sm'>
+            Adicional
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    {/*modal*/}
   </div>
   );
 }
