@@ -228,9 +228,7 @@ function Residents() {
                     <th className='ps-4'>Avatar</th>
                       <th>Nome</th>
                       <th>Residencia</th>
-                      <th>Cargo</th>
-                      <th>Telefone</th>
-                      <th>Morador</th>
+                      <th>Data de registro</th>
                       <th>Estado</th>
                       <th className='text-right pe-4'>Detalhes</th>
                     </tr>
@@ -245,11 +243,9 @@ function Residents() {
                                   <img src={appointment.foto} alt="" />
                                 </div>
                                 </th>
-                                <td>{appointment.nome}</td>
-                                <td>Lote {appointment.lote} - Quadra {appointment.quadra}</td>
-                                <td>{appointment.cargo}</td>
-                                <td>{appointment.telefone}</td>
                                 <td>{appointment.moradoror}</td>
+                                <td>Lote {appointment.lote} - Quadra {appointment.quadra}</td>
+                                <td>{appointment.created_at}</td>
                                 <td>
                                   {
                                     (appointment.status === '0') ?

@@ -57,7 +57,7 @@ function Residentsc() {
 
   async function getAppointments() {
     try {
-      const response = await api.get('v1/list_funcionarios_condominio/1');
+      const response = await api.get('v1/list_moradores/1/principal');
       setAppointments(response.data);
 
       setLoading(false);
@@ -199,9 +199,7 @@ function Residentsc() {
                     <th className='ps-4'>Avatar</th>
                       <th>Nome</th>
                       <th>Residencia</th>
-                      <th>Cargo</th>
                       <th>Telefone</th>
-                      <th>Morador</th>
                       <th>Estado</th>
                       <th className='text-right pe-4'>Detalhes</th>
                     </tr>
@@ -218,9 +216,7 @@ function Residentsc() {
                                 </th>
                                 <td>{appointment.nome}</td>
                                 <td>Lote {appointment.lote} - Quadra {appointment.quadra}</td>
-                                <td>{appointment.cargo}</td>
                                 <td>{appointment.telefone}</td>
-                                <td>{appointment.moradoror}</td>
                                 <td>
                                   {
                                     (appointment.status === '0') ?

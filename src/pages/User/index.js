@@ -14,6 +14,8 @@ import {
   HiRefresh,
   HiOutlineSearch,
   HiOutlineEye,
+  HiUser,
+  HiOutlinePlusSm,
   HiOutlineUserCircle
 } from "react-icons/hi";
 import { 
@@ -27,14 +29,14 @@ import {
   IoPersonOutline 
 } from "react-icons/io5";
 import { MenuTop } from '../../components/MenuTop';
-import { Modal, Button,  } from 'react-bootstrap';
-
 import {Card, 
         Table,
         Dropdown, 
         Spinner,
         Collapse,
-        Form 
+        Form,
+        Modal,
+        Button  
 } from 'react-bootstrap';
 import marisa from './../../assets/photos/marisa.jpg'
 import chiao from './../../assets/photos/chiao.jpg'
@@ -47,6 +49,9 @@ function User() {
   const [open1, setOpen1] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     setLoading(true);
@@ -57,7 +62,7 @@ function User() {
 
   async function getAppointments() {
     try {
-      const response = await api.get('v1/list_moradores/1/agregado');
+      const response = await api.get('v1/list_funcionarios_condominio/1');
       setAppointments(response.data);
 
       setLoading(false);
@@ -139,6 +144,9 @@ function User() {
         <Button className='btn-sm ms-1'>
           <HiRefresh/>
         </Button>
+        <Button className='btn-sm ms-1' onClick={handleShow}>
+        <HiOutlinePlusSm/>
+        </Button>
           </div>            
           </div>
           <Collapse className='w-max-1200' in={open1}>
@@ -182,10 +190,8 @@ function User() {
                     <tr>
                     <th className='ps-4'>Avatar</th>
                       <th>Nome</th>
-                      <th>Residencia</th>
-                      <th>Cargo</th>
+                      <th>Email</th>
                       <th>Telefone</th>
-                      <th>Morador</th>
                       <th>Estado</th>
                       <th className='text-right pe-4'>Detalhes</th>
                     </tr>
@@ -200,11 +206,9 @@ function User() {
                                   <img src={appointment.foto} alt="" />
                                 </div>
                                 </th>
-                                <td>{appointment.nome}</td>
-                                <td>Lote {appointment.lote} - Quadra {appointment.quadra}</td>
-                                <td>{appointment.cargo}</td>
+                                <td>{appointment.name}</td>
+                                <td>{appointment.email}</td>
                                 <td>{appointment.telefone}</td>
-                                <td>{appointment.moradoror}</td>
                                 <td>
                                   {
                                     (appointment.status === '0') ?
@@ -300,6 +304,43 @@ function User() {
       </div>
       </section>
     </main>
+
+    {/*modal*/}
+    <Modal show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}>
+        <Modal.Header closeButton className='border-0'>
+          <h5 className='mt-3'>Adicionar usuario no sistema</h5>
+        </Modal.Header>
+        <Modal.Body className='pt-0'>
+          <form action="">
+            <label className='mt-2 mb-2'><b>Nome *</b></label>
+            <Form.Control type="text" placeholder="Nome de administrador" />
+            <label className='mt-2 mb-2'><b>Telefone *</b></label>
+            <Form.Control type="number" placeholder="Telefone" />
+            <label className='mt-2 mb-2'><b>Email *</b></label>
+            <Form.Control type="email" placeholder="Email" />
+            <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
+            <Form.Select aria-label="Default select example">
+              <option>Selecione</option>
+            </Form.Select>
+            <label className='mt-2 mb-2'><b>Senha *</b></label>
+            <Form.Control type="password" placeholder="Senha" />
+            <label className='mt-2 mb-2'><b>Confirma senha *</b></label>
+            <Form.Control type="password" placeholder="Confirma Senha" />
+          </form>
+        </Modal.Body>
+        <Modal.Footer className='border-0'>
+          <Button variant="secondary" onClick={handleClose} className='btn-sm'>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleClose} className='btn-sm'>
+            Adicional
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    {/*modal*/}
   </div>
   );
 }
