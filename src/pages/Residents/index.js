@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu } from '../../components/Menu';
 import { 
   Link
 } from "react-router-dom";
-import { 
+import {  
   HiOutlineUserGroup, 
   HiOutlineUsers,
   HiOutlineHome,
@@ -27,7 +27,7 @@ import {
   IoPersonOutline 
 } from "react-icons/io5";
 import { MenuTop } from '../../components/MenuTop';
-import { Modal, Button,  } from 'react-bootstrap';
+import { Modal, Spinner, Button,  } from 'react-bootstrap';
 
 import {Card, 
         Table,
@@ -40,7 +40,7 @@ import chiao from './../../assets/photos/chiao.jpg'
 import cassia from './../../assets/photos/cassia.jpg'
 import matheus from './../../assets/photos/matheus.jpg'
 import paula from './../../assets/photos/paula.jpg'
-
+import { api } from './../../services/api';
 function Residents() {
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -48,6 +48,82 @@ function Residents() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow= () => setShow(true);
+
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getAppointments();
+
+  }, []);
+
+
+  async function getAppointments() {
+    try {
+      const response = await api.get('v1/logs_morador/1');
+      setAppointments(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handlePrevPage(link) {
+    try {
+      setLoading(true);
+      const response = await api.get(link);
+      setAppointments(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleNextPage(link) {
+    try {
+      setLoading(true);
+      const response = await api.get(link);
+      setAppointments(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+
+
+
   return (
     <div className="dashboard">
     <main className='d-flex'>
@@ -152,127 +228,109 @@ function Residents() {
                     <th className='ps-4'>Avatar</th>
                       <th>Nome</th>
                       <th>Residencia</th>
-                      <th>Hora</th>
-                      <th>Data</th>
+                      <th>Cargo</th>
+                      <th>Telefone</th>
+                      <th>Morador</th>
                       <th>Estado</th>
                       <th className='text-right pe-4'>Detalhes</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row" className='ps-4'>
-                        <div className="vatar-tab">
-                          <img src={marisa} alt="" />
-                        </div>
-                      </th>
-                      <td>Marisa Francisco</td>
-                      <td>Q21 - t25</td>
-                      <td>12h:30m</td>
-                      <td>20/09/2022</td>
-                      <td>
-                      <span class="badge rounded-pill estado-bg-success">Entou no condomínio</span>
-                      </td>
-                      <td className='text-right pe-4'>
-                      <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
-                        <IoEllipsisHorizontal/>
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" className='ps-4'>
-                      <div className="vatar-tab">
-                          <img src={chiao} alt="" />
-                      </div>
-                      </th>
-                      <td>Chiao Man</td>
-                      <td>Q10 - t23</td>
-                      <td>12h:30m</td>
-                      <td>20/08/2022</td>
-                      <td>
-                      <span class="badge rounded-pill estado-bg-danger">Saiu do condomínio</span>
-                      </td>
-                      <td className='text-right pe-4'>
-                      <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
-                        <IoEllipsisHorizontal/>
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" className='ps-4'>
-                      <div className="vatar-tab">
-                          <img src={cassia} alt="" />
-                      </div>
-                      </th>
-                      <td>Cassia Fernandes</td>
-                      <td>Q30 - t23</td>
-                      <td>12h:30m</td>
-                      <td>20/09/2022</td>
-                      <td>
-                      <span class="badge rounded-pill estado-bg-success">Entou no condomínio</span>
-                      </td>
-                      <td className='text-right pe-4'>
-                      <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
-                        <IoEllipsisHorizontal/>
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" className='ps-4'>
-                      <div className="vatar-tab">
-                          <img src={matheus} alt="" />
-                      </div>
-                      </th>
-                      <td>Matheus Paulo</td>
-                      <td>Q09 - t03</td>
-                      <td>12h:30m</td>
-                      <td>29/09/2022</td>
-                      <td>
-                      <span class="badge rounded-pill estado-bg-danger">Saiu do condomínio</span>
-                      </td>
-                      <td className='text-right pe-4'>
-                      <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
-                        <IoEllipsisHorizontal/>
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" className='ps-4'>
-                      <div className="vatar-tab">
-                          <img src={paula} alt="" />
-                      </div>
-                      </th>
-                      <td>Paula Maria</td>
-                      <td>Q20 - t13</td>
-                      <td>12h:30m</td>
-                      <td>20/09/2022</td>
-                      <td>
-                      <span class="badge rounded-pill estado-bg-success">Entou no condomínio</span>
-                      </td>
-                      <td className='text-right pe-4'>
-                      <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
-                        <IoEllipsisHorizontal/>
-                      </Button>
-                      </td>
-                    </tr>
+                        {
+                          !loading ?
+                            appointments?.data?.map(appointment => (
+                              <tr>
+                                <th scope="row" className='ps-4'>
+                                <div className="vatar-tab">
+                                  <img src={appointment.foto} alt="" />
+                                </div>
+                                </th>
+                                <td>{appointment.nome}</td>
+                                <td>Lote {appointment.lote} - Quadra {appointment.quadra}</td>
+                                <td>{appointment.cargo}</td>
+                                <td>{appointment.telefone}</td>
+                                <td>{appointment.moradoror}</td>
+                                <td>
+                                  {
+                                    (appointment.status === '0') ?
+                                      <span className="badge rounded-pill estado-bg-success">Entou no condomínio</span>
+                                      : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-success">Entou no condomínio</span>
+                                        : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-danger">Fora do condomínio</span>
+                                            : <span className="badge rounded-pill estado-bg-success">Entou no condomínio</span>
+                                  }
+                                </td>
+                                <td className='text-right pe-4'>
+                                  <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
+                                    <IoEllipsisHorizontal />
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))
+                            :
+                            <>
+                              <tr>
+                                <td
+                                  colSpan={7}
+                                  className="text-center"
+                                >
+                                  <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                  />
+                                  Carregando...
+                                </td>
+
+                              </tr>
+                            </>
+                        }
+
+
                   </tbody>
                 </table>
               </div>
               <div className="card-body pt-0">
-                <div className="d-flex justify-content-between">
-                  <div className='pt-2'>1-12 itens</div>
-                  <div>
-                  <nav className='nav-pagination'>
-                        <ul className="pagination">
-                          <li className="page-item"><a className="page-link" href="#">&laquo;</a></li>
-                          <li className="page-item"><a className="page-link border-0 activee" href="#">1</a></li>
-                          <li className="page-item"><a className="page-link border-0" href="#">2</a></li>
-                          <li className="page-item"><a className="page-link border-0" href="#">3</a></li>
-                          <li className="page-item"><a className="page-link" href="#">&raquo;</a></li>
-                        </ul>
-                      </nav>
+                    <div className="d-flex justify-content-between">
+                      <div className='pt-2'> {
+                        !loading ?
+
+                          appointments?.from + ' - ' + appointments?.to + '- ' + appointments?.total : '0 - 0 itens '
+
+                      }
+                        itens
+                      </div>
+                      <div>
+                        <nav className='nav-pagination'>
+                          <ul className="pagination">
+                            {
+                              !loading ?
+
+                                appointments?.prev_page_url ?
+                                  <li className="page-item"><button className="page-link" onClick={() => handlePrevPage(appointments?.prev_page_url)} href="#">&laquo;</button></li>
+                                  : <li className="page-item"><button className="page-link">&laquo;</button></li>
+                                :
+                                <>
+                                  <li className="page-item"><button className="page-link">&laquo;</button></li>
+                                </>
+                            }
+
+                            {
+                              appointments?.next_page_url ?
+                                <li className="page-item"><button className="page-link" onClick={() => handleNextPage(appointments?.next_page_url)}>&raquo;</button></li>
+                                : <li className="page-item"><button className="page-link" >&raquo;</button></li>
+                            }
+
+                            {/*<li className="page-item"><a className="page-link border-0 activee" href="#">1</a></li>
+                            <li className="page-item"><a className="page-link border-0" href="#">2</a></li>
+                            <li className="page-item"><a className="page-link border-0" href="#">3</a></li>
+                            <li className="page-item"><a className="page-link" href="#">&raquo;</a></li>*/}
+                          </ul>
+                        </nav>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
           </div>
           </div>
         </div>

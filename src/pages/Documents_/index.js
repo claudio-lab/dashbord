@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu } from '../../components/Menu';
 import { 
   Link
@@ -33,6 +33,7 @@ import { Modal, Button,  } from 'react-bootstrap';
 import {Card, 
         Table,
         Dropdown, 
+        Spinner,
         Collapse,
         Form 
 } from 'react-bootstrap';
@@ -41,8 +42,82 @@ import chiao from './../../assets/photos/chiao.jpg'
 import cassia from './../../assets/photos/cassia.jpg'
 import matheus from './../../assets/photos/matheus.jpg'
 import paula from './../../assets/photos/paula.jpg'
+import { api } from './../../services/api';
 function Documents_() {
   const [open1, setOpen1] = useState(false);
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getAppointments();
+
+  }, []);
+
+
+  async function getAppointments() {
+    try {
+      const response = await api.get('v1/getDocumentos/1');
+      setAppointments(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handlePrevPage(link) {
+    try {
+      setLoading(true);
+      const response = await api.get(link);
+      setAppointments(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleNextPage(link) {
+    try {
+      setLoading(true);
+      const response = await api.get(link);
+      setAppointments(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+
 
   return (
     <div className="dashboard">
@@ -95,108 +170,108 @@ function Documents_() {
                     <tr>
                     <th className='ps-4'>Avatar</th>
                       <th>Nome</th>
-                      <th>função</th>
-                      <th>Titulo</th>
-                      <th>Data e hora</th>
-                      <th>Anexo</th>
-                      <th className='text-right pe-4'>Acções</th>
+                      <th>Residencia</th>
+                      <th>Cargo</th>
+                      <th>Telefone</th>
+                      <th>Morador</th>
+                      <th>Estado</th>
+                      <th className='text-right pe-4'>Detalhes</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row" className='ps-4'>
-                        <div className="vatar-tab">
-                          <img src={marisa} alt=""  className='mM-10'/>
-                        </div>
-                      </th>
-                      <td>Marisa Francisco</td>
-                      <td>Secretaria</td>
-                      <td>Q32-t43 C34</td>
-                      <td>20/04/2022 - 10h:30m</td>
-                      <td><HiOutlinePaperClip className='HiDD'/></td>
-                      <td className='text-right pe-4'>
-                      <Link to="/detalheDocoment" className='btn btn-light p-0 rounded-pill'><HiOutlineEye/></Link>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" className='ps-4'>
-                      <div className="vatar-tab">
-                          <img src={chiao} alt="" />
-                      </div>
-                      </th>
-                      <td>Chiao Man</td>
-                      <td>Maquiadora</td>
-                      <td>Q32-t43 C34</td>
-                      <td>20/04/2022 - 12h:30m</td>
-                      <td><HiOutlinePaperClip className='HiDD'/></td>
-                      <td className='text-right pe-4'>
-                         <Link to="/detalheDocoment" className='btn btn-light p-0 rounded-pill'><HiOutlineEye/></Link>                      
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" className='ps-4'>
-                      <div className="vatar-tab">
-                          <img src={cassia} alt="" />
-                      </div>
-                      </th>
-                      <td>Cassia Fernandes</td>
-                      <td>Empregada</td>
-                      <td>Q32-t43 C34</td>
-                      <td>10/02/2022 - 10h:20m</td>
-                      <td><HiOutlinePaperClip className='HiDD'/></td>
-                      <td className='text-right pe-4'>
-                         <Link to="/detalheDocoment" className='btn btn-light p-0 rounded-pill'><HiOutlineEye/></Link>                      
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" className='ps-4'>
-                      <div className="vatar-tab">
-                          <img src={matheus} alt="" />
-                      </div>
-                      </th>
-                      <td>Matheus Paulo</td>
-                      <td>Pedreiro</td>
-                      <td>Q32-t43 C34</td>
-                      <td>23/04/2022 - 22h:10m</td>
-                      <td><HiOutlinePaperClip className='HiDD'/></td>
-                      <td className='text-right pe-4'>
-                         <Link to="/detalheDocoment" className='btn btn-light p-0 rounded-pill'><HiOutlineEye/></Link>                      
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" className='ps-4'>
-                      <div className="vatar-tab">
-                          <img src={paula} alt="" />
-                      </div>
-                      </th>
-                      <td>Paula Maria</td>
-                      <td>Maquiadora</td>
-                      <td>Q32-t43 C34</td>
-                      <td>20/04/2022 - 20h:30m</td>
-                      <td><HiOutlinePaperClip className='HiDD'/></td>
-                      <td className='text-right pe-4'>
-                         <Link to="/detalheDocoment" className='btn btn-light p-0 rounded-pill'><HiOutlineEye/></Link>                      
-                      </td>
-                    </tr>
+                        {
+                          !loading ?
+                            appointments?.data?.map(appointment => (
+                              <tr>
+                                <th scope="row" className='ps-4'>
+                                <div className="vatar-tab">
+                                  <img src={appointment.foto} alt="" />
+                                </div>
+                                </th>
+                                <td>{appointment.nome}</td>
+                                <td>Lote {appointment.lote} - Quadra {appointment.quadra}</td>
+                                <td>{appointment.cargo}</td>
+                                <td>{appointment.telefone}</td>
+                                <td>{appointment.moradoror}</td>
+                                <td>
+                                  {
+                                    (appointment.status === '0') ?
+                                      <span className="badge rounded-pill estado-bg-success">Em serviço</span>
+                                      : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-success">Em serviço</span>
+                                        : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-danger">Fora de serviço</span>
+                                            : <span className="badge rounded-pill estado-bg-success">Em serviço</span>
+                                  }
+                                </td>
+                                <td className='text-right pe-4'>
+                                <Link to="/detalheDocoment" className='btn btn-light p-0 rounded-pill'><HiOutlineEye/></Link>
+                                </td>
+                              </tr>
+                            ))
+                            :
+                            <>
+                              <tr>
+                                <td
+                                  colSpan={7}
+                                  className="text-center"
+                                >
+                                  <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                  />
+                                  Carregando...
+                                </td>
+
+                              </tr>
+                            </>
+                        }
+
+
                   </tbody>
                 </table>
               </div>
               <div className="card-body pt-0">
-                <div className="d-flex justify-content-between">
-                  <div className='pt-2'>1-12 itens</div>
-                  <div>
-                  <nav className='nav-pagination'>
-                        <ul className="pagination">
-                          <li className="page-item"><a className="page-link" href="#">&laquo;</a></li>
-                          <li className="page-item"><a className="page-link border-0 activee" href="#">1</a></li>
-                          <li className="page-item"><a className="page-link border-0" href="#">2</a></li>
-                          <li className="page-item"><a className="page-link border-0" href="#">3</a></li>
-                          <li className="page-item"><a className="page-link" href="#">&raquo;</a></li>
-                        </ul>
-                      </nav>
+                    <div className="d-flex justify-content-between">
+                      <div className='pt-2'> {
+                        !loading ?
+
+                          appointments?.from + ' - ' + appointments?.to + '- ' + appointments?.total : '0 - 0 itens '
+
+                      }
+                        itens
+                      </div>
+                      <div>
+                        <nav className='nav-pagination'>
+                          <ul className="pagination">
+                            {
+                              !loading ?
+
+                                appointments?.prev_page_url ?
+                                  <li className="page-item"><button className="page-link" onClick={() => handlePrevPage(appointments?.prev_page_url)} href="#">&laquo;</button></li>
+                                  : <li className="page-item"><button className="page-link">&laquo;</button></li>
+                                :
+                                <>
+                                  <li className="page-item"><button className="page-link">&laquo;</button></li>
+                                </>
+                            }
+
+                            {
+                              appointments?.next_page_url ?
+                                <li className="page-item"><button className="page-link" onClick={() => handleNextPage(appointments?.next_page_url)}>&raquo;</button></li>
+                                : <li className="page-item"><button className="page-link" >&raquo;</button></li>
+                            }
+
+                            {/*<li className="page-item"><a className="page-link border-0 activee" href="#">1</a></li>
+                            <li className="page-item"><a className="page-link border-0" href="#">2</a></li>
+                            <li className="page-item"><a className="page-link border-0" href="#">3</a></li>
+                            <li className="page-item"><a className="page-link" href="#">&raquo;</a></li>*/}
+                          </ul>
+                        </nav>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
           </div>
           </div>
         </div>
