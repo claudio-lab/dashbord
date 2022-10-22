@@ -57,7 +57,7 @@ function User() {
 
   async function getAppointments() {
     try {
-      const response = await api.get('v1/list_moradores/1/agregado');
+      const response = await api.get('v1/list_funcionarios_condominio/1');
       setAppointments(response.data);
 
       setLoading(false);
@@ -182,10 +182,8 @@ function User() {
                     <tr>
                     <th className='ps-4'>Avatar</th>
                       <th>Nome</th>
-                      <th>Residencia</th>
+                      <th>Email</th>
                       <th>Cargo</th>
-                      <th>Telefone</th>
-                      <th>Morador</th>
                       <th>Estado</th>
                       <th className='text-right pe-4'>Detalhes</th>
                     </tr>
@@ -200,11 +198,9 @@ function User() {
                                   <img src={appointment.foto} alt="" />
                                 </div>
                                 </th>
-                                <td>{appointment.nome}</td>
-                                <td>Lote {appointment.lote} - Quadra {appointment.quadra}</td>
-                                <td>{appointment.cargo}</td>
+                                <td>{appointment.name}</td>
+                                <td>{appointment.email}</td>
                                 <td>{appointment.telefone}</td>
-                                <td>{appointment.moradoror}</td>
                                 <td>
                                   {
                                     (appointment.status === '0') ?

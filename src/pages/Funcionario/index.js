@@ -57,7 +57,7 @@ function Funcionario() {
 
   async function getAppointments() {
     try {
-      const response = await api.get('v1/list_moradores/1/agregado');
+      const response = await api.get('v1/list_funcionario/1');
       setAppointments(response.data);
 
       setLoading(false);
