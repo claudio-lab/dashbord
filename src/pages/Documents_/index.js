@@ -42,10 +42,8 @@ import { format } from 'date-fns';
 import { api } from './../../services/api';
 
 import marisa from './../../assets/photos/marisa.jpg'
-
 function Documents_() {
   const [open1, setOpen1] = useState(false);
-
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(false);
 
