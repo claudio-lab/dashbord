@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useParams } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Menu } from '../../components/Menu';
 import {
   Link
@@ -46,7 +47,9 @@ import matheus from './../../assets/photos/matheus.jpg'
 import paula from './../../assets/photos/paula.jpg'
 
 function DetalheDocoment() {
-  let id = 154;
+  let params = useParams();
+  let id = params.id;
+
   const [open1, setOpen1] = useState(false);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -109,8 +112,6 @@ function DetalheDocoment() {
     try {
       const response = await api.get(`v1/list_user_comunicados/${id}`);
       setDocumentByUsers(response.data);
-
-      console.log(response.data);
 
       setLoading(false);
     } catch (error) {
@@ -237,7 +238,7 @@ function DetalheDocoment() {
 
               <div className='mt-4'>
                 <div className="btn-group border-botton-right-0">
-                  <Link to="/detalheDocoment" className="btn border-botton-right-0 btn-light-tabs active" >Informações</Link>
+                  <Link to={`/documents/${id}`} className="btn border-botton-right-0 btn-light-tabs active" >Informações</Link>
                   <Link to="/verDocumento" className="btn border-botton-right-0 btn-light-tabs " >Abrir arquivo</Link>
                 </div>
                 <div className="card border-0 border-botton-right-left-0 card-table">
