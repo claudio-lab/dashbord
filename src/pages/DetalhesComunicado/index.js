@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Menu } from '../../components/Menu';
 import {
   Link
@@ -50,7 +51,8 @@ import matheus from './../../assets/photos/matheus.jpg'
 import paula from './../../assets/photos/paula.jpg'
 
 function DetalhesComunicado() {
-  let id = 154;
+  let params = useParams();
+  let id = params.id;
   const [open1, setOpen1] = useState(false);
 
   const [comunicado, setComunicado] = useState([]);
