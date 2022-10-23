@@ -39,10 +39,7 @@ import {
   Spinner
 } from 'react-bootstrap';
 import marisa from './../../assets/photos/marisa.jpg'
-import chiao from './../../assets/photos/chiao.jpg'
-import cassia from './../../assets/photos/cassia.jpg'
-import matheus from './../../assets/photos/matheus.jpg'
-import paula from './../../assets/photos/paula.jpg'
+
 import { api } from './../../services/api';
 
 function Announcement() {
@@ -80,7 +77,7 @@ function Announcement() {
     try {
       setLoading(true);
       const response = await api.get(link);
-      setAnnouncements(response.data);
+      setAnnouncements(response.data.data?.comunicado);
 
       setLoading(false);
     } catch (error) {
@@ -101,7 +98,7 @@ function Announcement() {
     try {
       setLoading(true);
       const response = await api.get(link);
-      setAnnouncements(response.data);
+      setAnnouncements(response.data.data?.comunicado);
 
       setLoading(false);
     } catch (error) {
