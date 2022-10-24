@@ -20,7 +20,7 @@ export function MenuTop() {
           <HiMenuAlt2 />
         </button>
         <select className="form-select ms-3">
-          <option value="" selected>Verada das flores</option>
+          <option value="" selected>Vereda das Flores</option>
           <option value="1">Camama</option>
         </select>
       </div>

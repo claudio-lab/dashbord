@@ -233,7 +233,7 @@ function Visitors() {
                         {
                           !loading ?
                             appointments?.data?.map(appointment => (
-                              <tr>
+                              <tr key={appointment.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
                                     <FaUserCheck />
@@ -246,11 +246,11 @@ function Visitors() {
                                 <td>
                                   {
                                     (appointment.status === '0') ?
-                                      <span class="badge rounded-pill estado-bg-danger">Cancelado</span>
-                                      : (appointment.status === '1') ? <span class="badge rounded-pill estado-bg-warning">Expirado</span>
+                                      <span className="badge rounded-pill estado-bg-danger">Cancelado</span>
+                                      : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-warning">Expirado</span>
                                         : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-primary">Agendado</span>
-                                          : (appointment.status === '3') ? <span class="badge rounded-pill estado-bg-secondary">No condomínio </span>
-                                            : <span class="badge rounded-pill estado-bg-success">Concluído</span>
+                                          : (appointment.status === '3') ? <span className="badge rounded-pill estado-bg-secondary">No condomínio </span>
+                                            : <span className="badge rounded-pill estado-bg-success">Concluído</span>
                                   }
                                 </td>
                                 <td className='text-right pe-4'>

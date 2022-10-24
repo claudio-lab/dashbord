@@ -184,9 +184,9 @@ function DetalhesComunicado() {
               <div className="card border-0 card-body">
                 <div className='d-flex justify-content-between'>
                   <div>
-                    <Link to="/announcement" class="btn btn-primary btn-sm"><HiArrowSmLeft /> voltar</Link>
-                    <button type="button" class="btn btn-light me-3 ms-3 btn-sm"><HiOutlineEyeOff /> Visualizada: {data?.data?.count_vizualizados ? data?.data?.count_vizualizados : '0'}</button>
-                    <button type="button" class="btn btn-light btn-sm"><HiOutlineEye /> Não visualizada: {data?.data?.count_n_vizualizados ? data?.data?.count_n_vizualizados : '0'}</button>
+                    <Link to="/announcement" className="btn btn-primary btn-sm"><HiArrowSmLeft /> voltar</Link>
+                    <button type="button" className="btn btn-light me-3 ms-3 btn-sm"><HiOutlineEyeOff /> Visualizada: {data?.data?.count_vizualizados ? data?.data?.count_vizualizados : '0'}</button>
+                    <button type="button" className="btn btn-light btn-sm"><HiOutlineEye /> Não visualizada: {data?.data?.count_n_vizualizados ? data?.data?.count_n_vizualizados : '0'}</button>
                   </div>
                   {/*<div><h4 className=''>Detalhes Comunicados</h4></div>*/}
                   <div>
@@ -207,30 +207,30 @@ function DetalhesComunicado() {
                     <div className="d-flex flex-row-reverse">
                       <div className='d-flex'>
                         <div className="input-group input-group-sm w-280px rounded mt-2 border">
-                          <select class="form-select border-0">
-                            <option selected>Visto</option>
+                          <select className="form-select border-0">
+                            <option value="">Visto</option>
                             <option value="1">Nao visto</option>
                           </select>
                         </div>
                         <div className="input-group ms-3 input-group-sm rounded mt-2 ">
-                          <input type="text" class="form-control border" placeholder="Pesquisar residencia" />
+                          <input type="text" className="form-control border" placeholder="Pesquisar residencia" />
                         </div>
                         <div className="input-group ms-3 input-group-sm rounded mt-2 border ">
-                          <select class="form-select border-0 ">
-                            <option selected>Principal</option>
+                          <select className="form-select border-0 ">
+                            <option value="">Principal</option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
                           </select>
-                          <select class="form-select border-0">
-                            <option selected>Agregado</option>
+                          <select className="form-select border-0">
+                            <option value="">Agregado</option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
                           </select>
                         </div>
                         <div className='mt-2 ms-2'>
-                          <button type="button" class="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                          <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                         </div>
                       </div>
                     </div>
@@ -280,9 +280,9 @@ function DetalhesComunicado() {
                                       <td>Agregado</td>
                                       {
                                         (user.status === '0') ?
-                                          <td className='text-right pe-4'><span class="badge bg-secondary rounded-pill">Não visualizou</span></td>
+                                          <td className='text-right pe-4'><span className="badge bg-secondary rounded-pill">Não visualizou</span></td>
                                           :
-                                          <td className='text-right pe-4'><span class="badge bg-success rounded-pill">20/03/2022</span></td>
+                                          <td className='text-right pe-4'><span className="badge bg-success rounded-pill">20/03/2022</span></td>
                                       }
 
                                     </tr>

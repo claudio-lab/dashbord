@@ -163,7 +163,7 @@ function Employees() {
                       <div className='input-group input-group-sm  me-3 rounded mt-2 w-100px input-group-data'>
                         <span className="input-group-text" id="basic-addon1"><b>Estado</b></span>
                         <Form.Select className='border-0 ' aria-label="Default select example">
-                          <option>Todas</option>
+                          <option value="">Todas</option>
                           <option value="1">Dentro do condomínio</option>
                           <option value="2">Fora do condomínio</option>
                         </Form.Select>
@@ -176,29 +176,29 @@ function Employees() {
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
                         <Form.Select className='border-0' aria-label="Default select example">
-                          <option>Todas quadra</option>
+                          <option value="">Todas quadra</option>
                           <option value="1">One</option>
                           <option value="2">Two</option>
                           <option value="3">Three</option>
                         </Form.Select>
                         <Form.Select className='border-0' aria-label="Default select example">
-                          <option>Todos lotes</option>
+                          <option value="">Todos lotes</option>
                           <option value="1">One</option>
                           <option value="2">Two</option>
                           <option value="3">Three</option>
                         </Form.Select>
                         <Form.Select className='border-0' aria-label="Default select example">
-                          <option>Todos Funcionarios</option>
+                          <option value="">Todos Funcionarios</option>
                           <option value="1">One</option>
                           <option value="2">Two</option>
                           <option value="3">Three</option>
                         </Form.Select>
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" class="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" class="btn btn-primary btn-sm"><HiOutlineEye /></button>
+                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
                       </div>
                     </div>
                   </div>
@@ -211,7 +211,7 @@ function Employees() {
                       <div className='input-group w-100px input-group-sm  rounded mt-2 w-280px input-group-data'>
                         <span className="input-group-text" id="basic-addon1"><b>Porteiro</b></span>
                         <Form.Select className='border-0 ' aria-label="Default select example">
-                          <option>Todos</option>
+                          <option value="">Todos</option>
                           <option value="1">Marcio Morais</option>
                           <option value="2">Antonio Martins</option>
                         </Form.Select>
@@ -240,7 +240,7 @@ function Employees() {
                         {
                           !loading ?
                             employees?.data?.map(employee => (
-                              <tr>
+                              <tr key={employee.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
                                     <img src={marisa} alt="" />
@@ -251,7 +251,7 @@ function Employees() {
                                 <td>{format(new Date(employee.created_at), "H:i:s")}</td>
                                 <td>{format(new Date(employee.created_at), "dd/MM/yyyy")}</td>
                                 <td>
-                                  <span class="badge rounded-pill estado-bg-primary">Dentro do condomínio</span>
+                                  <span className="badge rounded-pill estado-bg-primary">Dentro do condomínio</span>
                                 </td>
                                 <td className='text-right pe-4'>
                                   <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>

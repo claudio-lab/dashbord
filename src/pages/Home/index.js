@@ -260,7 +260,7 @@ function Home() {
               </div>
             </div>
             <div className='table-h'>
-              <table class="table">
+              <table className="table">
                 <thead>
                   <tr>
                     <th className='ps-4'>Morador</th>
@@ -275,7 +275,7 @@ function Home() {
                   {
                     !loading ?
                       appointments?.data?.map(appointment => (
-                        <tr>
+                        <tr key={appointment.id}>
                           <th scope="row" className='ps-4'>
                             <div className="vatar-tab">
                               <FaUserCheck />
@@ -287,11 +287,11 @@ function Home() {
                           <td>
                             {
                               (appointment.status === '0') ?
-                                <span class="badge rounded-pill estado-bg-danger">Cancelado</span>
-                                : (appointment.status === '1') ? <span class="badge rounded-pill estado-bg-warning">Expirado</span>
+                                <span className="badge rounded-pill estado-bg-danger">Cancelado</span>
+                                : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-warning">Expirado</span>
                                   : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-primary">Agendado</span>
-                                    : (appointment.status === '3') ? <span class="badge rounded-pill estado-bg-secondary">No condomínio </span>
-                                      : <span class="badge rounded-pill estado-bg-success">Concluído</span>
+                                    : (appointment.status === '3') ? <span className="badge rounded-pill estado-bg-secondary">No condomínio </span>
+                                      : <span className="badge rounded-pill estado-bg-success">Concluído</span>
                             }
                           </td>
                           <td className='text-right pe-4'>
@@ -368,7 +368,7 @@ function Home() {
         <Modal.Header closeButton className='border-0 pb-1'>
           <div>
             <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span class="badge rounded-pill estado-bg-primary">Adendamento</span></div>
+            <div className="ss"><span className="badge rounded-pill estado-bg-primary">Adendamento</span></div>
           </div>
         </Modal.Header>
         <Modal.Body className='border-0'>
@@ -377,7 +377,7 @@ function Home() {
               <div className="col-lg-4">
                 <div className="card border">
                   <div className="card-body">
-                    <div className=""><span class="badge rounded-pill estado-bg-primary">Adendamento</span></div>
+                    <div className=""><span className="badge rounded-pill estado-bg-primary">Adendamento</span></div>
                     <div className='d-flex mt-3 mb-3'>
                       <div className="avatar-mini">
                         <img src={cassia} alt="" />
@@ -402,7 +402,7 @@ function Home() {
         <Modal.Header closeButton className='border-0 pb-1'>
           <div>
             <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span class="badge rounded-pill estado-bg-success">Concluido</span></div>
+            <div className="ss"><span className="badge rounded-pill estado-bg-success">Concluido</span></div>
           </div>
         </Modal.Header>
         <Modal.Body className='border-0'>
@@ -411,7 +411,7 @@ function Home() {
               <div className="col-lg-4">
                 <div className="card border">
                   <div className="card-body">
-                    <div className=""><span class="badge rounded-pill estado-bg-primary">Adendamento</span></div>
+                    <div className=""><span className="badge rounded-pill estado-bg-primary">Adendamento</span></div>
                     <div className='d-flex mt-3 mb-3'>
                       <div className="avatar-mini">
                         <img src={cassia} alt="" />
@@ -431,7 +431,7 @@ function Home() {
               <div className="col-lg-4">
                 <div className="card border">
                   <div className="card-body">
-                    <div className="ss"><span class="badge rounded-pill estado-bg-secondary">Entrada</span></div>
+                    <div className="ss"><span className="badge rounded-pill estado-bg-secondary">Entrada</span></div>
                     <div className='d-flex mt-3 mb-3'>
                       <div className="avatar-mini">
                         <img src={matheus} alt="" />
@@ -451,7 +451,7 @@ function Home() {
               <div className="col-lg-4">
                 <div className="card border">
                   <div className="card-body">
-                    <div className="ss"><span class="badge rounded-pill estado-bg-success">Saida</span></div>
+                    <div className="ss"><span className="badge rounded-pill estado-bg-success">Saida</span></div>
                     <div className='d-flex mt-3 mb-3'>
                       <div className="avatar-mini">
                         <img src={matheus} alt="" />
@@ -475,7 +475,7 @@ function Home() {
         <Modal.Header closeButton className='border-0 pb-1'>
           <div>
             <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span class="badge rounded-pill estado-bg-warning">Expirado</span></div>
+            <div className="ss"><span className="badge rounded-pill estado-bg-warning">Expirado</span></div>
           </div>
         </Modal.Header>
         <Modal.Body className='border-0'>
@@ -484,7 +484,7 @@ function Home() {
               <div className="col-lg-4">
                 <div className="card border">
                   <div className="card-body">
-                    <div className=""><span class="badge rounded-pill estado-bg-primary">Agendado</span></div>
+                    <div className=""><span className="badge rounded-pill estado-bg-primary">Agendado</span></div>
                     <div className='d-flex mt-3 mb-3'>
                       <div className="avatar-mini">
                         <img src={cassia} alt="" />
@@ -509,7 +509,7 @@ function Home() {
         <Modal.Header closeButton className='border-0 pb-1'>
           <div>
             <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span class="badge rounded-pill estado-bg-danger">Cancelado</span></div>
+            <div className="ss"><span className="badge rounded-pill estado-bg-danger">Cancelado</span></div>
 
             <div className='mt-3'>
               <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
@@ -522,7 +522,7 @@ function Home() {
               <div className="col-lg-4">
                 <div className="card border">
                   <div className="card-body">
-                    <div className=""><span class="badge rounded-pill estado-bg-primary">Agendado</span></div>
+                    <div className=""><span className="badge rounded-pill estado-bg-primary">Agendado</span></div>
                     <div className='d-flex mt-3 mb-3'>
                       <div className="avatar-mini">
                         <img src={cassia} alt="" />
@@ -547,7 +547,7 @@ function Home() {
         <Modal.Header closeButton className='border-0 pb-1'>
           <div>
             <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span class="badge rounded-pill estado-bg-secondary">No condomínio</span></div>
+            <div className="ss"><span className="badge rounded-pill estado-bg-secondary">No condomínio</span></div>
           </div>
         </Modal.Header>
         <Modal.Body className='border-0'>
@@ -556,7 +556,7 @@ function Home() {
               <div className="col-lg-4">
                 <div className="card border">
                   <div className="card-body">
-                    <div className=""><span class="badge rounded-pill estado-bg-primary">Adendamento</span></div>
+                    <div className=""><span className="badge rounded-pill estado-bg-primary">Adendamento</span></div>
                     <div className='d-flex mt-3 mb-3'>
                       <div className="avatar-mini">
                         <img src={cassia} alt="" />
@@ -579,7 +579,7 @@ function Home() {
               <div className="col-lg-4">
                 <div className="card border">
                   <div className="card-body">
-                    <div className="ss"><span class="badge rounded-pill estado-bg-secondary">Entrada</span></div>
+                    <div className="ss"><span className="badge rounded-pill estado-bg-secondary">Entrada</span></div>
                     <div className='d-flex mt-3 mb-3'>
                       <div className="avatar-mini">
                         <img src={matheus} alt="" />

@@ -150,13 +150,13 @@ function Quadra() {
                   <div className="d-flex flex-row-reverse">
                     <div className='d-flex'>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <input type="search" class="form-control border-0" placeholder="Pesquisar" />
+                        <input type="search" className="form-control border-0" placeholder="Pesquisar" />
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" class="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" class="btn btn-primary btn-sm"><HiOutlineEye /></button>
+                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
                       </div>
                     </div>
                   </div>

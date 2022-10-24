@@ -202,7 +202,7 @@ function Agendadas() {
                         {
                           !loading ?
                             appointments?.data?.map(appointment => (
-                              <tr>
+                              <tr key={appointment.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
                                     <img src={marisa} alt="" />
