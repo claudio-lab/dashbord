@@ -331,7 +331,7 @@ function Funcionario() {
         backdrop="static"
         keyboard={false}>
         <Modal.Header closeButton className='border-0'>
-          <h5 className='mt-3'>Adicionar Funcionario</h5>
+          <h5 className='mt-3'>Adicionar Funcionario </h5>
         </Modal.Header>
         <Modal.Body className='pt-0'>
           <form action="">
