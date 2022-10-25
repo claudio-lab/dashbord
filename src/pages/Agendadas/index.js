@@ -7,7 +7,8 @@ import {
   HiAdjustments,
   HiRefresh,
   HiOutlineSearch,
-  HiOutlineEye
+  HiOutlineEye,
+  HiOutlinePlusSm
 } from "react-icons/hi";
 import {
   IoEllipsisHorizontal,
@@ -38,6 +39,10 @@ function Agendadas() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  {/*--------------------------------------------*/ }
+  const [show5, setShow5] = useState(false);
+  const handleClose5 = () => setShow5(false);
+  const handleShow5 = () => setShow5(true);
   {/*--------------------------------------------*/ }
 
   const [appointments, setAppointments] = useState([]);
@@ -131,6 +136,9 @@ function Agendadas() {
                   </Button>
                   <Button className='btn-sm ms-1'>
                     <HiRefresh />
+                  </Button>
+                  <Button className='btn-sm ms-1' onClick={handleShow5}>
+                    <HiOutlinePlusSm />
                   </Button>
                 </div>
               </div>
@@ -329,6 +337,42 @@ function Agendadas() {
           </div>
         </Modal.Body>
       </Modal>
+            {/*modal*/}
+            <Modal show={show5}
+        onHide={handleClose5}
+        backdrop="static"
+        keyboard={false}>
+        <Modal.Header closeButton className='border-0'>
+          <h5 className='mt-3'>Agendar Visita</h5>
+        </Modal.Header>
+        <Modal.Body className='pt-0'>
+          <form action="">
+            <label className='mt-2 mb-2'><b>Nome *</b></label>
+            <Form.Control type="text" placeholder="Nome do visitante" />
+            <div className="row">
+              <div className='col-6'>
+              <label className='mt-2 mb-2'><b>Data da Visita * *</b></label>
+              <Form.Control type="date"/>
+              </div>
+              <div className='col-6'>
+              <label className='mt-2 mb-2'><b>Hora *</b></label>
+              <Form.Control type="time"/>
+              </div>
+            </div>
+            <label className='mt-2 mb-2'><b>Motivo da Visita *</b></label>
+            <textarea className="form-control" placeholder="Nome do visitante" rows="3"></textarea>
+          </form>
+        </Modal.Body>
+        <Modal.Footer className='border-0'>
+          <Button variant="secondary" onClick={handleClose5} className='btn-sm'>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleClose5} className='btn-sm'>
+            Adicional
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/*modal*/}
     </div>
   );
 }

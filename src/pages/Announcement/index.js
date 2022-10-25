@@ -14,6 +14,7 @@ import {
   HiRefresh,
   HiOutlineSearch,
   HiOutlineEye,
+  HiOutlinePlusSm,
   HiOutlineUserCircle
 } from "react-icons/hi";
 import {
@@ -46,6 +47,12 @@ function Announcement() {
   const [open1, setOpen1] = useState(false);
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(false);
+  {/*--------------------------------------------*/ }
+  const [show5, setShow5] = useState(false);
+  const handleClose5 = () => setShow5(false);
+  const handleShow5 = () => setShow5(true);
+  {/*--------------------------------------------*/ }
+
 
   useEffect(() => {
     setLoading(true);
@@ -135,6 +142,9 @@ function Announcement() {
                   </Button>
                   <Button className='btn-sm ms-1'>
                     <HiRefresh />
+                  </Button>
+                  <Button className='btn-sm ms-1' onClick={handleShow5}>
+                    <HiOutlinePlusSm />
                   </Button>
                 </div>
               </div>
@@ -255,6 +265,32 @@ function Announcement() {
           </div>
         </section>
       </main>
+                  {/*modal*/}
+                  <Modal show={show5}
+        onHide={handleClose5}
+        backdrop="static"
+        keyboard={false}>
+        <Modal.Header closeButton className='border-0'>
+          <h5 className='mt-3'>Notificar Moradores</h5>
+        </Modal.Header>
+        <Modal.Body className='pt-0'>
+          <form action="">
+            <label className='mt-2 mb-2'><b>Assunto  *</b></label>
+            <Form.Control type="text" placeholder="Comunicado" />
+            <label className='mt-2 mb-2'><b>Comunicado  *</b></label>
+            <textarea className="form-control" placeholder="Discrição do comunicado" rows="3"></textarea>
+          </form>
+        </Modal.Body>
+        <Modal.Footer className='border-0'>
+          <Button variant="secondary" onClick={handleClose5} className='btn-sm'>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleClose5} className='btn-sm'>
+            Adicional
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/*modal*/}
     </div>
   );
 }
