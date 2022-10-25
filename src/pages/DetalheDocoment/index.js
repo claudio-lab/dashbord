@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useParams } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Menu } from '../../components/Menu';
 import {
   Link
@@ -46,7 +47,9 @@ import matheus from './../../assets/photos/matheus.jpg'
 import paula from './../../assets/photos/paula.jpg'
 
 function DetalheDocoment() {
-  let id = 154;
+  let params = useParams();
+  let id = params.id;
+
   const [open1, setOpen1] = useState(false);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -109,8 +112,6 @@ function DetalheDocoment() {
     try {
       const response = await api.get(`v1/list_user_comunicados/${id}`);
       setDocumentByUsers(response.data);
-
-      console.log(response.data);
 
       setLoading(false);
     } catch (error) {
@@ -184,9 +185,9 @@ function DetalheDocoment() {
               <div className="card w-max-1200 border-0 card-body">
                 <div className='d-flex justify-content-between'>
                   <div>
-                    <Link to="/documents_" class="btn btn-primary btn-sm"><HiArrowSmLeft /> voltar</Link>
-                    <button type="button" class="btn btn-light me-3 ms-3 btn-sm"><HiOutlineEyeOff /> Visualizada: {data?.data?.count_vizualizados ? data?.data?.count_vizualizados : '0'}</button>
-                    <button type="button" class="btn btn-light btn-sm"><HiOutlineEye /> Não visualizada: {data?.data?.count_n_vizualizados ? data?.data?.count_n_vizualizados : '0'}</button>
+                    <Link to="/documents_" className="btn btn-primary btn-sm"><HiArrowSmLeft /> voltar</Link>
+                    <button type="button" className="btn btn-light me-3 ms-3 btn-sm"><HiOutlineEyeOff /> Visualizada: {data?.data?.count_vizualizados ? data?.data?.count_vizualizados : '0'}</button>
+                    <button type="button" className="btn btn-light btn-sm"><HiOutlineEye /> Não visualizada: {data?.data?.count_n_vizualizados ? data?.data?.count_n_vizualizados : '0'}</button>
                   </div>
                   {/*<div><h4 className=''>Detalhes Comunicados</h4></div>*/}
                   <div>
@@ -207,27 +208,27 @@ function DetalheDocoment() {
                     <div className="d-flex flex-row-reverse">
                       <div className='d-flex'>
                         <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                          <select class="form-select border-0" >
-                            <option selected>Todos</option>
+                          <select className="form-select border-0" >
+                            <option value="">Todos</option>
                             <option value="1">Visualizado</option>
                             <option value="2">Não visualizado</option>
                           </select>
                         </div>
                         <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                          <select class="form-select border-0" >
-                            <option selected>Todos</option>
+                          <select className="form-select border-0" >
+                            <option value="">Todos</option>
                             <option value="1">Principais</option>
                             <option value="2">Agregados</option>
                           </select>
                         </div>
                         <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                          <input type="text" class="form-control" placeholder="Pesquisar residencia" />
+                          <input type="text" className="form-control" placeholder="Pesquisar residencia" />
                         </div>
                         <div className='mt-2 ms-2'>
-                          <button type="button" class="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                          <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                         </div>
                         <div className='mt-2 ms-2'>
-                          <button type="button" class="btn btn-primary btn-sm"><HiOutlineEye /></button>
+                          <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
                         </div>
                       </div>
                     </div>
@@ -237,7 +238,7 @@ function DetalheDocoment() {
 
               <div className='mt-4'>
                 <div className="btn-group border-botton-right-0">
-                  <Link to="/detalheDocoment" className="btn border-botton-right-0 btn-light-tabs active" >Informações</Link>
+                  <Link to={`/documents/${id}`} className="btn border-botton-right-0 btn-light-tabs active" >Informações</Link>
                   <Link to="/verDocumento" className="btn border-botton-right-0 btn-light-tabs " >Abrir arquivo</Link>
                 </div>
                 <div className="card border-0 border-botton-right-left-0 card-table">

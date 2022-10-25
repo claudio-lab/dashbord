@@ -142,7 +142,7 @@ function Concluido() {
                       <div className="w-100px me-3">
                         <div className="input-group input-group-sm rounded mt-2 input-group-data">
                           <Form.Select className='border-0'>
-                            <option>Todos porteiros</option>
+                            <option value="">Todos porteiros</option>
                             <option value="1">Matheus Fernandes</option>
                             <option value="2">Paulo Maria</option>
                             <option value="3">Daniel Filipe</option>
@@ -157,29 +157,29 @@ function Concluido() {
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
                         <Form.Select className='border-0' aria-label="Default select example">
-                          <option>Todas quadra</option>
+                          <option value="">Todas quadra</option>
                           <option value="1">One</option>
                           <option value="2">Two</option>
                           <option value="3">Three</option>
                         </Form.Select>
                         <Form.Select className='border-0' aria-label="Default select example">
-                          <option>Todos lotes</option>
+                          <option value="">Todos lotes</option>
                           <option value="1">One</option>
                           <option value="2">Two</option>
                           <option value="3">Three</option>
                         </Form.Select>
                         <Form.Select className='border-0' aria-label="Default select example">
-                          <option>Todos moradores</option>
+                          <option value="">Todos moradores</option>
                           <option value="1">One</option>
                           <option value="2">Two</option>
                           <option value="3">Three</option>
                         </Form.Select>
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" class="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" class="btn btn-primary btn-sm"><HiOutlineEye /></button>
+                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
                       </div>
                     </div>
                   </div>
@@ -213,7 +213,7 @@ function Concluido() {
                         {
                           !loading ?
                             appointments?.data?.map(appointment => (
-                              <tr>
+                              <tr key={appointment.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
                                     <FaUserCheck />
@@ -224,7 +224,7 @@ function Concluido() {
                                 <td>{appointment.residencia_morador}</td>
                                 <td>{appointment.data}</td>
                                 <td>
-                                  <span class="badge rounded-pill estado-bg-success">Concluído</span>
+                                  <span className="badge rounded-pill estado-bg-success">Concluído</span>
                                 </td>
                                 <td className='text-right pe-4'>
                                   <Button className="btn btn-light p-0 m-0 " onClick={handleShow1}>
@@ -303,7 +303,7 @@ function Concluido() {
         <Modal.Header closeButton className='border-0 pb-1'>
           <div>
             <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span class="badge rounded-pill estado-bg-success">Concluido</span></div>
+            <div className="ss"><span className="badge rounded-pill estado-bg-success">Concluido</span></div>
           </div>
         </Modal.Header>
         <Modal.Body className='border-0'>
@@ -312,7 +312,7 @@ function Concluido() {
               <div className="col-lg-4">
                 <div className="card border">
                   <div className="card-body">
-                    <div className=""><span class="badge rounded-pill estado-bg-primary">Adendamento</span></div>
+                    <div className=""><span className="badge rounded-pill estado-bg-primary">Adendamento</span></div>
                     <div className='d-flex mt-3 mb-3'>
                       <div className="avatar-mini">
                         <img src={cassia} alt="" />
@@ -332,7 +332,7 @@ function Concluido() {
               <div className="col-lg-4">
                 <div className="card border">
                   <div className="card-body">
-                    <div className="ss"><span class="badge rounded-pill estado-bg-secondary">Entrada</span></div>
+                    <div className="ss"><span className="badge rounded-pill estado-bg-secondary">Entrada</span></div>
                     <div className='d-flex mt-3 mb-3'>
                       <div className="avatar-mini">
                         <img src={matheus} alt="" />
@@ -352,7 +352,7 @@ function Concluido() {
               <div className="col-lg-4">
                 <div className="card border">
                   <div className="card-body">
-                    <div className="ss"><span class="badge rounded-pill estado-bg-success">Saida</span></div>
+                    <div className="ss"><span className="badge rounded-pill estado-bg-success">Saida</span></div>
                     <div className='d-flex mt-3 mb-3'>
                       <div className="avatar-mini">
                         <img src={matheus} alt="" />

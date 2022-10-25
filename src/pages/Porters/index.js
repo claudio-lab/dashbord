@@ -157,7 +157,7 @@ function Porters() {
                       <div className='input-group input-group-sm  me-3 rounded mt-2 w-100px input-group-data'>
                         <span className="input-group-text" id="basic-addon1"><b>Estado</b></span>
                         <Form.Select className='border-0 ' aria-label="Default select example">
-                          <option>Todas</option>
+                          <option value="">Todas</option>
                           <option value="1">Entrou no condomínio</option>
                           <option value="2">Saiu do condomínio</option>
                         </Form.Select>
@@ -169,10 +169,10 @@ function Porters() {
                         <input type="date" className="form-control" placeholder="Username" />
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" class="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" class="btn btn-primary btn-sm"><HiOutlineEye /></button>
+                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
                       </div>
                     </div>
                   </div>
@@ -185,7 +185,7 @@ function Porters() {
                       <div className='input-group w-100px input-group-sm  rounded mt-2 w-280px input-group-data'>
                         <span className="input-group-text" id="basic-addon1"><b>Porteiro</b></span>
                         <Form.Select className='border-0 ' aria-label="Default select example">
-                          <option>Todos</option>
+                          <option value="">Todos</option>
                           <option value="1">Marcio Morais</option>
                           <option value="2">Antonio Martins</option>
                         </Form.Select>
@@ -214,7 +214,7 @@ function Porters() {
                         {
                           !loading ?
                             concierges?.data?.map(employee => (
-                              <tr>
+                              <tr key={employee.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
                                     <img src={marisa} alt="" />
@@ -227,7 +227,7 @@ function Porters() {
                                 <td>-</td>
                                 <td>-</td>
                                 <td>
-                                  <span class="badge rounded-pill estado-bg-success">Em serviço</span>
+                                  <span className="badge rounded-pill estado-bg-success">Em serviço</span>
                                 </td>
                                 <td className='text-right pe-4'>
                                   <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
@@ -322,9 +322,9 @@ function Porters() {
                         <div className='font-size-12'>Porteiro</div>
                       </div>
                     </div>
-                    <span class="badge rounded-pill estado-bg-success">Entrada</span> <br />
+                    <span className="badge rounded-pill estado-bg-success">Entrada</span> <br />
                     <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <span class="badge rounded-pill estado-bg-danger">Saida</span> <br />
+                    <span className="badge rounded-pill estado-bg-danger">Saida</span> <br />
                     <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
                   </div>
                 </div>
