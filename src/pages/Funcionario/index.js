@@ -325,7 +325,7 @@ function Funcionario() {
       </div>
       </section>
     </main>
-    {/*modal*/}
+    {/*modal*/} 
     <Modal show={show}
         onHide={handleClose}
         backdrop="static"
