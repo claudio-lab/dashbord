@@ -330,7 +330,7 @@ function Funcionario() {
         onHide={handleClose}
         backdrop="static"
         keyboard={false}>
-        <Modal.Header closeButton className='border-0'>
+        <Modal.Header closeButton className='border-0'> 
           <h5 className='mt-3'>Adicionar Funcionario</h5>
         </Modal.Header>
         <Modal.Body className='pt-0'>
@@ -343,7 +343,7 @@ function Funcionario() {
             <Form.Control type="email" placeholder="Email" />
             <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
             <Form.Select aria-label="Default select example">
-              <option>Selecione</option>
+              <option>Selecione *</option>
             </Form.Select>
             <label className='mt-2 mb-2'><b>Senha *</b></label>
             <Form.Control type="password" placeholder="Senha" />
