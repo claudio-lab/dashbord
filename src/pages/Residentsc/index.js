@@ -118,6 +118,28 @@ function Residentsc() {
     }
   }
 
+  async function handleChangePassword(id) {
+    try {
+      const response = await api.get('v1/status_funcionario/' + id);
+      //setAppointments(response.data);
+
+      alert("Senha alterada com sucesso");
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
 
   return (
     <div className="dashboard">
@@ -234,7 +256,9 @@ function Residentsc() {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
-                                      <Dropdown.Item href="#/action-1">Reenviar senha</Dropdown.Item>
+                                      <Dropdown.Item onClick={
+                                        () => { " handleChangePassword(appointment.id)" }
+                                      }>Reenviar senha</Dropdown.Item>
                                       <Dropdown.Item href="#/action-2">Activar</Dropdown.Item>
                                       <Dropdown.Item href="#/action-3">Desativa</Dropdown.Item>
                                     </Dropdown.Menu>

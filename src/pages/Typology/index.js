@@ -14,7 +14,7 @@ import {
   HiRefresh,
   HiOutlineSearch,
   HiOutlineEye,
-  HiOutlineUserCircle
+  HiOutlinePlusSm
 } from "react-icons/hi";
 import {
   IoEllipsisHorizontal,
@@ -50,6 +50,14 @@ function Typology() {
 
   const [typologies, setTypologies] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingSubmitTypology, setLoadingSubmitTypology] = useState(false);
+
+  const [typology, setTypology] = useState("");
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     setLoading(true);
@@ -119,6 +127,37 @@ function Typology() {
     }
   }
 
+  async function handleSaveTypology(condominio_id) {
+    try {
+      setLoadingSubmitTypology(true);
+
+      if (!typologies) return alert('Tipologia é obrigatório!');
+
+      const data = {
+        tipologia: typologies,
+        condominio_id: condominio_id
+      }
+
+      const response = await api.post('v1/addTipologia', data);
+
+      console.log(response.data);
+
+
+      setLoadingSubmitTypology(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoadingSubmitTypology(false);
+    }
+  }
+
   return (
     <div className="dashboard">
       <main className='d-flex'>
@@ -139,6 +178,10 @@ function Typology() {
                   </Button>
                   <Button className='btn-sm ms-1'>
                     <HiRefresh />
+                  </Button>
+
+                  <Button className='btn-sm ms-1' onClick={handleShow}>
+                    <HiOutlinePlusSm />
                   </Button>
                 </div>
               </div>
@@ -264,6 +307,45 @@ function Typology() {
           </div>
         </section>
       </main>
+
+      {/*modal*/}
+      <Modal show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}>
+        <Modal.Header closeButton className='border-0'>
+          <h5 className='mt-3'>Adicionar tipologia</h5>
+        </Modal.Header>
+        <Modal.Body className='pt-0'>
+          <form action="">
+            <label className='mt-2 mb-2'><b>Tipologia *</b></label>
+            <Form.Control
+              type="text"
+              required
+              placeholder="Tipologia"
+              onchange={(event) => setTypologies(event.target.value)}
+            />
+          </form>
+        </Modal.Body>
+        <Modal.Footer className='border-0'>
+          <Button variant="secondary" onClick={handleClose} className='btn-sm'>
+            Cancelar
+          </Button>
+
+          {
+
+            setLoadingSubmitTypology
+              ? <Button variant="primary" onClick={handleSaveTypology(1)} className='btn-sm'>
+                Adicionar
+              </Button>
+              : <Button variant="primary" disabled className='btn-sm'>
+                Adicionando...
+              </Button>
+
+          }
+        </Modal.Footer>
+      </Modal>
+      {/*modal*/}
     </div>
   );
 }

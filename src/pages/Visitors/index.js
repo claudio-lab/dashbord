@@ -3,6 +3,7 @@ import { Menu } from '../../components/Menu';
 import {
   Link
 } from "react-router-dom";
+import { format } from 'date-fns';
 import {
   HiAdjustments,
   HiRefresh,
@@ -62,6 +63,8 @@ function Visitors() {
   {/*--------------------------------------------*/ }
 
   const [appointments, setAppointments] = useState([]);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -80,9 +83,9 @@ function Visitors() {
       if (error.message === "Network Error") {
         console.log("Por favor verifique sua conexão com a internet!");
       } else if (error.message === "Request failed with status code 401") {
-        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
       } else if (error.message === "Request failed with status code 400") {
-        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
       } else if (error.status === 500) {
         console.log("Erro interno, por favor, contactar o suporte!");
       }
@@ -101,9 +104,9 @@ function Visitors() {
       if (error.message === "Network Error") {
         console.log("Por favor verifique sua conexão com a internet!");
       } else if (error.message === "Request failed with status code 401") {
-        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
       } else if (error.message === "Request failed with status code 400") {
-        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
       } else if (error.status === 500) {
         console.log("Erro interno, por favor, contactar o suporte!");
       }
@@ -122,9 +125,74 @@ function Visitors() {
       if (error.message === "Network Error") {
         console.log("Por favor verifique sua conexão com a internet!");
       } else if (error.message === "Request failed with status code 401") {
-        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
       } else if (error.message === "Request failed with status code 400") {
-        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleFilterFromDate(date) {
+    setLoading(true);
+
+    if (!date)
+      return getAppointments();
+
+    try {
+
+      const data = {
+        data_de: format(new Date(date), 'yyyy-MM-dd'),
+      }
+
+      const response = await api.post('v1/filtro_visitas', data);
+      console.log(response.data)
+      setAppointments(response.data.agendamento.data);
+      setStartDate(format(new Date(date), 'yyyy-MM-dd'));
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleFilterFromDateToEndDate(end_date) {
+    setLoading(true);
+
+    if (!end_date)
+      return getAppointments();
+
+    try {
+
+      const data = {
+        data_de: startDate,
+        data_ate: format(new Date(end_date), 'yyyy-MM-dd'),
+      }
+
+      const response = await api.post('v1/filtro_visitas', data);
+      console.log(response.data)
+      setAppointments(response.data.agendamento.data);
+      setEndDate(format(new Date(end_date), 'yyyy-MM-dd'));
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
       } else if (error.status === 500) {
         console.log("Erro interno, por favor, contactar o suporte!");
       }
@@ -171,7 +239,7 @@ function Visitors() {
                       </div>
                       <div className="input-group input-group-sm rounded mt-2 input-group-data">
                         <span className="input-group-text" id="basic-addon1"><b>De</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
+                        <input type="date" onChange={(event) => { handleFilterFromDate(event.target.value); }} className="form-control" placeholder="Username" />
                         <span className="input-group-text" id="basic-addon1"><b>Ate</b></span>
                         <input type="date" className="form-control" placeholder="Username" />
                       </div>
