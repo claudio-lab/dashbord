@@ -12,6 +12,7 @@ import {
   HiSearch,
   HiAdjustments,
   HiRefresh,
+  HiOutlinePlusSm,
   HiOutlineSearch,
   HiOutlineEye,
   HiOutlineUserCircle
@@ -49,6 +50,10 @@ function Agregado() {
 
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     setLoading(true);
@@ -142,6 +147,10 @@ function Agregado() {
                   <Button className='btn-sm ms-1'>
                     <HiRefresh />
                   </Button>
+
+                  <Button className='btn-sm ms-1' onClick={handleShow}>
+                  <HiOutlinePlusSm/>
+                  </Button>
                 </div>
               </div>
               <Collapse className='w-max-1200' in={open1}>
@@ -187,7 +196,7 @@ function Agregado() {
                 </div>
               </Collapse>
 
-              <div className='mt-4'>
+              <div className='mt-4'> 
                 <div className="btn-group border-botton-right-0">
                   <Link to="/residentsc" className="btn border-botton-right-0 btn-light-tabs" >Principal</Link>
                   <Link to="/agregado" className="btn border-botton-right-0 btn-light-tabs active">Agregado</Link>
@@ -315,6 +324,39 @@ function Agregado() {
           </div>
         </section>
       </main>
+          {/*modal*/} 
+    <Modal show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}>
+        <Modal.Header closeButton className='border-0'>
+          <h5 className='mt-3'>Adicionar agregado</h5>
+        </Modal.Header>
+        <Modal.Body className='pt-0'>
+          <form action="">
+            <label className='mt-2 mb-2'><b>Nome *</b></label>
+            <Form.Control type="text" placeholder="Nome de administrador" />
+            <label className='mt-2 mb-2'><b>Telefone *</b></label>
+            <Form.Control type="number" placeholder="Telefone" />
+            <label className='mt-2 mb-2'><b>Email *</b></label>
+            <Form.Control type="email" placeholder="Email" />
+            <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
+            <Form.Select aria-label="Default select example">
+              <option>Pricipal</option>
+              <option>Agregado</option>
+            </Form.Select>
+          </form>
+        </Modal.Body>
+        <Modal.Footer className='border-0'>
+          <Button variant="secondary" onClick={handleClose} className='btn-sm'>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleClose} className='btn-sm'>
+            Adicional
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    {/*modal*/}
     </div>
   );
 }

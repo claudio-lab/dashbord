@@ -8,7 +8,8 @@ import {
   HiAdjustments,
   HiRefresh,
   HiOutlineSearch,
-  HiOutlineEye
+  HiOutlineEye,
+  HiOutlinePlusSm
 } from "react-icons/hi";
 import {
   IoEllipsisHorizontal,
@@ -57,15 +58,20 @@ function Visitors() {
   const handleClose3 = () => setShow3(false);
   const handleShow3 = () => setShow3(true);
   {/*--------------------------------------------*/ }
-  const [show4, setShow4] = useState(false);
-  const handleClose4 = () => setShow4(false);
-  const handleShow4 = () => setShow4(true);
-  {/*--------------------------------------------*/ }
+    const [show4, setShow4] = useState(false);
+    const handleClose4 = () => setShow4(false);
+    const handleShow4 = () => setShow4(true);
+    {/*--------------------------------------------*/ }
+    const [show5, setShow5] = useState(false);
+    const handleClose5 = () => setShow5(false);
+    const handleShow5 = () => setShow5(true);
+    {/*--------------------------------------------*/ }
 
   const [appointments, setAppointments] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     setLoading(true);
@@ -220,6 +226,9 @@ function Visitors() {
                   </Button>
                   <Button className='btn-sm ms-1'>
                     <HiRefresh />
+                  </Button>
+                  <Button className='btn-sm ms-1' onClick={handleShow5}>
+                    <HiOutlinePlusSm />
                   </Button>
                 </div>
               </div>
@@ -633,6 +642,78 @@ function Visitors() {
           </div>
         </Modal.Body>
       </Modal>
+            {/*modal*/}
+            <Modal show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}>
+        <Modal.Header closeButton className='border-0'>
+          <h5 className='mt-3'>Adicionar Funcionario </h5>
+        </Modal.Header>
+        <Modal.Body className='pt-0'>
+          <form action="">
+            <label className='mt-2 mb-2'><b>Nome *</b></label>
+            <Form.Control type="text" placeholder="Nome de administrador" />
+            <label className='mt-2 mb-2'><b>Telefone *</b></label>
+            <Form.Control type="number" placeholder="Telefone" />
+            <label className='mt-2 mb-2'><b>Email *</b></label>
+            <Form.Control type="email" placeholder="Email" />
+            <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
+            <Form.Select aria-label="Default select example">
+              <option value="">Selecione</option>
+            </Form.Select>
+            <label className='mt-2 mb-2'><b>Senha *</b></label>
+            <Form.Control type="password" placeholder="Senha" />
+            <label className='mt-2 mb-2'><b>Confirma senha *</b></label>
+            <Form.Control type="password" placeholder="Confirma Senha" />
+          </form>
+        </Modal.Body>
+        <Modal.Footer className='border-0'>
+          <Button variant="secondary" onClick={handleClose} className='btn-sm'>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleClose} className='btn-sm'>
+            Adicional
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/*modal*/}
+      {/*modal*/}
+      <Modal show={show5}
+        onHide={handleClose5}
+        backdrop="static"
+        keyboard={false}>
+        <Modal.Header closeButton className='border-0'>
+          <h5 className='mt-3'>Agendar Visita</h5>
+        </Modal.Header>
+        <Modal.Body className='pt-0'>
+          <form action="">
+            <label className='mt-2 mb-2'><b>Nome *</b></label>
+            <Form.Control type="text" placeholder="Nome do visitante" />
+            <div className="row">
+              <div className='col-6'>
+              <label className='mt-2 mb-2'><b>Data da Visita * *</b></label>
+              <Form.Control type="date"/>
+              </div>
+              <div className='col-6'>
+              <label className='mt-2 mb-2'><b>Hora *</b></label>
+              <Form.Control type="time"/>
+              </div>
+            </div>
+            <label className='mt-2 mb-2'><b>Motivo da Visita *</b></label>
+            <textarea className="form-control" placeholder="Nome do visitante" rows="3"></textarea>
+          </form>
+        </Modal.Body>
+        <Modal.Footer className='border-0'>
+          <Button variant="secondary" onClick={handleClose5} className='btn-sm'>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleClose5} className='btn-sm'>
+            Adicional
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/*modal*/}
     </div>
   );
 }
