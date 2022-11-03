@@ -37,9 +37,10 @@ function Login() {
   const { signIn } = useContext(AuthContext);
 
   function handleLogin(event) {
+    setLoading(true);
     event.preventDefault();
     try {
-      setLoading(true);
+
 
       if (!email) return toast.error("Email é obrigatório!");
       if (!passwordInput) return toast.error("A senha é obrigatória!");
