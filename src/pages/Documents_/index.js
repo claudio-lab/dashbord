@@ -56,7 +56,7 @@ function Documents_() {
   async function getDocuments() {
     try {
       const response = await api.get('v1/getDocumentos/1');
-      setDocuments(response.data);
+      setDocuments(response.data.documentos);
 
       setLoading(false);
     } catch (error) {
@@ -77,7 +77,7 @@ function Documents_() {
     try {
       setLoading(true);
       const response = await api.get(link);
-      setDocuments(response.data);
+      setDocuments(response.data.documentos);
 
       setLoading(false);
     } catch (error) {
@@ -98,7 +98,7 @@ function Documents_() {
     try {
       setLoading(true);
       const response = await api.get(link);
-      setDocuments(response.data);
+      setDocuments(response.data.documentos);
 
       setLoading(false);
     } catch (error) {
