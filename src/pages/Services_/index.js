@@ -49,12 +49,15 @@ function Services_() {
   const [open1, setOpen1] = useState(false);
 
   const [services, setServices] = useState([]);
+  const [service, setService] = useState("");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
-{/*--------------------------------------------*/ }
-const [show5, setShow5] = useState(false);
-const handleClose5 = () => setShow5(false);
-const handleShow5 = () => setShow5(true);
-{/*--------------------------------------------*/ }
+  const [loadingSubmitService, setLoadingSubmitService] = useState(false);
+  {/*--------------------------------------------*/ }
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  {/*--------------------------------------------*/ }
 
   useEffect(() => {
     setLoading(true);
@@ -123,6 +126,42 @@ const handleShow5 = () => setShow5(true);
       setLoading(false);
     }
   }
+
+  async function handleSaveService(condominio_id) {
+    try {
+      setLoadingSubmitService(true);
+
+      if (!service) return alert('Serviço é obrigatório!'); setLoadingSubmitService(false);
+      if (!description) return alert('Descrição é obrigatório!'); setLoadingSubmitService(false);
+
+      const data = {
+        tipo: service,
+        descricao: description,
+        condominio_id: condominio_id
+      }
+
+      const response = await api.post('v1/add_servico', data);
+
+      if (response.data.success) {
+        alert(response.data.msg);
+      }
+
+      handleClose();
+      getServices();
+      setLoadingSubmitService(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoadingSubmitService(false);
+    }
+  }
   return (
     <div className="dashboard">
       <main className='d-flex'>
@@ -144,7 +183,7 @@ const handleShow5 = () => setShow5(true);
                   <Button className='btn-sm ms-1'>
                     <HiRefresh />
                   </Button>
-                  <Button className='btn-sm ms-1' onClick={handleShow5}>
+                  <Button className='btn-sm ms-1' onClick={handleShow}>
                     <HiOutlinePlusSm />
                   </Button>
                 </div>
@@ -266,8 +305,8 @@ const handleShow5 = () => setShow5(true);
         </section>
       </main>
       {/*modal*/}
-      <Modal show={show5}
-        onHide={handleClose5}
+      <Modal show={show}
+        onHide={handleClose}
         backdrop="static"
         keyboard={false}>
         <Modal.Header closeButton className='border-0'>
@@ -276,18 +315,28 @@ const handleShow5 = () => setShow5(true);
         <Modal.Body className='pt-0'>
           <form action="">
             <label className='mt-2 mb-2'><b>Serviço  *</b></label>
-            <Form.Control type="text" placeholder="Serviço" />
+            <Form.Control type="text" placeholder="Serviço" required onChange={(e) => setService(e.target.value)} />
             <label className='mt-2 mb-2'><b>Descrição do Serviço  *</b></label>
-            <textarea className="form-control" placeholder="Discrição do Serviço" rows="3"></textarea>
+            <textarea className="form-control" placeholder="Discrição do Serviço" required onChange={(e) => setDescription(e.target.value)} rows="3"></textarea>
           </form>
         </Modal.Body>
         <Modal.Footer className='border-0'>
-          <Button variant="secondary" onClick={handleClose5} className='btn-sm'>
+          <Button variant="secondary" onClick={handleClose} className='btn-sm'>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleClose5} className='btn-sm'>
-            Adicional
-          </Button>
+
+
+          {
+
+            !loadingSubmitService
+              ? <Button variant="primary" onClick={() => handleSaveService(1)} className='btn-sm'>
+                Adicionar
+              </Button>
+              : <Button variant="primary" disabled className='btn-sm'>
+                Adicionando...
+              </Button>
+
+          }
         </Modal.Footer>
       </Modal>
       {/*modal*/}

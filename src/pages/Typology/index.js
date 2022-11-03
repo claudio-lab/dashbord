@@ -131,18 +131,21 @@ function Typology() {
     try {
       setLoadingSubmitTypology(true);
 
-      if (!typologies) return alert('Tipologia é obrigatório!');
+      if (!typology) return alert('Tipologia é obrigatório!');
 
       const data = {
-        tipologia: typologies,
+        tipologia: typology,
         condominio_id: condominio_id
       }
 
       const response = await api.post('v1/addTipologia', data);
 
-      console.log(response.data);
+      if (response.data.success) {
+        alert(response.data.msg);
+      }
 
-
+      handleClose();
+      getTypologies();
       setLoadingSubmitTypology(false);
     } catch (error) {
       if (error.message === "Network Error") {
@@ -323,7 +326,7 @@ function Typology() {
               type="text"
               required
               placeholder="Tipologia"
-              onchange={(event) => setTypologies(event.target.value)}
+              onChange={(event) => setTypology(event.target.value)}
             />
           </form>
         </Modal.Body>
@@ -334,8 +337,8 @@ function Typology() {
 
           {
 
-            setLoadingSubmitTypology
-              ? <Button variant="primary" onClick={handleSaveTypology(1)} className='btn-sm'>
+            !loadingSubmitTypology
+              ? <Button variant="primary" onClick={() => handleSaveTypology(1)} className='btn-sm'>
                 Adicionar
               </Button>
               : <Button variant="primary" disabled className='btn-sm'>
