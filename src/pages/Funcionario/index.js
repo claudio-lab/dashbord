@@ -324,7 +324,7 @@ function Funcionario() {
         </div>
       </div>
       </section>
-    </main>   
+    </main>     
     {/*modal*/} 
     <Modal show={show}
         onHide={handleClose}
