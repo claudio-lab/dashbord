@@ -76,18 +76,106 @@ function Home() {
   });
 
   const [appointments, setAppointments] = useState([]);
+  const [countMoradores, setCountMoradores] = useState([]);
+  const [countPorteiros, setCountPorteiros] = useState([]);
+  const [countCategoria, setCountCategoria] = useState([]);
+  const [countSubCategoria, setCountSubCategoria] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     getAppointments();
-
+    getMoradores();
+    getPorteiros();
+    getCategoria();
+    getSubCategoria();
   }, []);
 
   async function getAppointments() {
     try {
-      const response = await api.get('v1/list_visitas/1/0000');
+      const response = await api.get('v1/list_visitas_hoje/1');
       setAppointments(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getMoradores() {
+    try {
+      const response = await api.get('v1/morador_count/1');
+      //setCountMoradores(response.data);
+      setCountMoradores(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getPorteiros() {
+    try {
+      const response = await api.get('v1/count_porteiro/1');
+      setCountPorteiros(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getCategoria() {
+    try {
+      const response = await api.get('v1/countCategoria/1');
+      setCountCategoria(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getSubCategoria() {
+    try {
+      const response = await api.get('v1/countSubcat/1');
+      setCountSubCategoria(response.data);
 
       setLoading(false);
     } catch (error) {
@@ -158,7 +246,8 @@ function Home() {
                 <div className="card-body d-flex justify-content-between pb-3">
                   <div>
                     <font className="font-size-15 font-sub-title"><b>Moradores</b></font>
-                    <h4>500</h4>
+
+                    <h4>{countMoradores?.data?.users}</h4>
                   </div>
                   <div className='d-flex align-items-center'>
                     <div className="card-icon-primary">
@@ -174,7 +263,7 @@ function Home() {
                   <div>
                     <font className="font-size-15 font-sub-title"><b>Porteiros</b></font>
                     <div className="d-flex">
-                      <h4>24</h4>
+                      <h4>{countPorteiros?.data?.porteiros}</h4>
                     </div>
                   </div>
                   <div className='d-flex align-items-center'>
@@ -191,7 +280,7 @@ function Home() {
                   <div>
                     <font className="font-size-15 font-sub-title"><b>Quadras</b></font>
                     <div className="d-flex">
-                      <h4>2500</h4>
+                      <h4>{countCategoria?.data?.categoria}</h4>
                     </div>
                   </div>
                   <div className='d-flex align-items-center'>
@@ -208,7 +297,7 @@ function Home() {
                   <div>
                     <font className="font-size-15 font-sub-title"><b>Lotes</b></font>
                     <div className="d-flex">
-                      <h4>500</h4>
+                      <h4>{countSubCategoria?.data?.lotes}</h4>
                     </div>
                   </div>
                   <div className='d-flex align-items-center'>
@@ -281,8 +370,9 @@ function Home() {
                               <FaUserCheck />
                             </div>
                           </th>
-                          <td>{appointment.nome_morador}</td>
                           <td>{appointment.nome}</td>
+                          <td>{appointment.nome_morador}</td>
+
                           <td>{appointment.residencia_morador}</td>
                           <td>
                             {
@@ -327,13 +417,7 @@ function Home() {
             <div className="card-body pt-0">
               <div className="d-flex justify-content-between">
                 <div className='pt-2'>
-                  {
-                    !loading ?
-
-                      appointments?.from + ' - ' + appointments?.to + '- ' + appointments?.total : '0 - 0 itens '
-
-                  }
-                  itens
+                  {!loading ? appointments?.from + ' - ' + appointments?.to + ' - ' + appointments?.total : '0 - 0 itens '} itens
                 </div>
                 <div>
                   <nav className='nav-pagination'>
