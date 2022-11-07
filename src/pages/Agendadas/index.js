@@ -46,6 +46,8 @@ function Agendadas() {
   {/*--------------------------------------------*/ }
 
   const [appointments, setAppointments] = useState([]);
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -57,6 +59,47 @@ function Agendadas() {
   async function getAppointments() {
     try {
       const response = await api.get('v1/list_visitas/1/agendadas');
+      setAppointments(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleChangeFilterByDateFromTo(dateFrom, dateTo) {
+    try {
+
+      if (!dateFrom || !dateTo) {
+        return;
+      }
+
+      if (dateFrom && !dateTo) {
+        setFrom(dateFrom);
+
+        const response = await api.get(`v1/list_visitas/1/0000/?data_de=${dateFrom}`);
+        setAppointments(response.data);
+        setLoading(false);
+        return;
+      }
+
+      /*if(!from && to) {
+        const response = await api.get(`v1/list_visitas/1/0000/?data_de=${from}&data_ate=${to}`);
+        setAppointments(response.data);
+        setLoading(false);
+        return;
+      }*/
+
+      const response = await api.get(`v1/list_visitas/1/0000/?data_de=${from}&data_ate=${to}`);
       setAppointments(response.data);
 
       setLoading(false);
@@ -337,8 +380,8 @@ function Agendadas() {
           </div>
         </Modal.Body>
       </Modal>
-            {/*modal*/}
-            <Modal show={show5}
+      {/*modal*/}
+      <Modal show={show5}
         onHide={handleClose5}
         backdrop="static"
         keyboard={false}>
@@ -351,12 +394,12 @@ function Agendadas() {
             <Form.Control type="text" placeholder="Nome do visitante" />
             <div className="row">
               <div className='col-6'>
-              <label className='mt-2 mb-2'><b>Data da Visita * *</b></label>
-              <Form.Control type="date"/>
+                <label className='mt-2 mb-2'><b>Data da Visita * *</b></label>
+                <Form.Control type="date" />
               </div>
               <div className='col-6'>
-              <label className='mt-2 mb-2'><b>Hora *</b></label>
-              <Form.Control type="time"/>
+                <label className='mt-2 mb-2'><b>Hora *</b></label>
+                <Form.Control type="time" />
               </div>
             </div>
             <label className='mt-2 mb-2'><b>Motivo da Visita *</b></label>

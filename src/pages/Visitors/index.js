@@ -58,19 +58,21 @@ function Visitors() {
   const handleClose3 = () => setShow3(false);
   const handleShow3 = () => setShow3(true);
   {/*--------------------------------------------*/ }
-    const [show4, setShow4] = useState(false);
-    const handleClose4 = () => setShow4(false);
-    const handleShow4 = () => setShow4(true);
-    {/*--------------------------------------------*/ }
-    const [show5, setShow5] = useState(false);
-    const handleClose5 = () => setShow5(false);
-    const handleShow5 = () => setShow5(true);
-    {/*--------------------------------------------*/ }
+  const [show4, setShow4] = useState(false);
+  const handleClose4 = () => setShow4(false);
+  const handleShow4 = () => setShow4(true);
+  {/*--------------------------------------------*/ }
+  const [show5, setShow5] = useState(false);
+  const handleClose5 = () => setShow5(false);
+  const handleShow5 = () => setShow5(true);
+  {/*--------------------------------------------*/ }
 
   const [appointments, setAppointments] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
 
 
   useEffect(() => {
@@ -92,6 +94,40 @@ function Visitors() {
         console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
       } else if (error.message === "Request failed with status code 400") {
         console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleChangeFilterByDateFromTo() {
+    try {
+      setLoading(true);
+
+      if (!from || !to) {
+        setLoading(false);
+        return;
+      }
+
+      if (from && !to) {
+        const response = await api.get(`v1/list_visitas/1/0000/?data_de=${from}`);
+        setAppointments(response.data);
+        setLoading(false);
+        return;
+      }
+
+      const response = await api.get(`v1/list_visitas/1/0000/?data_de=${from}&data_ate=${to}`);
+      setAppointments(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
       } else if (error.status === 500) {
         console.log("Erro interno, por favor, contactar o suporte!");
       }
@@ -248,9 +284,9 @@ function Visitors() {
                       </div>
                       <div className="input-group input-group-sm rounded mt-2 input-group-data">
                         <span className="input-group-text" id="basic-addon1"><b>De</b></span>
-                        <input type="date" onChange={(event) => { handleFilterFromDate(event.target.value); }} className="form-control" placeholder="Username" />
-                        <span className="input-group-text" id="basic-addon1"><b>Ate</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
+                        <input type="date" onChange={(event) => { setFrom(event.target.value); setTo(''); }} className="form-control" placeholder="Date" />
+                        <span className="input-group-text" id="basic-addon1"><b>Até</b></span>
+                        <input type="date" onChange={(event) => { setTo(from, event.target.value); }} className="form-control" placeholder="Date" />
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
                         <Form.Select className='border-0' aria-label="Default select example">
@@ -273,7 +309,7 @@ function Visitors() {
                         </Form.Select>
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
                       <div className='mt-2 ms-2'>
                         <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
@@ -642,8 +678,8 @@ function Visitors() {
           </div>
         </Modal.Body>
       </Modal>
-            {/*modal*/}
-            <Modal show={show}
+      {/*modal*/}
+      <Modal show={show}
         onHide={handleClose}
         backdrop="static"
         keyboard={false}>
@@ -692,12 +728,12 @@ function Visitors() {
             <Form.Control type="text" placeholder="Nome do visitante" />
             <div className="row">
               <div className='col-6'>
-              <label className='mt-2 mb-2'><b>Data da Visita * *</b></label>
-              <Form.Control type="date"/>
+                <label className='mt-2 mb-2'><b>Data da Visita * *</b></label>
+                <Form.Control type="date" />
               </div>
               <div className='col-6'>
-              <label className='mt-2 mb-2'><b>Hora *</b></label>
-              <Form.Control type="time"/>
+                <label className='mt-2 mb-2'><b>Hora *</b></label>
+                <Form.Control type="time" />
               </div>
             </div>
             <label className='mt-2 mb-2'><b>Motivo da Visita *</b></label>
