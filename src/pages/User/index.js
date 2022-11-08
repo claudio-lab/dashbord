@@ -19,14 +19,7 @@ import {
   HiOutlineUserCircle
 } from "react-icons/hi";
 import {
-  IoEllipsisHorizontal,
-  IoCalendarOutline,
-  IoPeopleOutline,
-  IoCarSportOutline,
-  IoClipboardOutline,
-  IoTimeOutline,
-  IoAlertCircleOutline,
-  IoPersonOutline
+  IoEllipsisHorizontal
 } from "react-icons/io5";
 import { MenuTop } from '../../components/MenuTop';
 import {
@@ -39,11 +32,7 @@ import {
   Modal,
   Button
 } from 'react-bootstrap';
-import marisa from './../../assets/photos/marisa.jpg'
-import chiao from './../../assets/photos/chiao.jpg'
-import cassia from './../../assets/photos/cassia.jpg'
-import matheus from './../../assets/photos/matheus.jpg'
-import paula from './../../assets/photos/paula.jpg'
+import user from './../../assets/photos/user.png'
 import { api } from './../../services/api';
 
 function User() {
@@ -77,7 +66,7 @@ function User() {
       } else if (error.status === 500) {
         console.log("Erro interno, por favor, contactar o suporte!");
       }
-      setLoading(false);
+      setLoading(false); 
     }
   }
 
@@ -204,7 +193,7 @@ function User() {
                               <tr key={appointment.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
-                                    <img src={appointment.foto} alt="" />
+                                    <img src={user} alt="" />
                                   </div>
                                 </th>
                                 <td>{appointment.name}</td>
@@ -335,7 +324,7 @@ function User() {
         <Modal.Footer className='border-0'>
           <Button variant="secondary" onClick={handleClose} className='btn-sm'>
             Cancelar
-          </Button>
+          </Button>          
           <Button variant="primary" onClick={handleClose} className='btn-sm'>
             Adicional
           </Button>

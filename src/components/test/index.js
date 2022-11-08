@@ -21,10 +21,10 @@ function Typology() {
     getTypologies();
   }, []);
 
-  
+  {/* -------- */}
   async function getTypologies() {
     try {
-      const response = await api.get('v1/list_funcionario/1');
+      const response = await api.get('v1/listTipologias/1');
       setTypologies(response.data);
 
       setLoading(false);
@@ -83,7 +83,7 @@ function Typology() {
         typologies?.data?.map(employee => (
          <tr key={employee.id}>
           <th scope="row" className='ps-4'>
-            {employee.nome}
+            {employee.name}
           </th>
         </tr>
       )):<>....</>}

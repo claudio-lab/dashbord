@@ -18,6 +18,7 @@ export function Menu() {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
   return (
     <>
       <div className="menu">
@@ -52,6 +53,23 @@ export function Menu() {
           <Link className="nav-link" to="/announcement">
           <HiSpeakerphone className='icon-hi me-2'/>Comunicados
           </Link>
+          <a
+            onClick={() => setOpen3(!open3)}
+            aria-controls="collapse-reclamação"
+            aria-expanded={open3}
+            className="nav-link"
+            href='#'
+            >
+            <HiKey className='icon-hi me-2'/> Reclamação
+          </a>
+          <Collapse in={open3}>
+            <div id="collapse-reclamação">
+            <nav className="nav flex-column menu-sub">
+                <Link className="nav-link p-1" to="/reclamacao">Correntes</Link>
+                <Link className="nav-link p-1" to="/garantia">Garantia</Link>
+              </nav>
+            </div>
+          </Collapse>
           <Link className="nav-link" to="/documents_">
            <HiDocumentText className='icon-hi me-2'/> Documentos
           </Link>

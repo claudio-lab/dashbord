@@ -36,7 +36,8 @@ import Quadra from './pages/Quadra';
 import DetalheDocoment from './pages/DetalheDocoment';
 import DetalhesComunicado from './pages/DetalhesComunicado';
 import VerDocumento from './pages/VerDocumento';
-
+import Reclamacao from './pages/Reclamacao';
+import Garantia from './pages/Garantia';
 import { AuthProvider } from './components/contexts/AuthContext';
 
 function App() {
@@ -63,6 +64,8 @@ function App() {
             <Route path='/documents_' element={<Documents_ />} />
             <Route path='/residentsc' element={<Residentsc />} />
             <Route path='/typology' element={<Typology />} />
+            <Route path='/reclamacao' element={<Reclamacao />} />
+            <Route path='/garantia' element={<Garantia />} />
             <Route path='/area' element={<Area />} />
             <Route path='/quadra' element={<Quadra />} />
             <Route path='/services_' element={<Services_ />} /> NoCondominio

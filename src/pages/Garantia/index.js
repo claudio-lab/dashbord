@@ -36,9 +36,9 @@ import cassia from './../../assets/photos/cassia.jpg'
 import matheus from './../../assets/photos/matheus.jpg'
 
 
-import { api } from './../../services/api';
+import { api } from '../../services/api';
 
-function Visitors() {
+function Garantia() {
   const [open1, setOpen1] = useState(false);
 
   const [show, setShow] = useState(false);
@@ -214,7 +214,7 @@ function Visitors() {
           <div className="p-4">
             <div className="container ">
               <div className='d-flex w-max-1200 justify-content-between'>
-                <div><h4 className=''>Visitantes</h4></div>
+                <div><h4 className=''>Reclamação garantia</h4></div>
                 <div>
                   <Button
                     onClick={() => setOpen1(!open1)}
@@ -282,15 +282,7 @@ function Visitors() {
                 </div>
               </Collapse>
               <div className='mt-4'>
-                <div className="btn-group border-botton-right-0 w-max-1200">
-                  <Link to="/visitors" className="btn border-botton-right-0 btn-light-tabs active" >Todas</Link>
-                  <Link to="/agendadas" className="btn border-botton-right-0 btn-light-tabs">Agendadas</Link>
-                  <Link to="/condominio" className="btn border-botton-right-0 btn-light-tabs">No condomínio</Link>
-                  <Link to="/concluido" className="btn border-botton-right-0 btn-light-tabs">Concluido</Link>
-                  <Link to="/cancelados" className="btn border-botton-right-0 btn-light-tabs">Cancelados</Link>
-                  <Link to="/expiradas" className="btn border-botton-right-0 btn-light-tabs">Expiradas</Link>
-                </div>
-                <div className="card border-0 border-botton-right-left-0 card-table">
+                <div className="card border-0 card-table">
                   <div className="card-body pb-2"></div>
                   <div className='table-h'>
                     <table className="table">
@@ -717,4 +709,4 @@ function Visitors() {
   );
 }
 
-export default Visitors;
+export default Garantia;
