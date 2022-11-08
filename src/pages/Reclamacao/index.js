@@ -315,10 +315,9 @@ function Reclamacao() {
                                   {
                                     (appointment.status === '0') ?
                                       <span className="badge rounded-pill estado-bg-danger">Cancelado</span>
-                                      : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-warning">Expirado</span>
-                                        : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-primary">Agendado</span>
-                                          : (appointment.status === '3') ? <span className="badge rounded-pill estado-bg-secondary">No condomínio </span>
-                                            : <span className="badge rounded-pill estado-bg-success">Concluído</span>
+                                      : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-warning">pendentes</span>
+                                        : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-primary">em andamento</span>
+                                            : <span className="badge rounded-pill estado-bg-success">finalizado</span>
                                   }
                                 </td>
                                 <td className='text-right pe-4'>
