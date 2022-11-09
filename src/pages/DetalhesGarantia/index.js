@@ -50,7 +50,7 @@ import cassia from './../../assets/photos/cassia.jpg'
 import matheus from './../../assets/photos/matheus.jpg'
 import paula from './../../assets/photos/paula.jpg'
 
-function DetalhesReclamacao() {
+function DetalhesGarantia() {
   let params = useParams();
   let id = params.id;
   const [open1, setOpen1] = useState(false);
@@ -358,4 +358,4 @@ function DetalhesReclamacao() {
   );
 }
 
-export default DetalhesReclamacao;
+export default DetalhesGarantia;
