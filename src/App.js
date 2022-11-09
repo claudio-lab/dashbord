@@ -25,6 +25,7 @@ import User from './pages/User';
 import DetalhesGarantia from './pages/DetalhesGarantia';
 import DetalhesReclamacao from './pages/DetalhesReclamacao';
 import Agendadas from './pages/Agendadas';
+import Itens from './pages/Itens';
 import NoCondominio from './pages/NoCondominio';
 import Erro400 from './pages/Erro400';
 import Concluido from './pages/Concluido';
@@ -63,6 +64,7 @@ function App() {
             <Route path='/agregado' element={<Agregado />} />
             <Route path='/residents' element={<Residents />} />
             <Route path='/porters' element={<Porters />} />
+            <Route path='/itens' element={<Itens />} />
             <Route path='/detalhesReclamacao' element={<DetalhesReclamacao />} />
             <Route path='/detalhesGarantia' element={<DetalhesGarantia />} />
             <Route path='/documents_' element={<Documents_ />} />

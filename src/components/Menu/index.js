@@ -100,6 +100,7 @@ export function Menu() {
                 <Link className="nav-link p-1" to="/typology">Estrutura</Link>
                 {/*<Link className="nav-link p-1" to="/area">Área</Link>*/}
                 <Link className="nav-link p-1" to="/services_">Serviços</Link>
+                <Link className="nav-link p-1" to="/itens">Itens de garantia</Link>
                 <Link className="nav-link p-1" to="/user">Usuário do Sistema</Link>
               </nav>
             </div>
