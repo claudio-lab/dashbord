@@ -74,7 +74,9 @@ function DetalhesComunicado() {
   async function getComunicadoById() {
     try {
       const response = await api.get(`v1/show_comunicado/${id}`);
-      setComunicado(response.data.data.comunicado);
+      setComunicado(response.data.data);
+      console.log(response.data.data);
+    
 
       setLoading(false);
     } catch (error) {
@@ -185,8 +187,8 @@ function DetalhesComunicado() {
                 <div className='d-flex justify-content-between'>
                   <div>
                     <Link to="/announcement" className="btn btn-primary btn-sm"><HiArrowSmLeft /> voltar</Link>
-                    <button type="button" className="btn btn-light me-3 ms-3 btn-sm"><HiOutlineEyeOff /> Visualizada: {data?.data?.count_vizualizados ? data?.data?.count_vizualizados : '0'}</button>
-                    <button type="button" className="btn btn-light btn-sm"><HiOutlineEye /> Não visualizada: {data?.data?.count_n_vizualizados ? data?.data?.count_n_vizualizados : '0'}</button>
+                    <button type="button" className="btn btn-light me-3 ms-3 btn-sm"><HiOutlineEyeOff /> Visualizada: {comunicado?.count_vizualizados ? comunicado?.count_vizualizados : '0'}</button>
+                    <button type="button" className="btn btn-light btn-sm"><HiOutlineEye /> Não visualizada: {comunicado?.count_n_vizualizados ? comunicado?.count_n_vizualizados : '0'}</button>
                   </div>
                   {/*<div><h4 className=''>Detalhes Comunicados</h4></div>*/}
                   <div>
@@ -245,11 +247,11 @@ function DetalhesComunicado() {
                       <div className="card border-0 card-table">
                         <div className="card-body">
                           <h4 className='mb-3'>Informações</h4>
-                          <b>Assunto:</b> {comunicado?.title ? comunicado?.title : ' '} <br />
-                          <b>Comunicado por:</b> {comunicado?.adm ? comunicado?.adm : ' '}  <br /><br />
-                          <b>Descrição:</b> {comunicado?.message ? comunicado?.message : ' '} <br /><br />
+                          <b>Assunto:</b> {comunicado?.comunicado?.title ? comunicado?.comunicado?.title : ' '} <br />
+                          <b>Comunicado por:</b> {comunicado?.comunicado?.adm ? comunicado?.comunicado?.adm : ' '}  <br /><br />
+                          <b>Descrição:</b> {comunicado?.comunicado?.message ? comunicado?.comunicado?.message : ' '} <br /><br />
 
-                          <b>Data da comunicação:</b> {comunicado?.created_at ? format(new Date(comunicado?.created_at), 'dd/MM/yyyy') : ' '}
+                          <b>Data da comunicação:</b> {comunicado?.comunicado?.created_at ? format(new Date(comunicado?.comunicado?.created_at), 'dd/MM/yyyy') : ' '}
                         </div>
                       </div>
                     </div>
@@ -262,14 +264,14 @@ function DetalhesComunicado() {
                               <tr>
                                 <th className='ps-4'>Avatar</th>
                                 <th>Nome</th>
-                                <th>Tipo</th>
+                               
                                 <th className='text-right pe-4'>Estado</th>
                               </tr>
                             </thead>
                             <tbody>
                               {
                                 !loadingList ?
-                                  comunicadoListByUser?.data?.map((user) => (
+                                comunicado?.list_user?.data?.map((user) => (
                                     <tr key={user.id}>
                                       <th scope="row" className='ps-4'>
                                         <div className="vatar-tab">
@@ -277,7 +279,7 @@ function DetalhesComunicado() {
                                         </div>
                                       </th>
                                       <td>{user.nome}</td>
-                                      <td>Agregado</td>
+                                     
                                       {
                                         (user.status === '0') ?
                                           <td className='text-right pe-4'><span className="badge bg-secondary rounded-pill">Não visualizou</span></td>
@@ -317,7 +319,7 @@ function DetalhesComunicado() {
                             <div className='pt-2'>{
                               !loadingList ?
 
-                                comunicadoListByUser?.from + ' - ' + comunicadoListByUser?.to + '- ' + comunicadoListByUser?.total + ' ' : '0 - 0 itens '
+                              comunicado?.list_user?.from + ' - ' + comunicado?.list_user?.to + '- ' + comunicado?.list_user?.total + ' ' : '0 - 0 itens '
 
                             } itens</div>
                             <div>
@@ -326,8 +328,8 @@ function DetalhesComunicado() {
                                   {
                                     !loadingList ?
 
-                                      comunicadoListByUser?.prev_page_url ?
-                                        <li className="page-item"><button className="page-link" onClick={() => handlePrevPage(comunicadoListByUser?.prev_page_url)} href="#">&laquo;</button></li>
+                                      comunicado?.list_user?.prev_page_url ?
+                                        <li className="page-item"><button className="page-link" onClick={() => handlePrevPage(comunicado?.list_user?.prev_page_url)} href="#">&laquo;</button></li>
                                         : <li className="page-item"><button className="page-link">&laquo;</button></li>
                                       :
                                       <>
@@ -336,8 +338,8 @@ function DetalhesComunicado() {
                                   }
 
                                   {
-                                    comunicadoListByUser?.next_page_url ?
-                                      <li className="page-item"><button className="page-link" onClick={() => handleNextPage(comunicadoListByUser?.next_page_url)}>&raquo;</button></li>
+                                    comunicado?.list_user?.next_page_url ?
+                                      <li className="page-item"><button className="page-link" onClick={() => handleNextPage(comunicado?.list_user?.next_page_url)}>&raquo;</button></li>
                                       : <li className="page-item"><button className="page-link" >&raquo;</button></li>
                                   }
                                 </ul>
