@@ -677,7 +677,7 @@ function Visitors() {
           </div>
         </Modal.Body>
       </Modal>
-      {/*modal*/}
+      {/*modal*
       <Modal show={show}
         onHide={handleClose}
         backdrop="static"
@@ -712,7 +712,7 @@ function Visitors() {
           </Button>
         </Modal.Footer>
       </Modal>
-      {/*modal*/}
+      *modal*/}
       {/*modal*/}
       <Modal show={show5}
         onHide={handleClose5}

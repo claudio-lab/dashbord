@@ -46,6 +46,9 @@ import { api } from './../../services/api';
 function Announcement() {
   const [open1, setOpen1] = useState(false);
   const [announcements, setAnnouncements] = useState([]);
+  const [announcement, setAnnouncement] = useState("");
+  const [loadingSubmitAnnouncement, setLoadingSubmitAnnouncement] = useState(false);
+  const [loadingSubmitTypology, setLoadingSubmitTypology] = useState(false);
   const [loading, setLoading] = useState(false);
   {/*--------------------------------------------*/ }
   const [show5, setShow5] = useState(false);
@@ -57,7 +60,6 @@ function Announcement() {
   useEffect(() => {
     setLoading(true);
     getAnnouncements();
-
   }, []);
 
   async function getAnnouncements() {
@@ -121,7 +123,38 @@ function Announcement() {
       setLoading(false);
     }
   }
+  async function handleSaveAnnouncement(morador_id) {
+    try {
+      setLoadingSubmitAnnouncement(true);
+      if (!announcement) return alert('Tipologia é obrigatório!');
 
+      const data = {
+        title: announcement,
+        morador_id: morador_id
+      }
+
+      const response = await api.post('v1/addTipologia', data);
+
+      if (response.data.success) {
+        alert(response.data.msg);
+      }
+
+      handleClose5();
+      getAnnouncements();
+      setLoadingSubmitAnnouncement(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoadingSubmitAnnouncement(false);
+    }
+  }
   return (
     <div className="dashboard">
       <main className='d-flex'>
@@ -276,18 +309,25 @@ function Announcement() {
         <Modal.Body className='pt-0'>
           <form action="">
             <label className='mt-2 mb-2'><b>Assunto  *</b></label>
-            <Form.Control type="text" placeholder="Comunicado" />
+            <Form.Control type="text" placeholder="Comunicado" required onChange={(event) => setAnnouncement(event.target.title)}/>
             <label className='mt-2 mb-2'><b>Comunicado  *</b></label>
-            <textarea className="form-control" placeholder="Discrição do comunicado" rows="3"></textarea>
+            <textarea className="form-control" placeholder="Discrição do comunicado" rows="3" required onChange={(event) => setAnnouncement(event.target.message)}></textarea>
           </form>
         </Modal.Body>
         <Modal.Footer className='border-0'>
           <Button variant="secondary" onClick={handleClose5} className='btn-sm'>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleClose5} className='btn-sm'>
-            Adicional
-          </Button>
+          <Button variant="primary" onClick={() => handleSaveAnnouncement(1)} className='btn-sm'> Adicionar </Button>
+          {/*
+            !loadingSubmitTypology
+              ?<Button variant="primary" onClick={handleClose5} onClick={() => handleSaveAnnouncement(1)} className='btn-sm'>
+              Adicional
+              </Button> 
+              : <Button variant="primary" disabled className='btn-sm'>
+                Adicionando...
+              </Button>
+             */}
         </Modal.Footer>
       </Modal>
       {/*modal*/}

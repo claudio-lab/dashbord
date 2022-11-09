@@ -7,61 +7,64 @@ import { api } from './../../services/api';
 
 function Typology() {
 
-  const [typologies, setTypologies] = useState([]);
+  const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loadingSubmitTypology, setLoadingSubmitTypology] = useState(false);
-  const [typology, setTypology] = useState("");
+ 
+ const [loadingSubmitAppointments, setLoadingSubmitAppointments] = useState(false);
+ const [appointment, setAppointment] = useState("");
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+ {/* const handleShow = () => setShow(true);
+*/}
 
-  useEffect(() => {
-    setLoading(true);
-    getTypologies();
-  }, []);
+useEffect(() => {
+  setLoading(true);
+  getAppointments();
+}, []);
+
 
   
-  async function getTypologies() {
-    try {
-      const response = await api.get('v1/list_funcionario/1');
-      setTypologies(response.data);
+async function getAppointments() {
+  try {
+    const response = await api.get('v1/list_funcionario/1');
+    setAppointments(response.data);
 
-      setLoading(false);
-    } catch (error) {
-      if (error.message === "Network Error") {
-        console.log("Por favor verifique sua conexão com a internet!");
-      } else if (error.message === "Request failed with status code 401") {
-        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
-      } else if (error.message === "Request failed with status code 400") {
-        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
-      } else if (error.status === 500) {
-        console.log("Erro interno, por favor, contactar o suporte!");
-      }
-      setLoading(false);
+    setLoading(false);
+  } catch (error) {
+    if (error.message === "Network Error") {
+      console.log("Por favor verifique sua conexão com a internet!");
+    } else if (error.message === "Request failed with status code 401") {
+      console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+    } else if (error.message === "Request failed with status code 400") {
+      console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+    } else if (error.status === 500) {
+      console.log("Erro interno, por favor, contactar o suporte!");
     }
-  }  
-  {/* -------- */}
-
-  async function handleSaveTypology(condominio_id) {
+    setLoading(false);
+  }
+}
+ 
+async function handleSaveAppointments(morador_id) {
     try {
-      setLoadingSubmitTypology(true);
-      if (!typology) return alert('Tipologia é obrigatório!');
+      setLoadingSubmitAppointments(true);
+      if (!appointment) return alert('obrigatório!');
 
       const data = {
-        tipologia: typology,
-        condominio_id: condominio_id
+        title: appointment,
+        morador_id: morador_id
       }
 
-      const response = await api.post('v1/addTipologia', data);
+      const response = await api.post('v1/add_funcionario', data);
 
       if (response.data.success) {
         alert(response.data.msg);
       }
 
       handleClose();
-      getTypologies();
-      setLoadingSubmitTypology(false);
+      getAppointments();
+      setLoadingSubmitAppointments(false);
     } catch (error) {
       if (error.message === "Network Error") {
         console.log("Por favor verifique sua conexão com a internet!");
@@ -72,7 +75,7 @@ function Typology() {
       } else if (error.status === 500) {
         console.log("Erro interno, por favor, contactar o suporte!");
       }
-      setLoadingSubmitTypology(false);
+      setLoadingSubmitAppointments(false);
     }
   }
 
@@ -80,16 +83,18 @@ function Typology() {
     <>
     {
       !loading ?
-        typologies?.data?.map(employee => (
-         <tr key={employee.id}>
+      appointments?.data?.map(appointment => (
+        <tr key={appointment.id}>
           <th scope="row" className='ps-4'>
-            {employee.nome}
+          {appointment.nome}
           </th>
         </tr>
       )):<>....</>}
 
-    <Form.Control type="text" required placeholder="Tipologia" onChange={(event) => setTypology(event.target.value)}/>
-      <Button variant="primary" onClick={() => handleSaveTypology(1)} className='btn-sm'> Adicionar </Button>
+
+    <Form.Control type="text" required placeholder="" onChange={(event) => setAppointments(event.target.oo)}/>
+    <Form.Control type="text" required placeholder="" onChange={(event) => setAppointments(event.target.oo)}/>
+      <Button variant="primary" onClick={() => handleSaveAppointments(1)} className='btn-sm'> Adicionar </Button>
     </>
   );
 }

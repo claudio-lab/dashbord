@@ -49,6 +49,11 @@ function Funcionario() {
   const [open1, setOpen1] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [loadingSubmitAppointments, setLoadingSubmitAppointments] = useState(false);
+  const [appointment, setAppointment] = useState("");
+
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -121,6 +126,39 @@ function Funcionario() {
     }
   }
 
+
+  async function handleSaveAppointments(morador_id) {
+    try {
+      setLoadingSubmitAppointments(true);
+      if (!appointment) return alert('obrigatório!');
+
+      const data = {
+        title: appointment,
+        morador_id: morador_id
+      }
+
+      const response = await api.post('v1/add_funcionario', data);
+
+      if (response.data.success) {
+        alert(response.data.msg);
+      }
+
+      handleClose();
+      getAppointments();
+      setLoadingSubmitAppointments(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoadingSubmitAppointments(false);
+    }
+  }
 
 
   return (
@@ -336,28 +374,37 @@ function Funcionario() {
         <Modal.Body className='pt-0'>
           <form action="">
             <label className='mt-2 mb-2'><b>Nome *</b></label>
-            <Form.Control type="text" placeholder="Nome de administrador" />
+            <Form.Control type="text" placeholder="Nome de administrador"  required onChange={(event) => setAppointments(event.target.oo)}/>
             <label className='mt-2 mb-2'><b>Telefone *</b></label>
-            <Form.Control type="number" placeholder="Telefone" />
+            <Form.Control type="number" placeholder="Telefone" required onChange={(event) => setAppointments(event.target.oo)}/>
             <label className='mt-2 mb-2'><b>Email *</b></label>
-            <Form.Control type="email" placeholder="Email" />
+            <Form.Control type="email" placeholder="Email" required onChange={(event) => setAppointments(event.target.oo)}/>
             <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
-            <Form.Select aria-label="Default select example">
+            <Form.Select aria-label="Default select example" required onChange={(event) => setAppointments(event.target.oo)}>
               <option>Selecione *</option>
             </Form.Select>
             <label className='mt-2 mb-2'><b>Senha *</b></label>
-            <Form.Control type="password" placeholder="Senha" />
+            <Form.Control type="password" placeholder="Senha" required onChange={(event) => setAppointments(event.target.oo)}/>
             <label className='mt-2 mb-2'><b>Confirma senha *</b></label>
-            <Form.Control type="password" placeholder="Confirma Senha" />
+            <Form.Control type="password" placeholder="Confirma Senha" required onChange={(event) => setAppointments(event.target.oo)}/>
           </form>
         </Modal.Body>
         <Modal.Footer className='border-0'>
           <Button variant="secondary" onClick={handleClose} className='btn-sm'>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleClose} className='btn-sm'>
-            Adicional
+          <Button variant="primary" onClick={() => handleSaveAppointments(1)} className='btn-sm'>
+            Adicional 
           </Button>
+          {/*
+            !loadingSubmitTypology
+              ?<Button variant="primary" onClick={handleClose5} onClick={() => handleSaveAnnouncement(1)} className='btn-sm'>
+              Adicional
+              </Button> 
+              : <Button variant="primary" disabled className='btn-sm'>
+                Adicionando...
+              </Button>
+             */}
         </Modal.Footer>
       </Modal>
     {/*modal*/}

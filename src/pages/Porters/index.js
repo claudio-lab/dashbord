@@ -50,6 +50,10 @@ function Porters() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [loadingSubmitConcierges, setLoadingSubmitConcierges] = useState(false);
+  const [concierge, setconcierge] = useState("");
+
+
   const [concierges, setConcierges] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -60,7 +64,6 @@ function Porters() {
   useEffect(() => {
     setLoading(true);
     getConcierges();
-
   }, []);
 
   async function getConcierges() {
@@ -124,6 +127,41 @@ function Porters() {
       setLoading(false);
     }
   }
+
+
+  async function handleSaveConcierges(morador_id) {
+    try {
+      setLoadingSubmitConcierges(true);
+      if (!concierge) return alert('obrigatório!');
+
+      const data = {
+        title: concierge,
+        morador_id: morador_id
+      }
+
+      const response = await api.post('v1/add_porteiro', data);
+
+      if (response.data.success) {
+        alert(response.data.msg);
+      }
+
+      handleClose();
+      getConcierges();
+      setLoadingSubmitConcierges(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoadingSubmitConcierges(false);
+    }
+  }
+
 
   return (
     <div className="dashboard">
@@ -352,28 +390,37 @@ function Porters() {
         <Modal.Body className='pt-0'>
           <form action="">
             <label className='mt-2 mb-2'><b>Nome *</b></label>
-            <Form.Control type="text" placeholder="Nome de administrador" />
+            <Form.Control type="text" placeholder="Nome de administrador" required onChange={(event) => setConcierges(event.target.oo)}/>
             <label className='mt-2 mb-2'><b>Telefone *</b></label>
-            <Form.Control type="number" placeholder="Telefone" />
+            <Form.Control type="number" placeholder="Telefone" required onChange={(event) => setConcierges(event.target.oo)}/>
             <label className='mt-2 mb-2'><b>Email *</b></label>
-            <Form.Control type="email" placeholder="Email" />
+            <Form.Control type="email" placeholder="Email" required onChange={(event) => setConcierges(event.target.oo)}/>
             <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
-            <Form.Select aria-label="Default select example">
+            <Form.Select aria-label="Default select example" required onChange={(event) => setConcierges(event.target.oo)}>
               <option>Selecione</option>
             </Form.Select>
             <label className='mt-2 mb-2'><b>Senha *</b></label>
-            <Form.Control type="password" placeholder="Senha" />
+            <Form.Control type="password" placeholder="Senha" required onChange={(event) => setConcierges(event.target.oo)}/>
             <label className='mt-2 mb-2'><b>Confirma senha *</b></label>
-            <Form.Control type="password" placeholder="Confirma Senha" />
+            <Form.Control type="password" placeholder="Confirma Senha" required onChange={(event) => setConcierges(event.target.oo)}/>
           </form>
         </Modal.Body>
         <Modal.Footer className='border-0'>
           <Button variant="secondary" onClick={handleClose5} className='btn-sm'>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleClose5} className='btn-sm'>
+          <Button variant="primary" onClick={() => handleSaveConcierges(1)} className='btn-sm'>
             Adicional
           </Button>
+          {/*
+            !loadingSubmitTypology
+              ?<Button variant="primary" onClick={handleClose5} onClick={() => handleSaveAnnouncement(1)} className='btn-sm'>
+              Adicional
+              </Button> 
+              : <Button variant="primary" disabled className='btn-sm'>
+                Adicionando...
+              </Button>
+             */}
         </Modal.Footer>
       </Modal>
     {/*modal*/}
