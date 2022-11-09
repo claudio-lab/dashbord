@@ -54,12 +54,175 @@ function Expiradas() {
 
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const [cat, setCat] = useState('');
+  const [subcat, setSubCat] = useState('');
+  const [morad, setMorador] = useState('');
+  const [categorias, setCategorias] = useState([]);
+  const [subcategorias, setSubCategorias] = useState([]);
+  const [moradores, setMoradores] = useState([]);
+  const [pdf, setpdf] = useState([]);
+  const [excel, setexcel] = useState([]);
 
   useEffect(() => {
     setLoading(true);
     getAppointments();
-
+    getCategorias();
+    getMoradores();
   }, []);
+
+  async function getPdf() {
+    console.log('ok', from, to, cat, subcat,morad);
+    try {
+      const pdf = `https://webapi.monzoyetu.com/api/v1/list_visitas_/1/expirados?data_de=${from}&data_ate=${to}&categoria=${cat}&sub_categoria=${subcat}&morador=${morad}&export=pdf`;
+      setpdf(pdf);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+  
+  async function getExcel() {
+    console.log('ok', from, to, cat, subcat,morad);
+    try {
+      const excel = `https://webapi.monzoyetu.com/api/v1/list_visitas_/1/expirados?data_de=${from}&data_ate=${to}&categoria=${cat}&sub_categoria=${subcat}&morador=${morad}&export=excel`;
+      setexcel(excel);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+  
+  async function getMoradores() {
+    try {
+      const response = await api.get('v1/list_moradores/1/0000');
+      setMoradores(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+
+  async function listSubCat(id) {
+    
+    try {
+      console.log(id);
+      const response = await api.get(`v1/listLotes/${id}`);
+      setSubCategorias(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getCategorias() {
+    try {
+      const response = await api.get('v1/listCategoria/1');
+      setCategorias(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleChangeFilterByDateFromTo() {
+    console.log('ok', from, to, cat, subcat,morad);
+    try {
+      setLoading(true);
+
+      /*if (!from || !to) {
+        setLoading(false);
+        return;
+      }*/
+
+      if (to) {
+
+       if(from){}else{
+        setLoading(false);
+        return;
+       }
+        
+      }
+
+      if (subcat) {
+
+        if(cat){}else{
+         setLoading(false);
+         return;
+        }
+         
+       }
+
+      const response = await api.get(`v1/list_visitas/1/expirados?data_de=${from}&data_ate=${to}&categoria=${cat}&sub_categoria=${subcat}&morador=${morad}`);
+      setAppointments(response.data);
+      console.log(response.data);
+      setLoading(false);
+  
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
 
   async function getAppointments() {
     try {
@@ -146,41 +309,53 @@ function Expiradas() {
                   </Button>
                 </div>
               </div>
-              <Collapse in={open1}>
-                <div className='w-max-1200' id="example-collapse-text">
+              <Collapse className='w-max-1200' in={open1}>
+                <div id="example-collapse-text">
                   <div className="d-flex flex-row-reverse">
                     <div className='d-flex'>
                       <div className="input-group input-group-sm rounded mt-2 input-group-data">
                         <span className="input-group-text" id="basic-addon1"><b>De</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
+                        <input type="date" onChange={(event) => { setFrom(event.target.value); }} className="form-control" placeholder="Username" />
                         <span className="input-group-text" id="basic-addon1"><b>Ate</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
+                        <input type="date" onChange={(event) => { setTo(event.target.value); }} className="form-control" placeholder="Username" />
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <Form.Select className='border-0' aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { listSubCat(event.target.value); setCat(event.target.value);}} aria-label="Default select example">
                           <option value="">Todas quadra</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          {
+                            categorias?.data?.map(categoria => (
+                              <option value={categoria.id}>{categoria.quadra}</option>
+                            ))
+                          }
                         </Form.Select>
-                        <Form.Select className='border-0' aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { setSubCat(event.target.value);}} aria-label="Default select example">
                           <option value="">Todos lotes</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          {
+                            subcategorias?.data?.map(subcategoria => (
+                              <option value={subcategoria.id}>{subcategoria.lote}</option>
+                            ))
+                          }
                         </Form.Select>
-                        <Form.Select className='border-0' aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { setMorador(event.target.value);}} aria-label="Default select example">
                           <option value="">Todos moradores</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          {
+                            moradores?.data?.map(morador => (
+                              <option value={morador.id}>{morador.nome}</option>
+                            ))
+                          }
                         </Form.Select>
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
-                      <div className='mt-2 ms-2'>
+                      {/*<div className='mt-2 ms-2'>
                         <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
+                      </div>*/}
+                      <div className='mt-2 ms-2'>
+                        <a type="button" href={pdf} onClick={() => { getPdf(); console.log("passou..."); }}  className="btn btn-primary btn-sm">PDF</a>
+                      </div> 
+                      <div className='mt-2 ms-2'>
+                        <a type="button" href={excel} onClick={() => { getExcel(); console.log("passou..."); }} className="btn btn-primary btn-sm">EXCEL</a>
                       </div>
                     </div>
                   </div>
