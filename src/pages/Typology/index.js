@@ -92,7 +92,7 @@ async function handleSaveAppointments(morador_id) {
       )):<>....</>}
 
 
-    <Form.Control type="text" required placeholder="" onChange={(event) => setAppointments(event.target.oo)}/>
+    <Form.Control type="text"  placeholder="" required onChange={(event) => setAppointments(event.target.oo)}/>
     <Form.Control type="text" required placeholder="" onChange={(event) => setAppointments(event.target.oo)}/>
       <Button variant="primary" onClick={() => handleSaveAppointments(1)} className='btn-sm'> Adicionar </Button>
     </>

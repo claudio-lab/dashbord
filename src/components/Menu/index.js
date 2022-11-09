@@ -11,7 +11,8 @@ import {
   HiKey,
   HiUserGroup,
   HiHeart,
-  HiSpeakerphone
+  HiSpeakerphone,
+  HiExclamationCircle
  } from "react-icons/hi";
 
 export function Menu() {
@@ -60,7 +61,7 @@ export function Menu() {
             className="nav-link"
             href='#'
             >
-            <HiKey className='icon-hi me-2'/> Reclamação
+            <HiExclamationCircle className='icon-hi me-2'/> Reclamação
           </a>
           <Collapse in={open3}>
             <div id="collapse-reclamação">

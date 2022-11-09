@@ -322,7 +322,7 @@ function Garantia() {
                                 </td>
                                 <td className='text-right pe-4'>
                                   <Button className="btn btn-light p-0 m-0 " /*</td>onClick={handleShow}*/>
-                                    <IoEllipsisHorizontal />
+                                    <HiOutlineEye/>
                                   </Button>
                                 </td>
                               </tr>

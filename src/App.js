@@ -22,6 +22,7 @@ import Typology from './pages/Typology';
 import Area from './pages/Area';
 import Services_ from './pages/Services_';
 import User from './pages/User';
+import DetalhesReclamacao from './pages/DetalhesReclamacao';
 import Agendadas from './pages/Agendadas';
 import NoCondominio from './pages/NoCondominio';
 import Erro400 from './pages/Erro400';
@@ -61,6 +62,7 @@ function App() {
             <Route path='/agregado' element={<Agregado />} />
             <Route path='/residents' element={<Residents />} />
             <Route path='/porters' element={<Porters />} />
+            <Route path='/detalhesReclamacao' element={<DetalhesReclamacao />} />
             <Route path='/documents_' element={<Documents_ />} />
             <Route path='/residentsc' element={<Residentsc />} />
             <Route path='/typology' element={<Typology />} />
