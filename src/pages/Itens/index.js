@@ -307,14 +307,6 @@ function Itens() {
             <Form.Control type="number" placeholder="Telefone" />
             <label className='mt-2 mb-2'><b>Email *</b></label>
             <Form.Control type="email" placeholder="Email" />
-            <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
-            <Form.Select aria-label="Default select example">
-              <option value="">Selecione</option>
-            </Form.Select>
-            <label className='mt-2 mb-2'><b>Senha *</b></label>
-            <Form.Control type="password" placeholder="Senha" />
-            <label className='mt-2 mb-2'><b>Confirma senha *</b></label>
-            <Form.Control type="password" placeholder="Confirma Senha" />
           </form>
         </Modal.Body>
         <Modal.Footer className='border-0'>
