@@ -90,14 +90,29 @@ async function getAppointments() {
             appointments?.data?.map(appointment => (
               <div key={appointment.id} className="card border-0 card-body mb-5">
               <div className="row g-0">
-                <div className="col-md-4">
-                  <img src={appointment.foto} className="img-fluid rounded-start" alt="..." width={100}/>
+                <div className="col-md-3">
+                  <img src={appointment.foto} className="img-fluid rounded-start" alt="..."/>
                 </div>
                 <div className="col-md-8">
                   <div className="card-body">
                     <h5 className="card-title">{appointment.nome}</h5>
-                    <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+                    <p className="card-text">
+                      <b>Titulo</b>: {appointment.title} <br />
+                      <b>Descrição</b>: {appointment.description} <br />
+                      <b>Departamento</b>: {appointment.department} <br />
+                      <b>Numero</b>: {appointment.telefone} <br />
+                      <b>Estado</b>: {
+                                    (appointment.status === '0') ?
+                                      <span className="badge rounded-pill estado-bg-danger">Cancelado</span>
+                                      : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-warning">Expirado</span>
+                                        : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-primary">Agendado</span>
+                                          : (appointment.status === '3') ? <span className="badge rounded-pill estado-bg-secondary">No condomínio </span>
+                                            : <span className="badge rounded-pill estado-bg-success">Concluído</span>
+                                  }<br />
+                    <b>Anexo</b>: {appointment.reclamacoes_anexo} <br />
+                    <b>Historico</b>: {appointment.historico}
+                    </p>
+                    <p className="card-text"><small className="text-muted">Numero de ocorrencia: {appointment.occurrence_number}</small></p>
                   </div>
                 </div>
               </div>
