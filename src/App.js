@@ -65,7 +65,7 @@ function App() {
             <Route path='/residents' element={<Residents />} />
             <Route path='/porters' element={<Porters />} />
             <Route path='/itens' element={<Itens />} />
-            <Route path='/detalhesReclamacao' element={<DetalhesReclamacao />} />
+            <Route path='/detalhereclamacao/:id' element={<DetalhesReclamacao />} />
             <Route path='/detalhesGarantia' element={<DetalhesGarantia />} />
             <Route path='/documents_' element={<Documents_ />} />
             <Route path='/residentsc' element={<Residentsc />} />
