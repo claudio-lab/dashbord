@@ -9,8 +9,8 @@ import {
   HiRefresh,
   HiOutlineSearch,
   HiOutlineEye,
-  HiOutlinePlusSm,
-} from "react-icons/hi"; 
+  HiOutlinePlusSm
+} from "react-icons/hi";
 import {
   IoEllipsisHorizontal,
   IoCalendarOutline,
@@ -67,20 +67,138 @@ function Reclamacao() {
     {/*--------------------------------------------*/ }
 
   const [appointments, setAppointments] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const [telefone, setTelefone] = useState(false);
+  const [nome, setNome] = useState(false);
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const [status, setStatus] = useState('');
+  const [categorias, setCategorias] = useState([]);
+  const [cat, setCat] = useState('');
+  const [subcat, setSubCat] = useState('');
+  const [subcategorias, setSubCategorias] = useState([]);
 
   useEffect(() => {
     setLoading(true);
     getAppointments();
+    getCategorias();
 
   }, []);
 
+  async function listSubCat(id) {
+    
+    try {
+     
+      const response = await api.get(`v1/listLotes/${id}`);
+      setSubCategorias(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getCategorias() {
+    try {
+      const response = await api.get('v1/listCategoria/1');
+      setCategorias(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleChangeFilterByDateFromTo() {
+   
+    try {
+      setLoading(true);
+
+      /*if (!from || !to) {
+        setLoading(false);
+        return;
+      }*/
+
+      if (status) {
+        var stat = status;
+       }else{
+        var stat = '0000';
+
+       }
+
+       if (nome) {
+        var nom = nome;
+       }else{
+        var nom = '';
+       }
+
+       if (telefone) {
+        var tel = telefone;
+
+       }else{
+        var tel = '';
+
+       }
+
+
+      if (to) {
+
+       if(from){}else{
+        setLoading(false);
+        return;
+       }
+        
+      }
+
+      if (subcat) {
+
+        if(cat){}else{
+         setLoading(false);
+         return;
+        }
+         
+       }
+
+      const response = await api.get(`v1/list_reclamacao_c/1/${stat}?morador=${nom}&telefone=${tel}&categoria=${cat}&sub_categoria=${subcat}&de=${from}&ate=${to}`);
+      setAppointments(response.data);
+     
+      setLoading(false);
+  
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
   async function getAppointments() {
     try {
-      const response = await api.get('v1/list_visitas/1/0000');
+      const response = await api.get('v1/list_reclamacao_c/1/0000');
       setAppointments(response.data);
 
       setLoading(false);
@@ -140,71 +258,6 @@ function Reclamacao() {
     }
   }
 
-  async function handleFilterFromDate(date) {
-    setLoading(true);
-
-    if (!date)
-      return getAppointments();
-
-    try {
-
-      const data = {
-        data_de: format(new Date(date), 'yyyy-MM-dd'),
-      }
-
-      const response = await api.post('v1/filtro_visitas', data);
-      console.log(response.data)
-      setAppointments(response.data.agendamento.data);
-      setStartDate(format(new Date(date), 'yyyy-MM-dd'));
-
-      setLoading(false);
-    } catch (error) {
-      if (error.message === "Network Error") {
-        console.log("Por favor verifique sua conexão com a internet!");
-      } else if (error.message === "Request failed with status code 401") {
-        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
-      } else if (error.message === "Request failed with status code 400") {
-        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
-      } else if (error.status === 500) {
-        console.log("Erro interno, por favor, contactar o suporte!");
-      }
-      setLoading(false);
-    }
-  }
-
-  async function handleFilterFromDateToEndDate(end_date) {
-    setLoading(true);
-
-    if (!end_date)
-      return getAppointments();
-
-    try {
-
-      const data = {
-        data_de: startDate,
-        data_ate: format(new Date(end_date), 'yyyy-MM-dd'),
-      }
-
-      const response = await api.post('v1/filtro_visitas', data);
-      console.log(response.data)
-      setAppointments(response.data.agendamento.data);
-      setEndDate(format(new Date(end_date), 'yyyy-MM-dd'));
-
-      setLoading(false);
-    } catch (error) {
-      if (error.message === "Network Error") {
-        console.log("Por favor verifique sua conexão com a internet!");
-      } else if (error.message === "Request failed with status code 401") {
-        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
-      } else if (error.message === "Request failed with status code 400") {
-        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
-      } else if (error.status === 500) {
-        console.log("Erro interno, por favor, contactar o suporte!");
-      }
-      setLoading(false);
-    }
-  }
-
   return (
     <div className="dashboard">
       <main className='d-flex'>
@@ -226,9 +279,9 @@ function Reclamacao() {
                   <Button className='btn-sm ms-1'>
                     <HiRefresh />
                   </Button>
-                  <Button className='btn-sm ms-1' onClick={handleShow5}>
+                  {/*<Button className='btn-sm ms-1' onClick={handleShow5}>
                     <HiOutlinePlusSm />
-                  </Button>
+                  </Button>*/}
                 </div>
               </div>
               <Collapse className='w-max-1200' in={open1}>
@@ -237,46 +290,52 @@ function Reclamacao() {
                     <div className='d-flex'>
                       <div className="w-280px">
                         <div className="input-group input-group-sm rounded mt-2 input-group-data">
-                          <Form.Select className='border-0'>
-                            <option value="">Todos porteiros</option>
-                            <option value="1">Matheus Fernandes</option>
-                            <option value="2">Paulo Maria</option>
-                            <option value="3">Daniel Filipe</option>
+                          <Form.Select onChange={(event) => { setStatus(event.target.value); }} className='border-0'>
+                            <option value="0000">Todos estados</option>
+                            <option value="pendente">Pendentes</option>
+                            <option value="andamento">Em andamento</option>
+                            <option value="concluido">Concluídos</option>
+                            <option value="cancelado">Cancelados</option>
                           </Form.Select>
                         </div>
                       </div>
                       <div className="input-group input-group-sm rounded mt-2 input-group-data">
                         <span className="input-group-text" id="basic-addon1"><b>De</b></span>
-                        <input type="date" onChange={(event) => { handleFilterFromDate(event.target.value); }} className="form-control" placeholder="Username" />
+                        <input type="date" onChange={(event) => { setFrom(event.target.value); }} className="form-control" placeholder="Username" />
                         <span className="input-group-text" id="basic-addon1"><b>Ate</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
+                        <input type="date"  onChange={(event) => { setTo(event.target.value); }} className="form-control" placeholder="Username" />
                       </div>
-                      <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <Form.Select className='border-0' aria-label="Default select example">
+                      <div className="input-group input-group-sm rounded mt-2 input-group-data">
+                      <Form.Select className='border-0' onChange={(event) => { listSubCat(event.target.value); setCat(event.target.value);}} aria-label="Default select example">
                           <option value="">Todas quadra</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          {
+                            categorias?.data?.map(categoria => (
+                              <option value={categoria.id}>{categoria.quadra}</option>
+                            ))
+                          }
                         </Form.Select>
-                        <Form.Select className='border-0' aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { setSubCat(event.target.value);}}  aria-label="Default select example">
                           <option value="">Todos lotes</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
-                        </Form.Select>
-                        <Form.Select className='border-0' aria-label="Default select example">
-                          <option value="">Todos moradores</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          
+                          {
+                            subcategorias?.data?.map(subcategoria => (
+                              <option value={subcategoria.id}>{subcategoria.lote}</option>
+                            ))
+                          }
                         </Form.Select>
                       </div>
-                      <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                      <div className="input-group input-group-sm rounded mt-2 input-group-data">
+                        <input type="number" onKeyUp={(event) => { setTelefone(event.target.value);}} className="form-control" placeholder="Telefone" />
+                      </div>
+                      <div className="input-group input-group-sm rounded mt-2 input-group-data">
+                        <input type="text" onKeyUp={(event) => { setNome(event.target.value);}} className="form-control" placeholder="Morador" />
                       </div>
                       <div className='mt-2 ms-2'>
+                        <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                      </div>
+                      {/*<div className='mt-2 ms-2'>
                         <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
-                      </div>
+                      </div>*/}
                     </div>
                   </div>
                 </div>
@@ -296,9 +355,8 @@ function Reclamacao() {
                     <table className="table">
                       <thead>
                         <tr>
-                          <th className='ps-4'>Avatar</th>
+                          <th className='ps-4'>Titulo</th>
                           <th>Morador</th>
-                          <th>Visitante</th>
                           <th>Residência</th>
                           <th>Data</th>
                           <th>Estado</th>
@@ -311,27 +369,23 @@ function Reclamacao() {
                             appointments?.data?.map(appointment => (
                               <tr key={appointment.id}>
                                 <th scope="row" className='ps-4'>
-                                  <div className="vatar-tab">
-                                    <img src={user} alt="" />
-                                  </div>
+                                {appointment.title}
                                 </th>
-                                <td>{appointment.nome_morador}</td>
-                                <td>{appointment.nome}</td>
-                                <td>{appointment.residencia_morador}</td>
-                                <td>{appointment.data}</td>
+                                
+                                <td>{appointment.nome} <br></br> {appointment.telefone}</td>
+                                <td>Q{appointment.quadra} - L{appointment.lote}</td>
+                                <td>{appointment.created_at}</td>
                                 <td>
                                   {
-                                    (appointment.status === '0') ?
+                                    (appointment.status === '3') ?
                                       <span className="badge rounded-pill estado-bg-danger">Cancelado</span>
-                                      : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-warning">pendentes</span>
-                                        : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-primary">em andamento</span>
-                                            : <span className="badge rounded-pill estado-bg-success">finalizado</span>
+                                      : (appointment.status === '0') ? <span className="badge rounded-pill estado-bg-warning">Pendente</span>
+                                        : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-primary">Em andamento</span>
+                                            : <span className="badge rounded-pill estado-bg-success">Concluído</span>
                                   }
                                 </td>
                                 <td className='text-right pe-4'>
-                                  <Link to="/detalhesReclamacao" className="btn btn-light p-0 m-0 " /*</td>onClick={handleShow}*/>
-                                    <HiOutlineEye />
-                                  </Link>
+                                  <Link to={`/detalhereclamacao/${appointment.id}`} className="p-0 rounded-pill btn btn-light"><HiOutlineEye /></Link>
                                 </td>
                               </tr>
                             ))
