@@ -25,7 +25,10 @@ export function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { 'monzo.token': token, 'monzo.id': id, 'monzo.refreshToken': refreshToken } = parseCookies();
+    const cookies = parseCookies()
+    console.log({ cookies })
+
+    /*const { 'monzo.token': token, 'monzo.id': id, 'monzo.refreshToken': refreshToken } = parseCookies();
 
     if (token) {
       api.get('v1/profile/' + id).then((response) => {
@@ -40,7 +43,7 @@ export function AuthProvider({ children }) {
         .catch(() => {
           signOut();
         });
-    }
+    }*/
   }, []);
 
   async function signIn({ email, password }) {

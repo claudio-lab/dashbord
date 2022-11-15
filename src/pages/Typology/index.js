@@ -38,11 +38,6 @@ import {
   Form
 } from 'react-bootstrap';
 import { api } from './../../services/api';
-import marisa from './../../assets/photos/marisa.jpg'
-import chiao from './../../assets/photos/chiao.jpg'
-import cassia from './../../assets/photos/cassia.jpg'
-import matheus from './../../assets/photos/matheus.jpg'
-import paula from './../../assets/photos/paula.jpg'
 
 
 function Typology() {
