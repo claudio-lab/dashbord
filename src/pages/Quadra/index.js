@@ -166,6 +166,7 @@ function Quadra() {
               <div className='mt-4'>
                 <div className="btn-group border-botton-right-0">
                   <Link to="/typology" className="btn border-botton-right-0 btn-light-tabs " >Tipologias</Link>
+                  <Link to="/lote" className="btn border-botton-right-0 btn-light-tabs ">Lote</Link>
                   <Link to="/quadra" className="btn border-botton-right-0 btn-light-tabs active">Quadra</Link>
                 </div>
                 <div className="card border-0 border-botton-right-left-0 card-table">

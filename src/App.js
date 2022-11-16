@@ -20,6 +20,7 @@ import Documents_ from './pages/Documents_';
 import Residentsc from './pages/Residentsc';
 import Typology from './pages/Typology';
 import Area from './pages/Area';
+import Lote from './pages/Lote';
 import Services_ from './pages/Services_';
 import User from './pages/User';
 import DetalhesGarantia from './pages/DetalhesGarantia';
@@ -64,6 +65,7 @@ function App() {
             <Route path='/agregado' element={<Agregado />} />
             <Route path='/residents' element={<Residents />} />
             <Route path='/porters' element={<Porters />} />
+            <Route path='/lote' element={<Lote />} />
             <Route path='/itens' element={<Itens />} />
             <Route path='/detalhereclamacao/:id' element={<DetalhesReclamacao />} />
             <Route path='/detalhesGarantia' element={<DetalhesGarantia />} />
