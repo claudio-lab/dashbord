@@ -343,11 +343,10 @@ function Reclamacao() {
               <div className='mt-4'>
               <div className="btn-group border-botton-right-0 w-max-1200">
                   <Link to="/visitors" className="btn border-botton-right-0 btn-light-tabs active" >Todas</Link>
-                  <Link to="/agendadas" className="btn border-botton-right-0 btn-light-tabs">Agendadas</Link>
-                  <Link to="/condominio" className="btn border-botton-right-0 btn-light-tabs">No condomínio</Link>
+                  <Link to="/agendadas" className="btn border-botton-right-0 btn-light-tabs">Pendentes</Link>
+                  <Link to="/condominio" className="btn border-botton-right-0 btn-light-tabs">Em andamento</Link>
                   <Link to="/concluido" className="btn border-botton-right-0 btn-light-tabs">Concluido</Link>
                   <Link to="/cancelados" className="btn border-botton-right-0 btn-light-tabs">Cancelados</Link>
-                  <Link to="/expiradas" className="btn border-botton-right-0 btn-light-tabs">Expiradas</Link>
                 </div>
                 <div className="card border-0 border-botton-right-left-0 card-table">
                   <div className="card-body pb-2"></div>

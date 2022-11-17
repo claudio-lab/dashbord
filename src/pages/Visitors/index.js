@@ -176,8 +176,8 @@ function Visitors() {
 
   async function getCategorias() {
     try {
-      const response = await api.get('v1/listCategoria/1');
-      setCategorias(response.data);
+      const response = await api.get('v1/listCategoria/1?todos=all');
+      setCategorias(response.data.cat);
 
       setLoading(false);
     } catch (error) {

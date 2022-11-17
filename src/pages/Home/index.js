@@ -54,12 +54,58 @@ function Home() {
   const handleClose4 = () => setShow4(false);
   const handleShow4 = () => setShow4(true);
   {/*--------------------------------------------*/ }
-  const [userData, setUserData] = useState({
-    labels: UserData.map((data) => data.month),
+ 
+ 
+  const [appointments, setAppointments] = useState([]);
+  const [countMoradores, setCountMoradores] = useState([]);
+  const [countPorteiros, setCountPorteiros] = useState([]);
+  const [countCategoria, setCountCategoria] = useState([]);
+  const [countSubCategoria, setCountSubCategoria] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [comunicados, setCominucados] = useState([]);
+  const [statistic, setStatistica] = useState([]);
+ 
+  useEffect(() => {
+    setLoading(true);
+    getAppointments();
+    getMoradores();
+    getPorteiros();
+    getCategoria();
+    getSubCategoria();
+    getComunicados();
+    getStatistica();
+  }, []);
+
+  async function getStatistica() {
+    try {
+      const response = await api.get('v1/countvisitmes/1');
+      setStatistica(response.data.data.data);
+      console.log(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+
+
+  const [statisti, setUserData] = useState({
+   
+    labels: statistic.map((data) => data.mes),
     datasets: [
       {
         label: "Monzoyeto",
-        data: UserData.map((data) => data.userGain),
+        data: statistic?.data?.map((data) => data.id),
         backgroundColor: [
           "#84a7d7",
           "#4a79bb",
@@ -70,31 +116,36 @@ function Home() {
         maxBarThickness: 16,
         minBarLength: 2,
         borderRadius: 50,
-        data: [60, 40, 30, 60, 80, 50, 30, 50, 80, 70, 30, 30]
+        data: statistic?.data?.map((data) => data.count)
       },
     ],
   });
 
-  const [appointments, setAppointments] = useState([]);
-  const [countMoradores, setCountMoradores] = useState([]);
-  const [countPorteiros, setCountPorteiros] = useState([]);
-  const [countCategoria, setCountCategoria] = useState([]);
-  const [countSubCategoria, setCountSubCategoria] = useState([]);
-  const [loading, setLoading] = useState(false);
+  async function getComunicados() {
+    try {
+      const response = await api.get('v1/list_comunicados/1?hoje=hoje');
+      setCominucados(response.data.data);
 
-  useEffect(() => {
-    setLoading(true);
-    getAppointments();
-    getMoradores();
-    getPorteiros();
-    getCategoria();
-    getSubCategoria();
-  }, []);
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
 
   async function getAppointments() {
     try {
       const response = await api.get('v1/list_visitas_hoje/1');
       setAppointments(response.data);
+      console.log(response.data);
 
       setLoading(false);
     } catch (error) {
@@ -317,8 +368,8 @@ function Home() {
             <div className="col-lg-8 mb-4">
               <div className="card border-0">
                 <div className="card-body">
-                  <h5>Visitas -  2022</h5>
-                  <BarChart chartData={userData} />
+                  <h5>Visitas - 2022</h5>
+                  <BarChart chartData={statisti} />
                 </div>
               </div>
             </div>
@@ -328,14 +379,33 @@ function Home() {
                   <div className='d-flex justify-content-between'>
                     <h5> Comunicado</h5>
                   </div>
+                  {!loading ? comunicados?.comunicado?.data?.map(comunicado_ => (
                   <div className='div-comunicad  mb-3'>
                     <div className='border-bottom pb-3 mt-4'>
+                      <font className="font-size-12">{comunicado_.created_at}</font>
                       <div className="user-comu d-flex justify-content-between mb-2">
-                        <b>Lorem ipsum </b> <font className="font-size-12">20/09/2022</font>
+                        <b>{comunicado_.title} </b> 
                       </div>
-                      orem ipsum dolor, sit amet consectetur adipisicing elit. Iste, delectus ipsum
+                      {comunicado_.message}
                     </div>
                   </div>
+                  ))
+                  :
+                  <>
+                    <div className='div-comunicad  mb-3'>
+                      <div className='border-bottom pb-3 mt-4'>
+                      <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            Carregando...
+                      </div>
+                    </div>
+                  </>
+                  }
                 </div>
               </div>
             </div>
