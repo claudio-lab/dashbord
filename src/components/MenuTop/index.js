@@ -1,4 +1,4 @@
-import React, { useContext,useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import {
   HiMenuAlt2,
@@ -25,7 +25,7 @@ export function MenuTop() {
     try {
       const response = await api.get('v1/get_condominios');
       setAppointments(response.data.data);
-   
+
       setLoading(false);
     } catch (error) {
       if (error.message === "Network Error") {
@@ -48,12 +48,13 @@ export function MenuTop() {
           <HiMenuAlt2 />
         </button>
         <select className="form-select ms-3">
-        {
-          appointments?.condominio?.map(appointment => (
-            <option value={appointment.id}>{appointment.nome}</option>
-          ))
-        }
-         
+          <option value="">Selecionar Condomínio</option>
+          {
+            appointments?.condominio?.map(appointment => (
+              <option value={appointment.id}>{appointment.nome}</option>
+            ))
+          }
+
         </select>
       </div>
       <div className="d-flex" role="search">

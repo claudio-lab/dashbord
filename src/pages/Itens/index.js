@@ -52,7 +52,7 @@ function Itens() {
 
   async function getAppointments() {
     try {
-      const response = await api.get('v1/list_itens/10');
+      const response = await api.get('v1/list_itens/1');
       setAppointments(response.data);
 
       setLoading(false);
@@ -66,7 +66,7 @@ function Itens() {
       } else if (error.status === 500) {
         console.log("Erro interno, por favor, contactar o suporte!");
       }
-      setLoading(false); 
+      setLoading(false);
     }
   }
 
@@ -297,22 +297,22 @@ function Itens() {
         backdrop="static"
         keyboard={false}>
         <Modal.Header closeButton className='border-0'>
-          <h5 className='mt-3'>Adicionar usuario no sistema</h5>
+          <h5 className='mt-3'>Item</h5>
         </Modal.Header>
         <Modal.Body className='pt-0'>
           <form action="">
-            <label className='mt-2 mb-2'><b>Nome *</b></label>
+            <label className='mt-2 mb-2'><b>Item *</b></label>
             <Form.Control type="text" placeholder="Nome de administrador" />
-            <label className='mt-2 mb-2'><b>Telefone *</b></label>
+            <label className='mt-2 mb-2'><b>Prazo *</b></label>
             <Form.Control type="number" placeholder="Telefone" />
-            <label className='mt-2 mb-2'><b>Email *</b></label>
-            <Form.Control type="email" placeholder="Email" />
+            <label className='mt-2 mb-2'><b>Complemento *</b></label>
+            <Form.Control type="text" placeholder="Email" />
           </form>
         </Modal.Body>
         <Modal.Footer className='border-0'>
           <Button variant="secondary" onClick={handleClose} className='btn-sm'>
             Cancelar
-          </Button>          
+          </Button>
           <Button variant="primary" onClick={handleClose} className='btn-sm'>
             Adicional
           </Button>

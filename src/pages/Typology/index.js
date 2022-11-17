@@ -38,11 +38,6 @@ import {
   Form
 } from 'react-bootstrap';
 import { api } from './../../services/api';
-import marisa from './../../assets/photos/marisa.jpg'
-import chiao from './../../assets/photos/chiao.jpg'
-import cassia from './../../assets/photos/cassia.jpg'
-import matheus from './../../assets/photos/matheus.jpg'
-import paula from './../../assets/photos/paula.jpg'
 
 
 function Typology() {
@@ -208,6 +203,7 @@ function Typology() {
               <div className='mt-4'>
                 <div className="btn-group border-botton-right-0">
                   <Link to="/typology" className="btn border-botton-right-0 btn-light-tabs active" >Tipologias</Link>
+                  <Link to="/lote" className="btn border-botton-right-0 btn-light-tabs ">Lote</Link>
                   <Link to="/quadra" className="btn border-botton-right-0 btn-light-tabs ">Quadra</Link>
                 </div>
                 <div className="card border-0 border-botton-right-left-0 card-table">
