@@ -88,6 +88,7 @@ function Cancelados() {
       setLoading(false);
     }
   }
+  
   async function getExcel() {
     console.log('ok', from, to, cat, subcat,morad);
     try {
@@ -111,8 +112,9 @@ function Cancelados() {
 
   async function getMoradores() {
     try {
-      const response = await api.get('v1/list_moradores/1/0000');
-      setMoradores(response.data);
+      const response = await api.get('v1/list_moradores/1/0000?todos=all');
+      setMoradores(response);
+      console.log(response);
 
       setLoading(false);
     } catch (error) {
@@ -129,13 +131,13 @@ function Cancelados() {
     }
   }
 
-
   async function listSubCat(id) {
     
     try {
       console.log(id);
-      const response = await api.get(`v1/listLotes/${id}`);
-      setSubCategorias(response.data);
+      setSubCategorias([]);
+      const response = await api.get(`v1/listLotes/${id}?todos=all`);
+      setSubCategorias(response.data.data);
 
       setLoading(false);
     } catch (error) {
@@ -154,9 +156,9 @@ function Cancelados() {
 
   async function getCategorias() {
     try {
-      const response = await api.get('v1/listCategoria/1');
-      setCategorias(response.data);
-
+      const response = await api.get('v1/listCategoria/1?todos=all');
+      setCategorias(response.data.data);
+     
       setLoading(false);
     } catch (error) {
       if (error.message === "Network Error") {
@@ -173,14 +175,9 @@ function Cancelados() {
   }
 
   async function handleChangeFilterByDateFromTo() {
-    console.log('ok', from, to, cat, subcat,morad);
+    //console.log('ok', from, to, cat, subcat,morad);
     try {
       setLoading(true);
-
-      /*if (!from || !to) {
-        setLoading(false);
-        return;
-      }*/
 
       if (to) {
 
@@ -202,7 +199,7 @@ function Cancelados() {
 
       const response = await api.get(`v1/list_visitas/1/canceladas?data_de=${from}&data_ate=${to}&categoria=${cat}&sub_categoria=${subcat}&morador=${morad}`);
       setAppointments(response.data);
-      console.log(response.data);
+     
       setLoading(false);
   
     } catch (error) {
@@ -318,7 +315,7 @@ function Cancelados() {
                         <Form.Select className='border-0' onChange={(event) => { listSubCat(event.target.value); setCat(event.target.value);}} aria-label="Default select example">
                           <option value="">Todas quadra</option>
                           {
-                            categorias?.data?.map(categoria => (
+                            categorias?.cat?.map(categoria => (
                               <option value={categoria.id}>{categoria.quadra}</option>
                             ))
                           }
@@ -326,7 +323,7 @@ function Cancelados() {
                         <Form.Select className='border-0' onChange={(event) => { setSubCat(event.target.value);}} aria-label="Default select example">
                           <option value="">Todos lotes</option>
                           {
-                            subcategorias?.data?.map(subcategoria => (
+                            subcategorias?.sub_cat?.map(subcategoria => (
                               <option value={subcategoria.id}>{subcategoria.lote}</option>
                             ))
                           }
