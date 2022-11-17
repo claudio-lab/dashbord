@@ -34,6 +34,7 @@ import matheus from './../../assets/photos/matheus.jpg'
 import paula from './../../assets/photos/paula.jpg'
 
 import { api } from './../../services/api';
+import ShowVisitorDetails from '../../components/modal/ShowVisitorDetails';
 
 
 
@@ -43,10 +44,14 @@ function NoCondominio() {
 
   const [show4, setShow4] = useState(false);
   const handleClose4 = () => setShow4(false);
-  const handleShow4 = () => setShow4(true);
+  function handleShow4(appointmentID) {
+    setAppointmentId(appointmentID);
+    setShow4(true);
+  }
   {/*--------------------------------------------*/ }
 
   const [appointments, setAppointments] = useState([]);
+  const [appointmentId, setAppointmentId] = useState('');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [cat, setCat] = useState('');
@@ -68,7 +73,7 @@ function NoCondominio() {
   }, []);
 
   async function getPdf() {
-    console.log('ok', from, to, cat, subcat,morad);
+    console.log('ok', from, to, cat, subcat, morad);
     try {
       const pdf = `https://webapi.monzoyetu.com/api/v1/list_visitas_/1/condominio?data_de=${from}&data_ate=${to}&categoria=${cat}&sub_categoria=${subcat}&morador=${morad}&export=pdf`;
       setpdf(pdf);
@@ -88,7 +93,7 @@ function NoCondominio() {
     }
   }
   async function getExcel() {
-    console.log('ok', from, to, cat, subcat,morad);
+    console.log('ok', from, to, cat, subcat, morad);
     try {
       const excel = `https://webapi.monzoyetu.com/api/v1/list_visitas_/1/condominio?data_de=${from}&data_ate=${to}&categoria=${cat}&sub_categoria=${subcat}&morador=${morad}&export=excel`;
       setexcel(excel);
@@ -130,7 +135,7 @@ function NoCondominio() {
 
 
   async function listSubCat(id) {
-    
+
     try {
       console.log(id);
       const response = await api.get(`v1/listLotes/${id}`);
@@ -172,7 +177,7 @@ function NoCondominio() {
   }
 
   async function handleChangeFilterByDateFromTo() {
-    console.log('ok', from, to, cat, subcat,morad);
+    console.log('ok', from, to, cat, subcat, morad);
     try {
       setLoading(true);
 
@@ -183,27 +188,27 @@ function NoCondominio() {
 
       if (to) {
 
-       if(from){}else{
-        setLoading(false);
-        return;
-       }
-        
+        if (from) { } else {
+          setLoading(false);
+          return;
+        }
+
       }
 
       if (subcat) {
 
-        if(cat){}else{
-         setLoading(false);
-         return;
+        if (cat) { } else {
+          setLoading(false);
+          return;
         }
-         
-       }
+
+      }
 
       const response = await api.get(`v1/list_visitas/1/condominio?data_de=${from}&data_ate=${to}&categoria=${cat}&sub_categoria=${subcat}&morador=${morad}`);
       setAppointments(response.data);
       console.log(response.data);
       setLoading(false);
-  
+
     } catch (error) {
       if (error.message === "Network Error") {
         console.log("Por favor verifique sua conexão com a internet!");
@@ -314,7 +319,7 @@ function NoCondominio() {
                         <input type="date" onChange={(event) => { setTo(event.target.value); }} className="form-control" placeholder="Username" />
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <Form.Select className='border-0' onChange={(event) => { listSubCat(event.target.value); setCat(event.target.value);}} aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { listSubCat(event.target.value); setCat(event.target.value); }} aria-label="Default select example">
                           <option value="">Todas quadra</option>
                           {
                             categorias?.data?.map(categoria => (
@@ -322,7 +327,7 @@ function NoCondominio() {
                             ))
                           }
                         </Form.Select>
-                        <Form.Select className='border-0' onChange={(event) => { setSubCat(event.target.value);}} aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { setSubCat(event.target.value); }} aria-label="Default select example">
                           <option value="">Todos lotes</option>
                           {
                             subcategorias?.data?.map(subcategoria => (
@@ -330,7 +335,7 @@ function NoCondominio() {
                             ))
                           }
                         </Form.Select>
-                        <Form.Select className='border-0' onChange={(event) => { setMorador(event.target.value);}} aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { setMorador(event.target.value); }} aria-label="Default select example">
                           <option value="">Todos moradores</option>
                           {
                             moradores?.data?.map(morador => (
@@ -342,12 +347,12 @@ function NoCondominio() {
                       <div className='mt-2 ms-2'>
                         <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
-                        {/*<div className='mt-2 ms-2'>
+                      {/*<div className='mt-2 ms-2'>
                         <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
                       </div>*/}
                       <div className='mt-2 ms-2'>
-                        <a type="button" href={pdf} onClick={() => { getPdf(); console.log("passou..."); }}  className="btn btn-primary btn-sm">PDF</a>
-                      </div> 
+                        <a type="button" href={pdf} onClick={() => { getPdf(); console.log("passou..."); }} className="btn btn-primary btn-sm">PDF</a>
+                      </div>
                       <div className='mt-2 ms-2'>
                         <a type="button" href={excel} onClick={() => { getExcel(); console.log("passou..."); }} className="btn btn-primary btn-sm">EXCEL</a>
                       </div>
@@ -373,7 +378,7 @@ function NoCondominio() {
                           <th className='ps-4'>Avatar</th>
                           <th>Morador</th>
                           <th>Visitante</th>
-                          <th>Residencia</th>
+                          <th>Residência</th>
                           <th>Data</th>
                           <th>Estado</th>
                           <th className='text-right pe-4'>Detalhes</th>
@@ -397,7 +402,7 @@ function NoCondominio() {
                                   <span className="badge rounded-pill estado-bg-secondary">No condomínio </span>
                                 </td>
                                 <td className='text-right pe-4'>
-                                  <Button className="btn btn-light p-0 m-0 " onClick={handleShow4}>
+                                  <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id)}>
                                     <IoEllipsisHorizontal />
                                   </Button>
                                 </td>
@@ -470,63 +475,17 @@ function NoCondominio() {
         </section>
       </main>
 
-      <Modal show={show4} size="lg" backdrop="static" centered onHide={handleClose4} className='border-0'>
-        <Modal.Header closeButton className='border-0 pb-1'>
-          <div>
-            <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span className="badge rounded-pill estado-bg-secondary">No condomínio</span></div>
-          </div>
-        </Modal.Header>
-        <Modal.Body className='border-0'>
-          <div className="container p-0">
-            <div className="row">
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className=""><span className="badge rounded-pill estado-bg-primary">Adendamento</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={cassia} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Cassia Fernandes</b><br />
-                        <div className='font-size-12'>Morador</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoPersonOutline /> <font className='font-size-14'>Carla Fernandes</font><br />
-                    <IoAlertCircleOutline /> <font className='font-size-14'>visita familiar</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-                  </div>
-                </div>
-              </div>
-              {/*<div className="col-lg-4">
-                <borderDashdetal/>
-              </div>*/}
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className="ss"><span className="badge rounded-pill estado-bg-secondary">Entrada</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={matheus} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Matheus Francisco</b><br />
-                        <div className='font-size-12'>porteiro</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoPeopleOutline /> <font className='font-size-14'>5 acompanhantes</font><br />
-                    <IoCarSportOutline /> <font className='font-size-14'>Sem viatura</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
+      {
+        show4 ?
+          <ShowVisitorDetails
+            isOpen={show4}
+            handleClose={handleClose4}
+            appointmentId={appointmentId}
+            status="NoCondominio"
+          />
+          :
+          <></>
+      }
     </div>
   );
 }
