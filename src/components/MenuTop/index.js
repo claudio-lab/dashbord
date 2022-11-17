@@ -48,7 +48,6 @@ export function MenuTop() {
           <HiMenuAlt2 />
         </button>
         <select className="form-select ms-3">
-          <option value="">Selecionar Condomínio</option>
           {
             appointments?.condominio?.map(appointment => (
               <option value={appointment.id}>{appointment.nome}</option>

@@ -80,7 +80,6 @@ function Home() {
     try {
       const response = await api.get('v1/countvisitmes/1');
       setStatistica(response.data.data.data);
-      console.log(response.data);
 
       setLoading(false);
     } catch (error) {
@@ -145,7 +144,7 @@ function Home() {
     try {
       const response = await api.get('v1/list_visitas_hoje/1');
       setAppointments(response.data);
-      console.log(response.data);
+     
 
       setLoading(false);
     } catch (error) {
