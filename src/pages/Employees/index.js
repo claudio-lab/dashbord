@@ -15,7 +15,7 @@ import {
   HiOutlineSearch,
   HiOutlineEye,
   HiOutlineUserCircle
-} from "react-icons/hi";
+} from "react-icons/hi"; 
 import {
   IoEllipsisHorizontal,
   IoCalendarOutline,
@@ -57,12 +57,134 @@ function Employees() {
 
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [from, setFrom] = useState('');
+  const [status, setStatus] = useState('');
+  const [to, setTo] = useState('');
+  const [cat, setCat] = useState('');
+  const [subcat, setSubCat] = useState('');
+  const [categorias, setCategorias] = useState([]);
+  const [subcategorias, setSubCategorias] = useState([]);
+  const [funcionarios, setFuncionarios] = useState([]);
+  const [func, setFunc] = useState([]);
+  
   useEffect(() => {
+
     setLoading(true);
     getEmployees();
+    getCategorias();
+    getfuncionarios();
 
   }, []);
+
+  async function getfuncionarios() {
+    try {
+      const response = await api.get('v1/list_funcionario/1?todos=all');
+      setFuncionarios(response);
+     
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleChangeFilterByDateFromTo() {
+    //console.log('ok', from, to, cat, subcat,morad);
+    try {
+      setLoading(true);
+
+      /*if (!from || !to) {
+        setLoading(false);
+        return;
+      }*/
+
+      if (to) {
+
+       if(from){}else{
+        setLoading(false);
+        return;
+       }
+        
+      }
+
+      if (subcat) {
+
+        if(cat){}else{
+         setLoading(false);
+         return;
+        }
+         
+       }
+
+      const response = await api.get(`v1/logs_function/1?status=${status}&situation=&categoria=${cat}&sub_categoria=${subcat}&funcionario=${func}&data_de=${from}&data_ate=${to}`);
+      setEmployees(response.data);
+      
+      setLoading(false);
+  
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function listSubCat(id) {
+    
+    try {
+      console.log(id);
+      setSubCategorias([]);
+      const response = await api.get(`v1/listLotes/${id}?todos=all`);
+      setSubCategorias(response.data.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getCategorias() {
+    try {
+      const response = await api.get('v1/listCategoria/1?todos=all');
+      setCategorias(response.data.data);
+     
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
 
   async function getEmployees() {
     try {
@@ -162,40 +284,47 @@ function Employees() {
                     <div className='d-flex'>
                       <div className='input-group input-group-sm  me-3 rounded mt-2 w-100px input-group-data'>
                         <span className="input-group-text" id="basic-addon1"><b>Estado</b></span>
-                        <Form.Select className='border-0 ' aria-label="Default select example">
+                        <Form.Select className='border-0 ' onChange={(event) => { setStatus(event.target.value);}} aria-label="Default select example">
                           <option value="">Todas</option>
                           <option value="1">Dentro do condomínio</option>
-                          <option value="2">Fora do condomínio</option>
+                          <option value="0">Fora do condomínio</option>
                         </Form.Select>
                       </div>
                       <div className="input-group input-group-sm rounded mt-2 input-group-data">
                         <span className="input-group-text" id="basic-addon1"><b>De</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
-                        <span className="input-group-text" id="basic-addon1"><b>Ate</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
+                        <input type="date" onChange={(event) => { setFrom(event.target.value); }} className="form-control" placeholder="Date" />
+                        <span className="input-group-text" id="basic-addon1"><b>Até</b></span>
+                        <input type="date" onChange={(event) => { setTo(event.target.value); }} className="form-control" placeholder="Date" />
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <Form.Select className='border-0' aria-label="Default select example">
+                      <Form.Select className='border-0' onChange={(event) => { listSubCat(event.target.value); setCat(event.target.value);}} aria-label="Default select example">
                           <option value="">Todas quadra</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          {
+                            categorias?.cat?.map(categoria => (
+                              <option value={categoria.id}>{categoria.quadra}</option>
+                            ))
+                          }
                         </Form.Select>
-                        <Form.Select className='border-0' aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { setSubCat(event.target.value);}}  aria-label="Default select example">
                           <option value="">Todos lotes</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          
+                          {
+                            subcategorias?.sub_cat?.map(subcategoria => (
+                              <option value={subcategoria.id}>{subcategoria.lote}</option>
+                            ))
+                          }
                         </Form.Select>
-                        <Form.Select className='border-0' aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { setFunc(event.target.value);}} aria-label="Default select example">
                           <option value="">Todos Funcionarios</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          {
+                            funcionarios?.data?.map(func => (
+                              <option value={func.id}>{func.nome}</option>
+                            ))
+                          }
                         </Form.Select>
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
                       <div className='mt-2 ms-2'>
                         <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
@@ -243,15 +372,20 @@ function Employees() {
                               <tr key={employee.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
-                                    <img src={marisa} alt="" />
+                                    <img src={employee.foto} alt="" />
                                   </div>
                                 </th>
                                 <td>{employee.nome}</td>
-                                <td>{"Q" + employee.quadra + " L" + employee.lote}</td>
+                                <td>{"Q-" + employee.quadra + " - L-" + employee.lote}</td>
                                 <td>{format(new Date(employee.created_at), "H:i:s")}</td>
                                 <td>{format(new Date(employee.created_at), "dd/MM/yyyy")}</td>
                                 <td>
-                                  <span className="badge rounded-pill estado-bg-primary">Dentro do condomínio</span>
+                                {
+                                    (employee.status === '0') ?
+                                      <span className="badge rounded-pill estado-bg-danger">Fora do condomínio</span>
+                                    :  <span className="badge rounded-pill estado-bg-primary">Dentro do condomínio</span>
+                                  }
+                                 
                                 </td>
                                 <td className='text-right pe-4'>
                                   <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
@@ -291,8 +425,7 @@ function Employees() {
 
                             employees?.from + ' - ' + employees?.to + '- ' + employees?.total : '0 - 0 itens '
 
-                        }
-                        itens
+                        } itens
                       </div>
                       <div>
                         <nav className='nav-pagination'>

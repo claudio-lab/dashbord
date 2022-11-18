@@ -79,7 +79,7 @@ function Visitors() {
   const [subcategorias, setSubCategorias] = useState([]);
   const [moradores, setMoradores] = useState([]);
   const [pdf, setpdf] = useState([]);
-  const [excel, setexcel] = useState([]);
+  const [excel, setexcel] = useState([]); 
 
   
 

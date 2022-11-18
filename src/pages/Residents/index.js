@@ -52,12 +52,135 @@ function Residents() {
 
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const [cat, setCat] = useState('');
+  const [subcat, setSubCat] = useState('');
+  const [morad, setMorador] = useState('');
+  const [status, setStatus] = useState('');
+  const [categorias, setCategorias] = useState([]);
+  const [subcategorias, setSubCategorias] = useState([]);
+  const [moradores, setMoradores] = useState([]);
 
   useEffect(() => {
     setLoading(true);
     getAppointments();
+    getCategorias();
+    getMoradores();
 
   }, []);
+
+  async function getMoradores() {
+    try {
+      const response = await api.get('v1/list_moradores/1/0000?todos=all');
+      setMoradores(response);
+      console.log(response);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function listSubCat(id) {
+    
+    try {
+      console.log(id);
+      setSubCategorias([]);
+      const response = await api.get(`v1/listLotes/${id}?todos=all`);
+      setSubCategorias(response.data.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getCategorias() {
+    try {
+      const response = await api.get('v1/listCategoria/1?todos=all');
+      setCategorias(response.data.data);
+     
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleChangeFilterByDateFromTo() {
+    console.log('ok',status, from, to, cat, subcat,morad);
+    try {
+      setLoading(true);
+
+      /*if (!from || !to) {
+        setLoading(false);
+        return;
+      }*/
+
+      if (to) {
+
+       if(from){}else{
+        setLoading(false);
+        return;
+       }
+        
+      }
+
+      if (subcat) {
+
+        if(cat){}else{
+         setLoading(false);
+         return;
+        }
+         
+       }
+
+      const response = await api.get(`v1/logs_morador/1?status=${status}&categoria=${cat}&sub_categoria=${subcat}&morador=${morad}&data_de=${from}&data_ate=${to}`);
+      setAppointments(response.data);
+      console.log(response.data);
+      
+      setLoading(false);
+  
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
 
 
   async function getAppointments() {
@@ -161,40 +284,47 @@ function Residents() {
                     <div className='d-flex'>
                       <div className='input-group input-group-sm  me-3 rounded mt-2 w-100px input-group-data'>
                         <span className="input-group-text" id="basic-addon1"><b>Estado</b></span>
-                        <Form.Select className='border-0 ' aria-label="Default select example">
+                        <Form.Select className='border-0 ' onChange={(event) => { setStatus(event.target.value); }} aria-label="Default select example">
                           <option value="">Todas</option>
-                          <option value="1">Entou no condominio</option>
-                          <option value="2">Saiu do condominio</option>
+                          <option value="0">Entou no condominio</option>
+                          <option value="1">Saiu do condominio</option>
                         </Form.Select>
                       </div>
                       <div className="input-group input-group-sm rounded mt-2 input-group-data">
                         <span className="input-group-text" id="basic-addon1"><b>De</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
-                        <span className="input-group-text" id="basic-addon1"><b>Ate</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
+                        <input type="date" onChange={(event) => { setFrom(event.target.value); }} className="form-control" placeholder="Date" />
+                        <span className="input-group-text" id="basic-addon1"><b>Até</b></span>
+                        <input type="date" onChange={(event) => { setTo(event.target.value); }} className="form-control" placeholder="Date" />
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <Form.Select className='border-0' aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { listSubCat(event.target.value); setCat(event.target.value);}} aria-label="Default select example">
                           <option value="">Todas quadra</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          {
+                            categorias?.cat?.map(categoria => (
+                              <option value={categoria.id}>{categoria.quadra}</option>
+                            ))
+                          }
                         </Form.Select>
-                        <Form.Select className='border-0' aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { setSubCat(event.target.value);}}  aria-label="Default select example">
                           <option value="">Todos lotes</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          
+                          {
+                            subcategorias?.sub_cat?.map(subcategoria => (
+                              <option value={subcategoria.id}>{subcategoria.lote}</option>
+                            ))
+                          }
                         </Form.Select>
-                        <Form.Select className='border-0' aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { setMorador(event.target.value);}} aria-label="Default select example">
                           <option value="">Todos moradores</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          {
+                            moradores?.data?.map(morador => (
+                              <option value={morador.id}>{morador.nome}</option>
+                            ))
+                          }
                         </Form.Select>
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
                       <div className='mt-2 ms-2'>
                         <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
@@ -249,11 +379,9 @@ function Residents() {
                                 <td>{appointment.created_at}</td>
                                 <td>
                                   {
-                                    (appointment.status === '0') ?
+                                    (appointment.status == '0') ?
                                       <span className="badge rounded-pill estado-bg-success">Entou no condomínio</span>
-                                      : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-success">Entou no condomínio</span>
-                                        : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-danger">Fora do condomínio</span>
-                                          : <span className="badge rounded-pill estado-bg-success">Entou no condomínio</span>
+                                     : <span className="badge rounded-pill estado-bg-danger">Fora do condomínio</span>
                                   }
                                 </td>
                                 <td className='text-right pe-4'>

@@ -48,7 +48,7 @@ function Documents_() {
   const [loading, setLoading] = useState(false);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  const [title, setTitle] = useState(false);
+  const [titulo, setTitulo] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -77,14 +77,9 @@ function Documents_() {
   }
 
   async function handleChangeFilterByDateFromTo() {
-    console.log('ok', title, from, to);
+    console.log('ok', from, to, titulo,);
     try {
       setLoading(true);
-
-      /*if (!from || !to) {
-        setLoading(false);
-        return;
-      }*/
       
       if (to) {
 
@@ -95,8 +90,9 @@ function Documents_() {
          
       }
 
-      const response = await api.get(`v1/getDocumentos/1?data_de=${from}&data_ate=${to}&titulo=${title}`);
+      const response = await api.get(`v1/getDocumentos/1?data_de=${from}&data_ate=${to}&titulo=${titulo}`);
       setDocuments(response.data.data.documentos);
+      console.log(response.data.data.documentos);
       setLoading(false);
   
     } catch (error) {
@@ -190,7 +186,7 @@ function Documents_() {
                         <input type="date" onChange={(event) => { setTo(event.target.value); }} className="form-control" placeholder="Date" />
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <input type="text" onKeyUp={(event) => { setTitle(event.target.value);}} className="form-control" placeholder="Pesquisar titulo" />
+                        <input type="text" onKeyUp={(event) => { setTitulo(event.target.value); }} className="form-control" placeholder="Pesquisar titulo" />
                       </div>
                       <div className='mt-2 ms-2'>
                         <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
