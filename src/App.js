@@ -6,7 +6,8 @@ import {
   Route
 } from "react-router-dom";
 
-import { ToastContainer } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './style/global.scss'
 import Login from './pages/Login';
@@ -85,8 +86,23 @@ function App() {
             <Route path='/user' element={<User />} />
             <Route path="/announcement" element={<Announcement />} />
           </Routes>
+
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme='colored'
+          />
         </AuthProvider>
       </Router>
+
+
     </>
   );
 }

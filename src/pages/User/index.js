@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu } from '../../components/Menu';
-import {
-  Link
-} from "react-router-dom";
+import { toast } from 'react-toastify';
 import {
   HiOutlineUserGroup,
   HiOutlineUsers,
@@ -39,7 +37,16 @@ function User() {
   const [open1, setOpen1] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [show, setShow] = useState(false);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [tel, setTel] = useState("");
+  const [nivel, setNivel] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -47,7 +54,7 @@ function User() {
     setLoading(true);
     getAppointments();
 
-  }, []);
+  }, [show]);
 
 
   async function getAppointments() {
@@ -66,7 +73,7 @@ function User() {
       } else if (error.status === 500) {
         console.log("Erro interno, por favor, contactar o suporte!");
       }
-      setLoading(false); 
+      setLoading(false);
     }
   }
 
@@ -112,9 +119,169 @@ function User() {
     }
   }
 
+  async function handleSubmitUser() {
+    try {
+
+      setIsSubmitted(true);
+
+      if (!name) {
+        toast.error('O nome é obrigatório');
+        setIsSubmitted(false);
+        return;
+      }
+
+      if (!email) {
+        toast.error('O email é obrigatório');
+        setIsSubmitted(false);
+        return;
+      }
+
+      if (!tel) {
+        toast.error('O telefone é obrigatório');
+        setIsSubmitted(false);
+        return;
+      }
+
+      if (!nivel) {
+        toast.error('O campo nível é obrigatório');
+        setIsSubmitted(false);
+        return;
+      }
+
+      if (!password) {
+        toast.error('O password é obrigatório');
+        setIsSubmitted(false);
+        return;
+      }
+
+      if (!passwordConfirmation) {
+        toast.error('O campo confirmação de senha é obrigatório');
+        setIsSubmitted(false);
+        return;
+      }
+
+      if (password !== passwordConfirmation) {
+        toast.error('As senhas  são diferentes');
+        setIsSubmitted(false);
+        return;
+      }
+
+      const data = {
+        name,
+        telefone: tel,
+        email,
+        nivel_user: nivel,
+        password: password,
+        password_confirmar: passwordConfirmation,
+        condominio_id: 1
+      }
+
+      const response = await api.post('v1/add_funcionario', data);
+
+      toast.success('Usuário registado com sucesso');
+
+
+      setIsSubmitted(false);
+      handleClose();
+
+    } catch (error) {
+      if (error.message === "Network Error") {
+        toast.error("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.message === "Request failed with status code 400") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.status === 500) {
+        toast.error("Erro interno, por favor, contactar o suporte!");
+      }
+      setIsSubmitted(false);
+    }
+  }
+
 
   return (
     <div className="dashboard">
+      {/*modal*/}
+      <Modal show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}>
+        <Modal.Header closeButton className='border-0'>
+          <h5 className='mt-3'>Adicionar usuário</h5>
+        </Modal.Header>
+        <Modal.Body className='pt-0'>
+          <form id="form-add">
+            <label className='mt-2 mb-2'><b>Nome *</b></label>
+            <Form.Control
+              type="text"
+              placeholder="Nome"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <label className='mt-2 mb-2'><b>Telefone *</b></label>
+            <Form.Control type="number"
+              value={tel}
+              placeholder="Telefone"
+              onChange={(e) => setTel(e.target.value)}
+            />
+            <label className='mt-2 mb-2'><b>Email *</b></label>
+            <Form.Control
+              type="email"
+              value={email}
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
+            <Form.Select
+              value={nivel}
+              onChange={(e) => setNivel(e.target.value)}
+            >
+              <option value="">Selecione</option>
+              <option value="1">Administrador</option>
+              <option value="2">Administrador adjunto</option>
+              <option value="4">Funcionário</option>
+            </Form.Select>
+            <label className='mt-2 mb-2'><b>Senha *</b></label>
+            <Form.Control
+              type="password"
+              value={password}
+              placeholder="Senha"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <label className='mt-2 mb-2'><b>Confirma senha *</b></label>
+            <Form.Control
+              type="password"
+              value={passwordConfirmation}
+              placeholder="Confirmar Senha"
+              onChange={(e) => setPasswordConfirmation(e.target.value)}
+            />
+          </form>
+        </Modal.Body>
+        <Modal.Footer className='border-0'>
+          {
+            !isSubmitted ? <>
+              <Button variant="secondary" onClick={handleClose} className='btn-sm'>
+                Cancelar
+              </Button>
+              <Button variant="primary" onClick={() => handleSubmitUser()} className='btn-sm'>
+                Adicionar
+              </Button>
+            </>
+              :
+              <>
+                <Button variant="secondary" disabled className='btn-sm'>
+                  Cancelar
+                </Button>
+                <Button variant="primary" disabled className='btn-sm'>
+                  Adicionando...
+                </Button>
+              </>
+          }
+
+        </Modal.Footer>
+      </Modal>
+      {/*modal*/}
+
       <main className='d-flex'>
         <Menu />
         <section className='w-100 h-100 height-overflow'>
@@ -147,8 +314,8 @@ function User() {
                         <span className="input-group-text" id="basic-addon1"><b>Estado</b></span>
                         <Form.Select className='border-0 ' aria-label="Default select example">
                           <option value="">Todas</option>
-                          <option value="1">Entou no condominio</option>
-                          <option value="2">Saiu do condominio</option>
+                          <option value="1">Entrou no condomínio</option>
+                          <option value="2">Saiu do condomínio</option>
                         </Form.Select>
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
@@ -294,43 +461,6 @@ function User() {
           </div>
         </section>
       </main>
-
-      {/*modal*/}
-      <Modal show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}>
-        <Modal.Header closeButton className='border-0'>
-          <h5 className='mt-3'>Adicionar usuario no sistema</h5>
-        </Modal.Header>
-        <Modal.Body className='pt-0'>
-          <form action="">
-            <label className='mt-2 mb-2'><b>Nome *</b></label>
-            <Form.Control type="text" placeholder="Nome de administrador" />
-            <label className='mt-2 mb-2'><b>Telefone *</b></label>
-            <Form.Control type="number" placeholder="Telefone" />
-            <label className='mt-2 mb-2'><b>Email *</b></label>
-            <Form.Control type="email" placeholder="Email" />
-            <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
-            <Form.Select aria-label="Default select example">
-              <option value="">Selecione</option>
-            </Form.Select>
-            <label className='mt-2 mb-2'><b>Senha *</b></label>
-            <Form.Control type="password" placeholder="Senha" />
-            <label className='mt-2 mb-2'><b>Confirma senha *</b></label>
-            <Form.Control type="password" placeholder="Confirma Senha" />
-          </form>
-        </Modal.Body>
-        <Modal.Footer className='border-0'>
-          <Button variant="secondary" onClick={handleClose} className='btn-sm'>
-            Cancelar
-          </Button>          
-          <Button variant="primary" onClick={handleClose} className='btn-sm'>
-            Adicional
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      {/*modal*/}
     </div>
   );
 }
