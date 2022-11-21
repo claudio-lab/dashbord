@@ -17,7 +17,7 @@ import {
   IoClipboardOutline,
   IoTimeOutline,
   IoAlertCircleOutline,
-  IoPersonOutline
+  IoPersonOutline 
 } from "react-icons/io5";
 import { MenuTop } from '../../components/MenuTop';
 import { Modal, Button, Spinner, Collapse } from 'react-bootstrap';
@@ -32,6 +32,7 @@ import matheus from './../../assets/photos/matheus.jpg'
 import paula from './../../assets/photos/paula.jpg'
 
 import { api } from './../../services/api';
+import ShowVisitorDetails from '../../components/modal/ShowVisitorDetails';
 
 
 function Concluido() {
@@ -39,9 +40,18 @@ function Concluido() {
 
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
+  
   const handleShow1 = () => setShow1(true);
+  const [show4, setShow4] = useState(false);
+  const handleClose4 = () => setShow4(false);
+  function handleShow4(appointmentID) {
+    setAppointmentId(appointmentID);
+
+    setShow4(true);
+  }
 
   const [appointments, setAppointments] = useState([]);
+  const [appointmentId, setAppointmentId] = useState(''); 
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [cat, setCat] = useState('');
@@ -393,7 +403,7 @@ function Concluido() {
                                   <span className="badge rounded-pill estado-bg-success">Concluído</span>
                                 </td>
                                 <td className='text-right pe-4'>
-                                  <Button className="btn btn-light p-0 m-0 " onClick={handleShow1}>
+                                <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id)}>
                                     <IoEllipsisHorizontal />
                                   </Button>
                                 </td>
@@ -538,7 +548,18 @@ function Concluido() {
           </div>
         </Modal.Body>
       </Modal>
-
+      {
+        show4 ?
+          <ShowVisitorDetails
+            isOpen={show4}
+            handleClose={handleClose4}
+            appointmentId={appointmentId}
+            status="Concluidos"
+            status_n="4"
+          />
+          :
+          <></>
+      }
     </div>
   );
 }

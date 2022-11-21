@@ -37,8 +37,8 @@ import cassia from './../../assets/photos/cassia.jpg'
 import matheus from './../../assets/photos/matheus.jpg'
 import paula from './../../assets/photos/paula.jpg'
 
-import { api } from './../../services/api';
-
+import { api } from './../../services/api'; 
+import ShowVisitorDetails from '../../components/modal/ShowVisitorDetails';
 
 function Cancelados() {
   const [open1, setOpen1] = useState(false);
@@ -47,6 +47,16 @@ function Cancelados() {
   const handleClose3 = () => setShow3(false);
   const handleShow3 = () => setShow3(true);
 
+  const [show4, setShow4] = useState(false);
+  const handleClose4 = () => setShow4(false);
+  function handleShow4(appointmentID) {
+    setAppointmentId(appointmentID);
+
+    setShow4(true);
+  }
+
+
+  const [appointmentId, setAppointmentId] = useState(''); 
   const [appointments, setAppointments] = useState([]);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
@@ -395,7 +405,7 @@ function Cancelados() {
                                   <span className="badge rounded-pill estado-bg-danger">Cancelado</span>
                                 </td>
                                 <td className='text-right pe-4'>
-                                  <Button className="btn btn-light p-0 m-0 " onClick={handleShow3}>
+                                <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id)}>
                                     <IoEllipsisHorizontal />
                                   </Button>
                                 </td>
@@ -505,7 +515,18 @@ function Cancelados() {
           </div>
         </Modal.Body>
       </Modal>
-
+      {
+        show4 ?
+          <ShowVisitorDetails
+            isOpen={show4}
+            handleClose={handleClose4}
+            appointmentId={appointmentId}
+            status="Cancelados"
+            status_n="0"
+          />
+          :
+          <></>
+      }
     </div>
   );
 }

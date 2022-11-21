@@ -43,7 +43,7 @@ import paula from './../../assets/photos/paula.jpg'
 
 import { api } from './../../services/api';
 
-
+import ShowVisitorDetails from '../../components/modal/ShowVisitorDetails';
 
 function Expiradas() {
   const [open1, setOpen1] = useState(false);
@@ -52,7 +52,16 @@ function Expiradas() {
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
 
+  const [show4, setShow4] = useState(false);
+  const handleClose4 = () => setShow4(false);
+  function handleShow4(appointmentID) {
+    setAppointmentId(appointmentID);
+
+    setShow4(true);
+  }
+
   const [appointments, setAppointments] = useState([]);
+  const [appointmentId, setAppointmentId] = useState(''); 
   const [loading, setLoading] = useState(false);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
@@ -400,7 +409,7 @@ function Expiradas() {
                                   <span className="badge rounded-pill estado-bg-warning">Expirado</span>
                                 </td>
                                 <td className='text-right pe-4'>
-                                  <Button className="btn btn-light p-0 m-0 " onClick={handleShow2}>
+                                  <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id)}>
                                     <IoEllipsisHorizontal />
                                   </Button>
                                 </td>
@@ -506,7 +515,18 @@ function Expiradas() {
           </div>
         </Modal.Body>
       </Modal>
-
+      {
+        show4 ?
+          <ShowVisitorDetails
+            isOpen={show4}
+            handleClose={handleClose4}
+            appointmentId={appointmentId}
+            status="Expirados"
+            status_n="1"
+          />
+          :
+          <></>
+      }
     </div>
   );
 }

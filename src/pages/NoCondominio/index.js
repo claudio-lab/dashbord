@@ -53,7 +53,7 @@ function NoCondominio() {
 
   const [appointments, setAppointments] = useState([]);
   const [appointmentId, setAppointmentId] = useState(''); 
-  const [appointmentStaus, setAppointmentStatus] = useState(''); 
+ 
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [cat, setCat] = useState('');
