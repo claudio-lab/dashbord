@@ -16,6 +16,7 @@ import {
   IoPersonOutline
 } from "react-icons/io5";
 import { Modal, Button, Spinner } from 'react-bootstrap';
+import user from './../../../assets/photos/user.png'
 import matheus from './../../../assets/photos/matheus.jpg'
 import cassia from './../../../assets/photos/cassia.jpg'
 import { format } from 'date-fns';
@@ -108,7 +109,7 @@ function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status ,status
                               <div className=""><span className="badge rounded-pill estado-bg-primary">Agendamento</span></div>
                               <div className='d-flex mt-3 mb-3'>
                                 <div className="avatar-mini">
-                                  <img src={appointmentDetails.foto ? appointmentDetails.foto : cassia} alt={appointmentDetails.nome_morador} />
+                                  <img src={appointmentDetails.foto ? appointmentDetails.foto : user} alt={appointmentDetails.nome_morador} />
                                 </div>
                                 <div className=' ms-2'>
                                   <b>{appointmentDetails.nome_morador}</b><br />
@@ -136,7 +137,7 @@ function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status ,status
                                 <div className=""><span className="badge rounded-pill estado-bg-primary">Agendamento</span></div>
                                 <div className='d-flex mt-3 mb-3'>
                                   <div className="avatar-mini">
-                                    <img src={appointmentDetails.foto ? appointmentDetails.foto : cassia} alt={appointmentDetails.nome_morador} />
+                                    <img src={appointmentDetails.foto ? appointmentDetails.foto : user} alt={appointmentDetails.nome_morador} />
                                   </div>
                                   <div className=' ms-2'>
                                     <b>{appointmentDetails.nome_morador}</b><br />
@@ -164,7 +165,7 @@ function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status ,status
                                 <div className="ss"><span className="badge rounded-pill estado-bg-secondary">Entrada</span></div>
                                 <div className='d-flex mt-3 mb-3'>
                                   <div className="avatar-mini">
-                                    <img src={matheus} alt="" />
+                                    <img src={user} alt="" />
                                   </div>
                                   <div className=' ms-2'>
                                     <b>{appointmentPort.nome}</b><br />
@@ -230,7 +231,7 @@ function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status ,status
                                 <div className="ss"><span className="badge rounded-pill estado-bg-secondary">Entrada</span></div>
                                 <div className='d-flex mt-3 mb-3'>
                                   <div className="avatar-mini">
-                                    <img src={matheus} alt="" />
+                                    <img src={user} alt="" />
                                   </div>
                                   <div className=' ms-2'>
                                     <b>{appointmentPort.nome}</b><br />
@@ -271,7 +272,7 @@ function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status ,status
                                 <div className="ss"><span className="badge rounded-pill estado-bg-success">Saida</span></div>
                                 <div className='d-flex mt-3 mb-3'>
                                   <div className="avatar-mini">
-                                    <img src={matheus} alt="" />
+                                    <img src={user} alt="" />
                                   </div>
                                   <div className=' ms-2'>
                                   <b>{appointmentPortS.nome}</b><br />
@@ -306,7 +307,7 @@ function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status ,status
                                     <div className=""><span className="badge rounded-pill estado-bg-primary">Agendamento</span></div>
                                     <div className='d-flex mt-3 mb-3'>
                                       <div className="avatar-mini">
-                                        <img src={appointmentDetails.foto ? appointmentDetails.foto : cassia} alt={appointmentDetails.nome_morador} />
+                                        <img src={appointmentDetails.foto ? appointmentDetails.foto : user} alt={appointmentDetails.nome_morador} />
                                       </div>
                                       <div className=' ms-2'>
                                         <b>{appointmentDetails.nome_morador}</b><br />
@@ -332,7 +333,7 @@ function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status ,status
                                       <div className=""><span className="badge rounded-pill estado-bg-warning">Expirado</span></div>
                                       <div className='d-flex mt-3 mb-3'>
                                         <div className="avatar-mini">
-                                          <img src={appointmentDetails.foto ? appointmentDetails.foto : cassia} alt={appointmentDetails.nome_morador} />
+                                          <img src={appointmentDetails.foto ? appointmentDetails.foto : user} alt={appointmentDetails.nome_morador} />
                                         </div>
                                         <div className=' ms-2'>
                                           <b>{appointmentDetails.nome_morador}</b><br />

@@ -24,12 +24,7 @@ import { Modal, Button, Spinner, Collapse } from 'react-bootstrap';
 import {
   Form
 } from 'react-bootstrap';
-import { FaUserCheck } from 'react-icons/fa';
-import marisa from './../../assets/photos/marisa.jpg'
-import chiao from './../../assets/photos/chiao.jpg'
-import cassia from './../../assets/photos/cassia.jpg'
-import matheus from './../../assets/photos/matheus.jpg'
-import paula from './../../assets/photos/paula.jpg'
+import user from './../../assets/photos/user.png'
 
 import { api } from './../../services/api';
 import ShowVisitorDetails from '../../components/modal/ShowVisitorDetails';
@@ -392,7 +387,8 @@ function Concluido() {
                               <tr key={appointment.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
-                                    <FaUserCheck />
+                                    <img src={appointment.foto ? appointment.foto : user} alt="" />
+
                                   </div>
                                 </th>
                                 <td>{appointment.nome_morador}</td>
@@ -475,79 +471,8 @@ function Concluido() {
         </section>
       </main>
 
-      <Modal show={show1} size="lg" backdrop="static" centered onHide={handleClose1} className='border-0'>
-        <Modal.Header closeButton className='border-0 pb-1'>
-          <div>
-            <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span className="badge rounded-pill estado-bg-success">Concluido</span></div>
-          </div>
-        </Modal.Header>
-        <Modal.Body className='border-0'>
-          <div className="container p-0">
-            <div className="row">
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className=""><span className="badge rounded-pill estado-bg-primary">Adendamento</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={cassia} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Cassia Fernandes</b><br />
-                        <div className='font-size-12'>Morador</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoPersonOutline /> <font className='font-size-14'>Carla Fernandes</font><br />
-                    <IoAlertCircleOutline /> <font className='font-size-14'>visita familiar</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className="ss"><span className="badge rounded-pill estado-bg-secondary">Entrada</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={matheus} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Matheus Francisco</b><br />
-                        <div className='font-size-12'>porteiro</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoPeopleOutline /> <font className='font-size-14'>5 acompanhantes</font><br />
-                    <IoCarSportOutline /> <font className='font-size-14'>Sem viatura</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className="ss"><span className="badge rounded-pill estado-bg-success">Saida</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={matheus} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Matheus Francisco</b><br />
-                        <div className='font-size-12'>porteiro</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Morador: Sem obs</font> <br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Porteiro : Sem obs</font> <br />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
+      
+      
       {
         show4 ?
           <ShowVisitorDetails

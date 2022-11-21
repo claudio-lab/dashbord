@@ -27,8 +27,7 @@ import {
 import marisa from './../../assets/photos/marisa.jpg'
 import chiao from './../../assets/photos/chiao.jpg'
 import cassia from './../../assets/photos/cassia.jpg'
-import matheus from './../../assets/photos/matheus.jpg'
-import paula from './../../assets/photos/paula.jpg'
+import user from './../../assets/photos/user.png'
 import { useEffect } from 'react';
 import { api } from './../../services/api';
 import ShowVisitorDetails from '../../components/modal/ShowVisitorDetails';
@@ -398,7 +397,7 @@ function Agendadas() {
                               <tr key={appointment.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
-                                    <img src={marisa} alt="" />
+                                  <img src={appointment.foto ? appointment.foto : user} alt="" />
                                   </div>
                                 </th>
                                 <td>{appointment.nome_morador}</td>

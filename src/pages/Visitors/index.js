@@ -37,6 +37,7 @@ import matheus from './../../assets/photos/matheus.jpg'
 
 
 import { api } from './../../services/api';
+import ShowVisitorDetails from '../../components/modal/ShowVisitorDetails';
 
 function Visitors() {
   const [open1, setOpen1] = useState(false);
@@ -57,16 +58,28 @@ function Visitors() {
   const handleClose3 = () => setShow3(false);
   const handleShow3 = () => setShow3(true);
   {/*--------------------------------------------*/ }
-  const [show4, setShow4] = useState(false);
+  //const [show4, setShow4] = useState(false);
   const handleClose4 = () => setShow4(false);
-  const handleShow4 = () => setShow4(true);
+  //const handleShow4 = () => setShow4(true);
+  const [show4, setShow4] = useState(false);
+  function handleShow4(appointmentID,sta,status) {
+    setAppointmentId(appointmentID);
+    setAppointmentSta(sta);
+    setAppointmentStatus(status);
+
+    setShow4(true);
+  }
   {/*--------------------------------------------*/ }
   const [show5, setShow5] = useState(false);
   const handleClose5 = () => setShow5(false);
   const handleShow5 = () => setShow5(true);
+  
   {/*--------------------------------------------*/ }
 
   const [appointments, setAppointments] = useState([]);
+  const [appointmentId, setAppointmentId] = useState('');
+  const [appointmentsta, setAppointmentSta] = useState('');
+  const [appointmentstatus, setAppointmentStatus] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
@@ -82,7 +95,6 @@ function Visitors() {
   const [excel, setexcel] = useState([]); 
 
   
-
   useEffect(() => {
     setLoading(true);
     getAppointments();
@@ -151,7 +163,6 @@ function Visitors() {
       setLoading(false);
     }
   }
-
 
   async function listSubCat(id) {
     
@@ -490,7 +501,7 @@ function Visitors() {
                               <tr key={appointment.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
-                                    <img src={user} alt="" />
+                                  <img src={appointment.foto ? appointment.foto : user} alt="" />
                                   </div>
                                 </th>
                                 <td>{appointment.nome_morador}</td>
@@ -508,9 +519,34 @@ function Visitors() {
                                   }
                                 </td>
                                 <td className='text-right pe-4'>
-                                  <Button className="btn btn-light p-0 m-0 " /*</td>onClick={handleShow}*/>
-                                    <IoEllipsisHorizontal />
-                                  </Button>
+                                {
+                                    (appointment.status === '0') ?
+                                      
+                                      <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id,appointment.status,'Cancelados')}>
+                                      <IoEllipsisHorizontal />
+                                    </Button>
+                                      : (appointment.status === '1') ? 
+                                      
+                                      <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id,appointment.status,'Expirados')}>
+                                      <IoEllipsisHorizontal />
+                                    </Button>
+                                        : (appointment.status === '2') ? 
+                                       
+                                        <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id,appointment.status,'Agendamento')}>
+                                        <IoEllipsisHorizontal />
+                                      </Button>
+                                          : (appointment.status === '3') ? 
+                                        
+                                          <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id,appointment.status,'NoCondominio')}>
+                                          <IoEllipsisHorizontal />
+                                        </Button>
+                                            : 
+                                           
+                                            <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id,appointment.status,'Concluidos')}>
+                                            <IoEllipsisHorizontal />
+                                          </Button>
+                                  }
+                               
                                 </td>
                               </tr>
                             ))
@@ -583,278 +619,7 @@ function Visitors() {
           </div>
         </section>
       </main>
-      <Modal show={show} size="lg" backdrop="static" centered onHide={handleClose} className='border-0'>
-        <Modal.Header closeButton className='border-0 pb-1'>
-          <div>
-            <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span className="badge rounded-pill estado-bg-primary">Adendamento</span></div>
-          </div>
-        </Modal.Header>
-        <Modal.Body className='border-0'>
-          <div className="container p-0">
-            <div className="row">
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className=""><span className="badge rounded-pill estado-bg-primary">Adendamento</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={cassia} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Cassia Fernandes</b><br />
-                        <div className='font-size-12'>Morador</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoPersonOutline /> <font className='font-size-14'>Carla Fernandes</font><br />
-                    <IoAlertCircleOutline /> <font className='font-size-14'>visita familiar</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
-      <Modal show={show1} size="lg" backdrop="static" centered onHide={handleClose1} className='border-0'>
-        <Modal.Header closeButton className='border-0 pb-1'>
-          <div>
-            <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span className="badge rounded-pill estado-bg-success">Concluido</span></div>
-          </div>
-        </Modal.Header>
-        <Modal.Body className='border-0'>
-          <div className="container p-0">
-            <div className="row">
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className=""><span className="badge rounded-pill estado-bg-primary">Adendamento</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={cassia} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Cassia Fernandes</b><br />
-                        <div className='font-size-12'>Morador</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoPersonOutline /> <font className='font-size-14'>Carla Fernandes</font><br />
-                    <IoAlertCircleOutline /> <font className='font-size-14'>visita familiar</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className="ss"><span className="badge rounded-pill estado-bg-secondary">Entrada</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={matheus} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Matheus Francisco</b><br />
-                        <div className='font-size-12'>porteiro</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoPeopleOutline /> <font className='font-size-14'>5 acompanhantes</font><br />
-                    <IoCarSportOutline /> <font className='font-size-14'>Sem viatura</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className="ss"><span className="badge rounded-pill estado-bg-success">Saida</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={matheus} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Matheus Francisco</b><br />
-                        <div className='font-size-12'>porteiro</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Morador: Sem obs</font> <br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Porteiro : Sem obs</font> <br />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
-      <Modal show={show2} size="lg" backdrop="static" centered onHide={handleClose2} className='border-0'>
-        <Modal.Header closeButton className='border-0 pb-1'>
-          <div>
-            <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span className="badge rounded-pill estado-bg-warning">Expirado</span></div>
-          </div>
-        </Modal.Header>
-        <Modal.Body className='border-0'>
-          <div className="container p-0">
-            <div className="row">
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className=""><span className="badge rounded-pill estado-bg-primary">Agendado</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={cassia} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Cassia Fernandes</b><br />
-                        <div className='font-size-12'>Morador</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoPersonOutline /> <font className='font-size-14'>Carla Fernandes</font><br />
-                    <IoAlertCircleOutline /> <font className='font-size-14'>visita familiar</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
-      <Modal show={show3} size="lg" backdrop="static" centered onHide={handleClose3} className='border-0'>
-        <Modal.Header closeButton className='border-0 pb-1'>
-          <div>
-            <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span className="badge rounded-pill estado-bg-danger">Cancelado</span></div>
 
-            <div className='mt-3'>
-              <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-            </div>
-          </div>
-        </Modal.Header>
-        <Modal.Body className='border-0'>
-          <div className="container p-0">
-            <div className="row">
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className=""><span className="badge rounded-pill estado-bg-primary">Agendado</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={cassia} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Cassia Fernandes</b><br />
-                        <div className='font-size-12'>Morador</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoPersonOutline /> <font className='font-size-14'>Carla Fernandes</font><br />
-                    <IoAlertCircleOutline /> <font className='font-size-14'>visita familiar</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
-      <Modal show={show4} size="lg" backdrop="static" centered onHide={handleClose4} className='border-0'>
-        <Modal.Header closeButton className='border-0 pb-1'>
-          <div>
-            <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span className="badge rounded-pill estado-bg-secondary">No condomínio</span></div>
-          </div>
-        </Modal.Header>
-        <Modal.Body className='border-0'>
-          <div className="container p-0">
-            <div className="row">
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className=""><span className="badge rounded-pill estado-bg-primary">Adendamento</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={cassia} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Cassia Fernandes</b><br />
-                        <div className='font-size-12'>Morador</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoPersonOutline /> <font className='font-size-14'>Carla Fernandes</font><br />
-                    <IoAlertCircleOutline /> <font className='font-size-14'>visita familiar</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-                  </div>
-                </div>
-              </div>
-              {/*<div className="col-lg-4">
-                <borderDashdetal/>
-              </div>*/}
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className="ss"><span className="badge rounded-pill estado-bg-secondary">Entrada</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={matheus} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Matheus Francisco</b><br />
-                        <div className='font-size-12'>porteiro</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoPeopleOutline /> <font className='font-size-14'>5 acompanhantes</font><br />
-                    <IoCarSportOutline /> <font className='font-size-14'>Sem viatura</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
-      {/*modal*/}
-      <Modal show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}>
-        <Modal.Header closeButton className='border-0'>
-          <h5 className='mt-3'>Adicionar Funcionario </h5>
-        </Modal.Header>
-        <Modal.Body className='pt-0'>
-          <form action="">
-            <label className='mt-2 mb-2'><b>Nome *</b></label>
-            <Form.Control type="text" placeholder="Nome de administrador" />
-            <label className='mt-2 mb-2'><b>Telefone *</b></label>
-            <Form.Control type="number" placeholder="Telefone" />
-            <label className='mt-2 mb-2'><b>Email *</b></label>
-            <Form.Control type="email" placeholder="Email" />
-            <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
-            <Form.Select aria-label="Default select example">
-              <option value="">Selecione</option>
-            </Form.Select>
-            <label className='mt-2 mb-2'><b>Senha *</b></label>
-            <Form.Control type="password" placeholder="Senha" />
-            <label className='mt-2 mb-2'><b>Confirma senha *</b></label>
-            <Form.Control type="password" placeholder="Confirma Senha" />
-          </form>
-        </Modal.Body>
-        <Modal.Footer className='border-0'>
-          <Button variant="secondary" onClick={handleClose} className='btn-sm'>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={handleClose} className='btn-sm'>
-            Adicional
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      {/*modal*/}
       {/*modal*/}
       <Modal show={show5}
         onHide={handleClose5}
@@ -891,6 +656,19 @@ function Visitors() {
         </Modal.Footer>
       </Modal>
       {/*modal*/}
+
+      {
+        show4 ?
+          <ShowVisitorDetails
+            isOpen={show4}
+            handleClose={handleClose4}
+            appointmentId={appointmentId}
+            status={appointmentstatus}
+            status_n={appointmentsta}
+          />
+          :
+          <></>
+      }
     </div>
   );
 }
