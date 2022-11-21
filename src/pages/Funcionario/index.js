@@ -57,12 +57,103 @@ function Funcionario() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  
+  const [status, setStatus] = useState('');
+  const [cat, setCat] = useState('');
+  const [subcat, setSubCat] = useState('');
+  const [nome, setNome] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [categorias, setCategorias] = useState([]);
+  const [subcategorias, setSubCategorias] = useState([]);
+
   useEffect(() => {
     setLoading(true);
     getAppointments();
+    getCategorias();
 
   }, []);
 
+  async function handleChangeFilterByDateFromTo() {
+    console.log('ok', status, telefone, cat, subcat,nome);
+    try {
+      setLoading(true);
+
+      /*if (!from || !to) {
+        setLoading(false);
+        return;
+      }*/
+
+      if (subcat) {
+
+        if(cat){}else{
+         setLoading(false);
+         return;
+        }
+         
+       }
+
+      const response = await api.get(`v1/list_funcionario/1?nome=${nome}&telefone=${telefone}&status=${status}&categoria=${cat}&sub_categoria=${subcat}`);
+      setAppointments(response.data);
+      console.log(response.data);
+      
+      setLoading(false);
+  
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function listSubCat(id) {
+    
+    try {
+      console.log(id);
+      setSubCategorias([]);
+      const response = await api.get(`v1/listLotes/${id}?todos=all`);
+      setSubCategorias(response.data.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getCategorias() {
+    try {
+      const response = await api.get('v1/listCategoria/1?todos=all');
+      setCategorias(response.data.data);
+     
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
 
   async function getAppointments() {
     try {
@@ -188,48 +279,55 @@ function Funcionario() {
         </Button>
           </div>            
           </div>
+
           <Collapse className='w-max-1200' in={open1}>
-            <div id="example-collapse-text">
-              <div className="d-flex flex-row-reverse">
-              <div className='d-flex'>
-              <div className='input-group input-group-sm  me-3 rounded mt-2 w-100px input-group-data'>
-              <span className="input-group-text" id="basic-addon1"><b>Estado</b></span>
-              <Form.Select className='border-0 ' aria-label="Default select example">
-                <option>Todas</option>
-                <option value="1">Activo</option>
-                <option value="2">Desativado</option>
-              </Form.Select>
-              </div>
-              <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-              <input type="text" class="form-control" placeholder="Pesquisar nome"/>
-              </div>
-              <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-              <input type="text" class="form-control" placeholder="Pesquisar telefone"/>
-              </div>
-              <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-              <select class="form-select border-0" aria-label="Default select example">
-                <option selected>Lote</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-              <select class="form-select border-0" aria-label="Default select example">
-              <option selected>Quadra</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-              </div>
-              <div className='mt-2 ms-2'>
-              <button type="button" class="btn btn-primary btn-sm"><HiOutlineSearch/></button>
-              </div>
-              <div className='mt-2 ms-2'>
-              <button type="button" class="btn btn-primary btn-sm"><HiOutlineEye/></button>
-              </div>
-              </div>
-              </div>
-            </div>
-          </Collapse>
+                <div id="example-collapse-text">
+                  <div className="d-flex flex-row-reverse">
+                    <div className='d-flex'>
+                      <div className='input-group input-group-sm  me-3 rounded mt-2 w-100px input-group-data'>
+                        <span className="input-group-text" id="basic-addon1"><b>Estado</b></span>
+                        <Form.Select className='border-0 '  onChange={(event) => { setStatus(event.target.value); }} aria-label="Default select example">
+                          <option value="">Todas</option>
+                          <option value="1">Activo</option>
+                          <option value="0">Desativado</option>
+                        </Form.Select>
+                      </div>
+                      <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
+                      <Form.Select className='border-0' onChange={(event) => { listSubCat(event.target.value); setCat(event.target.value);}} aria-label="Default select example">
+                          <option value="">Todas quadra</option>
+                          {
+                            categorias?.cat?.map(categoria => (
+                              <option value={categoria.id}>{categoria.quadra}</option>
+                            ))
+                          }
+                        </Form.Select>
+                        <Form.Select className='border-0' onChange={(event) => { setSubCat(event.target.value);}}  aria-label="Default select example">
+                          <option value="">Todos lotes</option>
+                          
+                          {
+                            subcategorias?.sub_cat?.map(subcategoria => (
+                              <option value={subcategoria.id}>{subcategoria.lote}</option>
+                            ))
+                          }
+                        </Form.Select>
+                      </div>
+                      <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
+                        <input type="text" className="form-control" onKeyUp={(event) => { setNome(event.target.value); }} placeholder="Pesquisar nome" />
+                      </div>
+                      <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
+                        <input type="text" className="form-control" onKeyUp={(event) => { setTelefone(event.target.value); }} placeholder="Pesquisar telefone" />
+                      </div>
+                      
+                      <div className='mt-2 ms-2'>
+                        <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                      </div>
+                      <div className='mt-2 ms-2'>
+                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Collapse>
 
           <div className='mt-4'>
           <div className="btn-group border-botton-right-0">
@@ -264,17 +362,15 @@ function Funcionario() {
                                 </div>
                                 </th>
                                 <td>{appointment.nome}</td>
-                                <td>Lote {appointment.lote} - Quadra {appointment.quadra}</td>
+                                <td>Q {appointment.quadra} - L {appointment.lote}</td>
                                 <td>{appointment.cargo}</td>
                                 <td>{appointment.telefone}</td>
                                 <td>{appointment.moradoror}</td>
                                 <td>
                                   {
-                                    (appointment.status === '0') ?
+                                    (appointment.status == '1') ?
                                       <span className="badge rounded-pill estado-bg-success">Ativado</span>
-                                      : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-success">Ativado</span>
-                                        : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-danger">Desativado</span>
-                                            : <span className="badge rounded-pill estado-bg-success">Ativado</span>
+                                      : <span className="badge rounded-pill estado-bg-danger">Desativado</span>
                                   }
                                 </td>
                                 <td className='text-right pe-4'>

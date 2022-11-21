@@ -18,13 +18,14 @@ import {
 import { Modal, Button, Spinner } from 'react-bootstrap';
 import matheus from './../../../assets/photos/matheus.jpg'
 import cassia from './../../../assets/photos/cassia.jpg'
-
+import { format } from 'date-fns';
 import { api } from './../../../services/api';
 
 // import { Container } from './styles';
 
-function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status }) {
+function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status ,status_n}) {
   const [appointmentDetails, setAppointmentDetails] = useState([]);
+  const [appointmentPort, setport] = useState([]);
   const [statusAppointment, setStatusAppointment] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -33,13 +34,25 @@ function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status }) {
     setStatusAppointment(status);
     getAppointmentById();
 
-  }, [])
+  }, []) 
 
-  async function getAppointmentById() {
+  async function getAppointmentById() {   
     try {
 
-      const response = await api.get(`v1/show_visitas/${appointmentId}`);
-      setAppointmentDetails(response.data.data.agendamento[0]);
+      const stat = status_n;
+      console.log(stat);
+      if (stat == '2') {
+        const response = await api.get(`v1/show_visitas/${appointmentId}?status=${stat}`);
+        setAppointmentDetails(response.data.data.agendamento[0]);
+        console.log(response.data.data.agendamento[0]);
+      } else if (stat == '3') {
+        const response = await api.get(`v1/show_visitas/${appointmentId}?status=${stat}`);
+        setAppointmentDetails(response.data.data.agendamento[0]);
+        setport(response.data.data.porteiro[0]);
+      } else {
+       
+      }
+      
 
 
       setLoading(false);
@@ -90,7 +103,11 @@ function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status }) {
                               <IoCalendarOutline /> <font className='font-size-14'>{appointmentDetails.data}</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> {appointmentDetails.hora}</font><br />
                               <IoPersonOutline /> <font className='font-size-14'>{appointmentDetails.nome}</font><br />
                               <IoAlertCircleOutline /> <font className='font-size-14'>{appointmentDetails.o_motivo}</font><br />
-                              <IoClipboardOutline /> <font className='font-size-14'>{appointmentDetails.observacao}</font>
+                              <IoClipboardOutline /> <font className='font-size-14'> {
+                                    (appointmentDetails.observacao == null) ?
+                                     'Sem observação'
+                                      : appointmentDetails.observacao 
+                                  }</font>
                             </div>
                           </div>
                         </div>
@@ -111,10 +128,17 @@ function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status }) {
                                     <div className='font-size-12'>Morador</div>
                                   </div>
                                 </div>
-                                <IoCalendarOutline /> <font className='font-size-14'>{appointmentDetails.data}</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> {appointmentDetails.hora}</font><br />
+                                <IoCalendarOutline /> <font className='font-size-14'>{appointmentDetails.data}</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'>  {appointmentDetails.hora}</font><br />
                                 <IoPersonOutline /> <font className='font-size-14'>{appointmentDetails.nome}</font><br />
                                 <IoAlertCircleOutline /> <font className='font-size-14'>{appointmentDetails.o_motivo}</font><br />
-                                <IoClipboardOutline /> <font className='font-size-14'>{appointmentDetails.observacao}</font>
+                                <IoClipboardOutline /> <font className='font-size-14'>
+                                 
+                                  {
+                                    (appointmentDetails.observacao == null) ?
+                                     'Sem observação'
+                                      : appointmentDetails.observacao 
+                                  }
+                                  </font>
                               </div>
                             </div>
                           </div>
@@ -128,14 +152,34 @@ function ShowVisitorDetails({ isOpen, handleClose, appointmentId, status }) {
                                     <img src={matheus} alt="" />
                                   </div>
                                   <div className=' ms-2'>
-                                    <b>Matheus Francisco</b><br />
-                                    <div className='font-size-12'>porteiro</div>
+                                    <b>{appointmentPort.nome}</b><br />
+                                    <div className='font-size-12'>Porteiro</div>
                                   </div>
                                 </div>
-                                <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                                <IoPeopleOutline /> <font className='font-size-14'>5 acompanhantes</font><br />
-                                <IoCarSportOutline /> <font className='font-size-14'>Sem viatura</font><br />
-                                <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
+                                <IoCalendarOutline /> <font className='font-size-14'>{format(new Date(appointmentDetails.entry_date), "dd/MM/yyyy")}</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> {format(new Date(appointmentDetails.entry_date), "H:i")}m</font><br />
+                                <IoPeopleOutline /> <font className='font-size-14'>
+
+                                {
+                                    (appointmentDetails.number_companions == null) ?
+                                     'Sem acompanhantes'
+                                      : appointmentDetails.number_companions +' acompanhantes'
+                                  } 
+                                  </font><br />
+                                <IoCarSportOutline /> <font className='font-size-14'>
+                                  {
+                                    (appointmentDetails.came_by_car == '') ?
+                                     'Sem viatura'
+                                      : appointmentDetails.came_by_car 
+                                  }
+                                  </font><br />
+                                <IoClipboardOutline /> <font className='font-size-14'>
+                                  
+                                  {
+                                    (appointmentDetails.end_observation == null) ?
+                                     'Sem observação'
+                                      : appointmentDetails.end_observation 
+                                  }
+                                  </font>
                               </div>
                             </div>
                           </div>

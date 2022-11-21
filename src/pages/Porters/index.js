@@ -68,7 +68,7 @@ function Porters() {
 
   async function getConcierges() {
     try {
-      const response = await api.get('v1/list_porteiros_condominio/1');
+      const response = await api.get('v1/getSessionPorteiro/1');
       setConcierges(response.data);
 
       setLoading(false);
