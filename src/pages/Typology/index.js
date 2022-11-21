@@ -54,11 +54,43 @@ function Typology() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [typol, setTypol] = useState('');
+
   useEffect(() => {
     setLoading(true);
     getTypologies();
 
   }, []);
+
+  async function handleChangeFilterByDateFromTo() {
+    console.log('ok', typol);
+    try {
+      setLoading(true);
+
+      /*if (!from || !to) {
+        setLoading(false);
+        return;
+      }*/
+
+      const response = await api.get(`v1/listTipologias/1?tipologia=${typol}`);
+      setTypologies(response.data);
+      console.log(response.data);
+      
+      setLoading(false);
+  
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
 
   async function getTypologies() {
     try {
@@ -155,6 +187,7 @@ function Typology() {
       setLoadingSubmitTypology(false);
     }
   }
+
   return (
     <div className="dashboard">
       <main className='d-flex'>
@@ -182,15 +215,16 @@ function Typology() {
                   </Button>
                 </div>
               </div>
+
               <Collapse className='w-max-1200' in={open1}>
                 <div id="example-collapse-text">
                   <div className="d-flex flex-row-reverse">
                     <div className='d-flex'>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <input type="search" className="form-control border-0" placeholder="Pesquisar" />
+                        <input type="search" onKeyUp={(event) => { setTypol(event.target.value); }} className="form-control border-0" placeholder="Pesquisar" />
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
                       <div className='mt-2 ms-2'>
                         <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>

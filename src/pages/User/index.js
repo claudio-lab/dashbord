@@ -41,7 +41,6 @@ function User() {
   const [show, setShow] = useState(false);
 
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [tel, setTel] = useState("");
   const [nivel, setNivel] = useState("");
   const [password, setPassword] = useState("");
@@ -50,12 +49,46 @@ function User() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [status, setStatus] = useState('');
+  const [nome, setNome] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [email, setEmail] = useState('');
+
   useEffect(() => {
     setLoading(true);
     getAppointments();
 
   }, [show]);
 
+  async function handleChangeFilterByDateFromTo() {
+    //console.log('ok', status, telefone, cat, subcat,nome);
+    try {
+      setLoading(true);
+
+      /*if (!from || !to) {
+        setLoading(false);
+        return;
+      }*/
+
+      const response = await api.get(`v1/list_funcionarios_condominio/1?nome=${nome}&telefone=${telefone}&status=${status}&email=${email}`);
+      setAppointments(response.data);
+      console.log(response.data);
+
+      setLoading(false);
+
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
 
   async function getAppointments() {
     try {
@@ -312,23 +345,23 @@ function User() {
                     <div className='d-flex'>
                       <div className='input-group input-group-sm  me-3 rounded mt-2 w-100px input-group-data'>
                         <span className="input-group-text" id="basic-addon1"><b>Estado</b></span>
-                        <Form.Select className='border-0 ' aria-label="Default select example">
+                        <Form.Select className='border-0 ' onChange={(event) => { setStatus(event.target.value); }} aria-label="Default select example">
                           <option value="">Todas</option>
-                          <option value="1">Entrou no condomínio</option>
-                          <option value="2">Saiu do condomínio</option>
+                          <option value="1">Activo</option>
+                          <option value="0">Desativado</option>
                         </Form.Select>
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <input type="text" className="form-control" placeholder="Pesquisar nome" />
+                        <input type="text" className="form-control" onKeyUp={(event) => { setNome(event.target.value); }} placeholder="Pesquisar nome" />
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <input type="text" className="form-control" placeholder="Pesquisar telefone" />
+                        <input type="text" className="form-control" onKeyUp={(event) => { setTelefone(event.target.value); }} placeholder="Pesquisar telefone" />
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <input type="text" className="form-control" placeholder="Pesquisar email" />
+                        <input type="text" className="form-control" onKeyUp={(event) => { setEmail(event.target.value); }} placeholder="Pesquisar email" />
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
                       <div className='mt-2 ms-2'>
                         <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
@@ -368,11 +401,10 @@ function User() {
                                 <td>{appointment.telefone}</td>
                                 <td>
                                   {
-                                    (appointment.status === '0') ?
+                                    (appointment.status == '1') ?
                                       <span className="badge rounded-pill estado-bg-success">Ativado</span>
-                                      : (appointment.status === '1') ? <span className="badge rounded-pill estado-bg-success">Ativado</span>
-                                        : (appointment.status === '2') ? <span className="badge rounded-pill estado-bg-danger">Desativado</span>
-                                          : <span className="badge rounded-pill estado-bg-success">Ativado</span>
+
+                                      : <span className="badge rounded-pill estado-bg-danger">Desativado</span>
                                   }
                                 </td>
                                 <td className='text-right pe-4'>

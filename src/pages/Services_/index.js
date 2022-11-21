@@ -59,11 +59,43 @@ function Services_() {
   const handleShow = () => setShow(true);
   {/*--------------------------------------------*/ }
 
+  const [servic, setServic] = useState('');
+
   useEffect(() => {
     setLoading(true);
     getServices();
 
   }, []);
+
+  async function handleChangeFilterByDateFromTo() {
+    //console.log('ok', status, telefone, cat, subcat,nome);
+    try {
+      setLoading(true);
+
+      /*if (!from || !to) {
+        setLoading(false);
+        return;
+      }*/
+
+      const response = await api.get(`v1/servico_list/1?servico=${servic}`);
+      setServices(response.data);
+      console.log(response.data);
+      
+      setLoading(false);
+  
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
 
   async function getServices() {
     try {
@@ -193,10 +225,10 @@ function Services_() {
                   <div className="d-flex flex-row-reverse">
                     <div className='d-flex'>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <input type="search" className="form-control border-0" placeholder="Pesquisar" />
+                        <input type="search" onKeyUp={(event) => { setServic(event.target.value); }} className="form-control border-0" placeholder="Pesquisar" />
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
                       <div className='mt-2 ms-2'>
                         <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>

@@ -55,6 +55,7 @@ export function Menu() {
             <Link className="nav-link" to="/announcement">
               <HiSpeakerphone className='icon-hi me-2' />Comunicados
             </Link>
+            {   isSac ?
             <a
               onClick={() => setOpen3(!open3)}
               aria-controls="collapse-reclamação"
@@ -62,32 +63,26 @@ export function Menu() {
               className="nav-link"
               href='#'
             >
+             
               <HiExclamationCircle className='icon-hi me-2' /> Reclamação
-            </a>
+            </a>:  <></>
+          }
+            {   isSac ?
             <Collapse in={open3}>
               <div id="collapse-reclamação">
                 <nav className="nav flex-column menu-sub">
                   <Link className="nav-link p-1" to="/reclamacao">Correntes</Link>
-                  {
-                    isSac ?
-
+                
                       <Link className="nav-link p-1" to="/garantia">Garantia</Link>
-                      :
-
-                      <></>
-                  }
+                   
                 </nav>
               </div>
-            </Collapse>
-            {
-              isSac ?
-
+            </Collapse> :  <></>
+          }
                 <Link className="nav-link" to="/documents_">
                   <HiDocumentText className='icon-hi me-2' /> Documentos
                 </Link>
-                :
-                <></>
-            }
+              
             <Link className="nav-link" to="/residentsc">
               <HiUserGroup className='icon-hi me-2' /> Moradores
             </Link>

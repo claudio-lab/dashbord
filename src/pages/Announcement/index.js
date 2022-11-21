@@ -4,7 +4,7 @@ import {
   Link
 } from "react-router-dom";
 import {
-  HiOutlineUserGroup,
+  HiOutlineUserGroup, 
   HiOutlineUsers,
   HiOutlineHome,
   HiOutlineViewGrid,
@@ -55,12 +55,75 @@ function Announcement() {
   const handleClose5 = () => setShow5(false);
   const handleShow5 = () => setShow5(true);
   {/*--------------------------------------------*/ }
-
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const [titulo, setTitulo] = useState('');
+  const [morad, setMorador] = useState('');
+  const [moradores, setMoradores] = useState([]);
 
   useEffect(() => {
     setLoading(true);
     getAnnouncements();
+    getMoradores();
+
   }, []);
+
+  async function getMoradores() {
+    try {
+      const response = await api.get('v1/list_moradores/1/0000?todos=all');
+      setMoradores(response);
+      console.log(response);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+
+  async function handleChangeFilterByDateFromTo() {
+    console.log('ok', from, to, titulo);
+    try {
+    
+      setLoading(true);
+
+      if (to) {
+
+       if(from){}else{
+        setLoading(false);
+        return;
+       }
+        
+      }
+
+      const response = await api.get(`v1/list_comunicados/1?data_de=${from}&data_ate=${to}&titulo=${titulo}`);
+      setAnnouncements(response.data.data?.comunicado);
+      console.log(response.data.data?.comunicado);
+      
+      setLoading(false);
+  
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
 
   async function getAnnouncements() {
     try {
@@ -155,6 +218,7 @@ function Announcement() {
       setLoadingSubmitAnnouncement(false);
     }
   }
+
   return (
     <div className="dashboard">
       <main className='d-flex'>
@@ -187,15 +251,15 @@ function Announcement() {
                     <div className='d-flex'>
                       <div className="input-group input-group-sm rounded mt-2 input-group-data">
                         <span className="input-group-text" id="basic-addon1"><b>De</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
-                        <span className="input-group-text" id="basic-addon1"><b>Ate</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
+                        <input type="date" onChange={(event) => { setFrom(event.target.value); }} className="form-control" placeholder="Date" />
+                        <span className="input-group-text" id="basic-addon1"><b>Até</b></span>
+                        <input type="date" onChange={(event) => { setTo(event.target.value); }} className="form-control" placeholder="Date" />
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <input type="text" className="form-control" placeholder="Pesquisar titulo" />
+                        <input type="text" onKeyUp={(event) => { setTitulo(event.target.value); }} className="form-control" placeholder="Pesquisar titulo" />
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
                     </div>
                   </div>
@@ -308,10 +372,20 @@ function Announcement() {
         </Modal.Header>
         <Modal.Body className='pt-0'>
           <form action="">
+          <label className='mt-2 mb-2'><b>Para  *</b></label>
+            <Form.Select className='form-control' onChange={(event) => { setMorador(event.target.value);}} aria-label="Default select example">
+                <option value="">Todos moradores</option>
+                {
+                  moradores?.data?.map(morador => (
+                  <option value={morador.id}>{morador.nome}</option>
+                  ))
+                }
+            </Form.Select>
             <label className='mt-2 mb-2'><b>Assunto  *</b></label>
             <Form.Control type="text" placeholder="Comunicado" required onChange={(event) => setAnnouncement(event.target.title)}/>
             <label className='mt-2 mb-2'><b>Comunicado  *</b></label>
             <textarea className="form-control" placeholder="Discrição do comunicado" rows="3" required onChange={(event) => setAnnouncement(event.target.message)}></textarea>
+           
           </form>
         </Modal.Body>
         <Modal.Footer className='border-0'>
