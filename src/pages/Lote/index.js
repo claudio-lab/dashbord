@@ -67,7 +67,7 @@ function Lote() {
 
   async function getTypologies() {
     try {
-      const response = await api.get('v1/listTipologias/1');
+      const response = await api.get('v1/listLotes/34');
       setTypologies(response.data);
 
       setLoading(false);
@@ -208,8 +208,8 @@ function Lote() {
               <div className='mt-4'>
                 <div className="btn-group border-botton-right-0">
                   <Link to="/typology" className="btn border-botton-right-0 btn-light-tabs " >Tipologias</Link>
-                  <Link to="/lote" className="btn border-botton-right-0 btn-light-tabs active">Lote</Link>
                   <Link to="/quadra" className="btn border-botton-right-0 btn-light-tabs ">Quadra</Link>
+                  <Link to="/lote" className="btn border-botton-right-0 btn-light-tabs active">Lote</Link>
                 </div>
                 <div className="card border-0 border-botton-right-left-0 card-table">
                   <div className="card-body pb-2"></div>
@@ -217,10 +217,10 @@ function Lote() {
                     <table className="table">
                       <thead>
                         <tr>
-                          <th className='ps-4'>Tipo</th>
-                          <th>Nº Quadra</th>
-                          <th>Nº Residência</th>
-                          <th>Nº Estabelecimento</th>
+                          <th className='ps-4'>Lote</th>
+                          <th>Quadra</th>
+                          <th>Tipologia</th>
+                          <th>Tipo</th>
                           <th className='text-right pe-4'>Acções</th>
                         </tr>
                       </thead>
@@ -228,19 +228,19 @@ function Lote() {
 
                         {
                           !loading ?
-                            typologies?.data?.map(employee => (
-                              <tr key={employee.id}>
+                            typologies?.data?.map(lote => (
+                              <tr key={lote.id}>
                                 <th scope="row" className='ps-4'>
-                                  {employee.name}
+                                  {lote.lote}
                                 </th>
                                 <th>
-                                  {employee.name}
+                                  {lote.quadra}
                                 </th>
                                 <th>
-                                  {employee.name}
+                                  {lote.name}
                                 </th>
                                 <th>
-                                  {employee.name}
+                                  {lote.tipo}
                                 </th>
                                 <td className='text-right pe-4'>
                                   <Dropdown>
