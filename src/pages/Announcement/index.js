@@ -4,7 +4,7 @@ import {
   Link
 } from "react-router-dom";
 import {
-  HiOutlineUserGroup,
+  HiOutlineUserGroup, 
   HiOutlineUsers,
   HiOutlineHome,
   HiOutlineViewGrid,
@@ -58,12 +58,37 @@ function Announcement() {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [titulo, setTitulo] = useState('');
-  
+  const [morad, setMorador] = useState('');
+  const [moradores, setMoradores] = useState([]);
 
   useEffect(() => {
     setLoading(true);
     getAnnouncements();
+    getMoradores();
+
   }, []);
+
+  async function getMoradores() {
+    try {
+      const response = await api.get('v1/list_moradores/1/0000?todos=all');
+      setMoradores(response);
+      console.log(response);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
 
   async function handleChangeFilterByDateFromTo() {
     console.log('ok', from, to, titulo);
@@ -347,10 +372,20 @@ function Announcement() {
         </Modal.Header>
         <Modal.Body className='pt-0'>
           <form action="">
+          <label className='mt-2 mb-2'><b>Para  *</b></label>
+            <Form.Select className='form-control' onChange={(event) => { setMorador(event.target.value);}} aria-label="Default select example">
+                <option value="">Todos moradores</option>
+                {
+                  moradores?.data?.map(morador => (
+                  <option value={morador.id}>{morador.nome}</option>
+                  ))
+                }
+            </Form.Select>
             <label className='mt-2 mb-2'><b>Assunto  *</b></label>
             <Form.Control type="text" placeholder="Comunicado" required onChange={(event) => setAnnouncement(event.target.title)}/>
             <label className='mt-2 mb-2'><b>Comunicado  *</b></label>
             <textarea className="form-control" placeholder="Discrição do comunicado" rows="3" required onChange={(event) => setAnnouncement(event.target.message)}></textarea>
+           
           </form>
         </Modal.Body>
         <Modal.Footer className='border-0'>

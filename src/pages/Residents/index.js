@@ -17,7 +17,7 @@ import {
   HiOutlineUserCircle
 } from "react-icons/hi";
 import {
-  IoEllipsisHorizontal,
+  IoEllipsisHorizontal, 
   IoCalendarOutline,
   IoPeopleOutline,
   IoCarSportOutline,
@@ -61,6 +61,8 @@ function Residents() {
   const [categorias, setCategorias] = useState([]);
   const [subcategorias, setSubCategorias] = useState([]);
   const [moradores, setMoradores] = useState([]);
+  const [pdf, setpdf] = useState([]); 
+  const [excel, setexcel] = useState([]); 
 
   useEffect(() => {
     setLoading(true);
@@ -69,6 +71,48 @@ function Residents() {
     getMoradores();
 
   }, []);
+
+  async function getExcel() {
+    //console.log('ok', from, to, cat, subcat,morad);
+    try {
+      const excel = `https://webapi.monzoyetu.com/api/v1/logs_morador_/1?status=${status}&categoria=${cat}&sub_categoria=${subcat}&morador=${morad}&data_de=${from}&data_ate=${to}&export=excel`;
+      setexcel(excel);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getPdf() {
+    //console.log('ok', from, to, cat, subcat,morad);
+    try {
+      const pdf = `https://webapi.monzoyetu.com/api/v1/logs_morador_/1?status=${status}&categoria=${cat}&sub_categoria=${subcat}&morador=${morad}&data_de=${from}&data_ate=${to}&export=pdf`;
+      setpdf(pdf);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
 
   async function getMoradores() {
     try {
@@ -327,7 +371,11 @@ function Residents() {
                         <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
+                        <a type="button" href={pdf} onClick={() => { getPdf(); console.log("passou..."); }}  className="btn btn-primary btn-sm">PDF</a>
+                      </div> 
+
+                      <div className='mt-2 ms-2'>
+                        <a type="button" href={excel} onClick={() => { getExcel(); console.log("passou..."); }} className="btn btn-primary btn-sm">EXCEL</a>
                       </div>
                     </div>
                   </div>

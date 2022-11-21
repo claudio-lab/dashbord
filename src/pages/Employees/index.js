@@ -3,7 +3,7 @@ import { Menu } from '../../components/Menu';
 import {
   Link
 } from "react-router-dom";
-import {
+import { 
   HiOutlineUserGroup,
   HiOutlineUsers,
   HiOutlineHome,
@@ -66,6 +66,8 @@ function Employees() {
   const [subcategorias, setSubCategorias] = useState([]);
   const [funcionarios, setFuncionarios] = useState([]);
   const [func, setFunc] = useState([]);
+  const [pdf, setpdf] = useState([]); 
+  const [excel, setexcel] = useState([]); 
   
   useEffect(() => {
 
@@ -75,6 +77,48 @@ function Employees() {
     getfuncionarios();
 
   }, []);
+
+  async function getExcel() {
+    //console.log('ok', from, to, cat, subcat,morad);
+    try {
+      const excel = `https://webapi.monzoyetu.com/api/v1/logs_function_/1?status=${status}&situation=&categoria=${cat}&sub_categoria=${subcat}&funcionario=${func}&data_de=${from}&data_ate=${to}&export=excel`;
+      setexcel(excel);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getPdf() {
+    //console.log('ok', from, to, cat, subcat,morad);
+    try {
+      const pdf = `https://webapi.monzoyetu.com/api/v1/logs_function_/1?status=${status}&situation=&categoria=${cat}&sub_categoria=${subcat}&funcionario=${func}&data_de=${from}&data_ate=${to}&export=pdf`;
+      setpdf(pdf);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
 
   async function getfuncionarios() {
     try {
@@ -326,9 +370,15 @@ function Employees() {
                       <div className='mt-2 ms-2'>
                         <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
+                    
                       <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
+                        <a type="button" href={pdf} onClick={() => { getPdf(); console.log("passou..."); }}  className="btn btn-primary btn-sm">PDF</a>
+                      </div> 
+
+                      <div className='mt-2 ms-2'>
+                        <a type="button" href={excel} onClick={() => { getExcel(); console.log("passou..."); }} className="btn btn-primary btn-sm">EXCEL</a>
                       </div>
+                      
                     </div>
                   </div>
                 </div>
@@ -372,7 +422,7 @@ function Employees() {
                               <tr key={employee.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
-                                    <img src={employee.foto} alt="" />
+                                    <img src={employee.foto} alt="" />  
                                   </div>
                                 </th>
                                 <td>{employee.nome}</td>

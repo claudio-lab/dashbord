@@ -78,7 +78,7 @@ function Visitors() {
   const [categorias, setCategorias] = useState([]);
   const [subcategorias, setSubCategorias] = useState([]);
   const [moradores, setMoradores] = useState([]);
-  const [pdf, setpdf] = useState([]);
+  const [pdf, setpdf] = useState([]); 
   const [excel, setexcel] = useState([]); 
 
   
@@ -454,7 +454,7 @@ function Visitors() {
                       </div> 
                       <div className='mt-2 ms-2'>
                         <a type="button" href={excel} onClick={() => { getExcel(); console.log("passou..."); }} className="btn btn-primary btn-sm">EXCEL</a>
-                      </div>
+                      </div> 
                     </div>
                   </div>
                 </div>

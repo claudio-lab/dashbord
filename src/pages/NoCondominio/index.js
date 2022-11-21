@@ -46,12 +46,14 @@ function NoCondominio() {
   const handleClose4 = () => setShow4(false);
   function handleShow4(appointmentID) {
     setAppointmentId(appointmentID);
+
     setShow4(true);
   }
   {/*--------------------------------------------*/ }
 
   const [appointments, setAppointments] = useState([]);
-  const [appointmentId, setAppointmentId] = useState('');
+  const [appointmentId, setAppointmentId] = useState(''); 
+  const [appointmentStaus, setAppointmentStatus] = useState(''); 
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [cat, setCat] = useState('');
@@ -224,7 +226,7 @@ function NoCondominio() {
       setLoading(false);
     }
   }
-
+ 
   async function getAppointments() {
     try {
       const response = await api.get('v1/list_visitas/1/condominio');
@@ -484,6 +486,7 @@ function NoCondominio() {
             handleClose={handleClose4}
             appointmentId={appointmentId}
             status="NoCondominio"
+            status_n="3"
           />
           :
           <></>

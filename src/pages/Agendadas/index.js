@@ -10,7 +10,7 @@ import {
   HiOutlineEye,
   HiOutlinePlusSm
 } from "react-icons/hi";
-import {
+import { 
   IoEllipsisHorizontal,
   IoCalendarOutline,
   IoClipboardOutline,
@@ -31,6 +31,7 @@ import matheus from './../../assets/photos/matheus.jpg'
 import paula from './../../assets/photos/paula.jpg'
 import { useEffect } from 'react';
 import { api } from './../../services/api';
+import ShowVisitorDetails from '../../components/modal/ShowVisitorDetails';
 
 function Agendadas() {
 
@@ -43,9 +44,17 @@ function Agendadas() {
   const [show5, setShow5] = useState(false);
   const handleClose5 = () => setShow5(false);
   const handleShow5 = () => setShow5(true);
+  const handleClose4 = () => setShow4(false);
+  const [show4, setShow4] = useState(false);
+  function handleShow4(appointmentID) {
+    setAppointmentId(appointmentID);
+
+    setShow4(true);
+  }
   {/*--------------------------------------------*/ }
 
   const [appointments, setAppointments] = useState([]);
+  const [appointmentId, setAppointmentId] = useState(''); 
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [cat, setCat] = useState('');
@@ -407,7 +416,7 @@ function Agendadas() {
                                   }
                                 </td>
                                 <td className='text-right pe-4'>
-                                  <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
+                                <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id)}>
                                     <IoEllipsisHorizontal />
                                   </Button>
                                 </td>
@@ -549,6 +558,19 @@ function Agendadas() {
         </Modal.Footer>
       </Modal>
       {/*modal*/}
+
+      {
+        show4 ?
+          <ShowVisitorDetails
+            isOpen={show4}
+            handleClose={handleClose4}
+            appointmentId={appointmentId}
+            status="Agendamento"
+            status_n="2"
+          />
+          :
+          <></>
+      }
     </div>
   );
 }
