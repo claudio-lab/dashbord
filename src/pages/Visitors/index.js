@@ -523,27 +523,27 @@ function Visitors() {
                                     (appointment.status === '0') ?
                                       
                                       <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id,appointment.status,'Cancelados')}>
-                                      <IoEllipsisHorizontal />
+                                      <HiOutlineEye />
                                     </Button>
                                       : (appointment.status === '1') ? 
                                       
                                       <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id,appointment.status,'Expirados')}>
-                                      <IoEllipsisHorizontal />
+                                      <HiOutlineEye />
                                     </Button>
                                         : (appointment.status === '2') ? 
                                        
                                         <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id,appointment.status,'Agendamento')}>
-                                        <IoEllipsisHorizontal />
+                                        <HiOutlineEye />
                                       </Button>
                                           : (appointment.status === '3') ? 
                                         
                                           <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id,appointment.status,'NoCondominio')}>
-                                          <IoEllipsisHorizontal />
+                                          <HiOutlineEye />
                                         </Button>
                                             : 
                                            
                                             <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id,appointment.status,'Concluidos')}>
-                                            <IoEllipsisHorizontal />
+                                            <HiOutlineEye />
                                           </Button>
                                   }
                                

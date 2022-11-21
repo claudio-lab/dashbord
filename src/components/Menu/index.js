@@ -48,7 +48,10 @@ export function Menu() {
                   <Link className="nav-link p-1" to="/visitors">Visitantes</Link>
                   <Link className="nav-link p-1" to="/employees">Funcionários das Residências</Link>
                   <Link className="nav-link p-1" to="/residents">Moradores</Link>
-                  <Link className="nav-link p-1" to="/porters">Porteiros</Link>
+                  {   isSac ?
+                    <Link className="nav-link p-1" to="/porters">Porteiros</Link>:<></>
+                    
+                  }
                 </nav>
               </div>
             </Collapse>

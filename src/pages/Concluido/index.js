@@ -400,7 +400,7 @@ function Concluido() {
                                 </td>
                                 <td className='text-right pe-4'>
                                 <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id)}>
-                                    <IoEllipsisHorizontal />
+                                    <HiOutlineEye />
                                   </Button>
                                 </td>
                               </tr>
