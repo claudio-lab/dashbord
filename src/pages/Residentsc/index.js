@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu } from '../../components/Menu';
+import { toast } from 'react-toastify';
 import {
   Link
 } from "react-router-dom";
@@ -28,19 +29,26 @@ function Residentsc() {
   const [open1, setOpen1] = useState(false);
 
   const [appointments, setAppointments] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [subcategorias, setSubCategorias] = useState([]);
+
   const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const [name, setName] = useState("");
+  const [tel, setTel] = useState("");
+  const [block, setBlock] = useState("");
+  const [lote, setLote] = useState("");
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  
+
   const [status, setStatus] = useState('');
   const [cat, setCat] = useState('');
   const [subcat, setSubCat] = useState('');
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
-  const [categorias, setCategorias] = useState([]);
-  const [subcategorias, setSubCategorias] = useState([]);
 
   useEffect(() => {
 
@@ -48,10 +56,10 @@ function Residentsc() {
     getAppointments();
     getCategorias();
 
-  }, []);
+  }, [show]);
 
   async function handleChangeFilterByDateFromTo() {
-    console.log('ok', status, telefone, cat, subcat,nome);
+    console.log('ok', status, telefone, cat, subcat, nome);
     try {
       setLoading(true);
 
@@ -62,19 +70,19 @@ function Residentsc() {
 
       if (subcat) {
 
-        if(cat){}else{
-         setLoading(false);
-         return;
+        if (cat) { } else {
+          setLoading(false);
+          return;
         }
-         
-       }
+
+      }
 
       const response = await api.get(`v1/list_moradores/1/principal?nome=${nome}&telefone=${telefone}&status=${status}&categoria=${cat}&sub_categoria=${subcat}`);
       setAppointments(response.data);
       console.log(response.data);
-      
+
       setLoading(false);
-  
+
     } catch (error) {
       if (error.message === "Network Error") {
         console.log("Por favor verifique sua conexão com a internet!");
@@ -90,7 +98,7 @@ function Residentsc() {
   }
 
   async function listSubCat(id) {
-    
+
     try {
       console.log(id);
       setSubCategorias([]);
@@ -116,7 +124,7 @@ function Residentsc() {
     try {
       const response = await api.get('v1/listCategoria/1?todos=all');
       setCategorias(response.data.data);
-     
+
       setLoading(false);
     } catch (error) {
       if (error.message === "Network Error") {
@@ -216,8 +224,190 @@ function Residentsc() {
     }
   }
 
+  async function handleSubmitUser() {
+    try {
+
+      setIsSubmitted(true);
+
+      if (!name) {
+        toast.error('O nome é obrigatório');
+        setIsSubmitted(false);
+        return;
+      }
+
+      if (!tel) {
+        toast.error('O telefone é obrigatório');
+        setIsSubmitted(false);
+        return;
+      }
+
+      if (!block) {
+        toast.error('O campo nível é obrigatório');
+        setIsSubmitted(false);
+        return;
+      }
+
+      if (!lote) {
+        toast.error('O email é obrigatório');
+        setIsSubmitted(false);
+        return;
+      }
+
+      const data = {
+        nome: name,
+        telefone: tel,
+        quadra: block,
+        lote: lote,
+        condominio_id: 1
+      }
+
+      const response = await api.post('v1/addMorador', data);
+
+      toast.success('Usuário registado com sucesso');
+
+
+      setIsSubmitted(false);
+      handleClose();
+
+    } catch (error) {
+      if (error.message === "Network Error") {
+        toast.error("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.message === "Request failed with status code 400") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.status === 500) {
+        toast.error("Erro interno, por favor, contactar o suporte!");
+      }
+      setIsSubmitted(false);
+    }
+  }
+
+  async function handleChangeBlockId(id) {
+
+    try {
+      if (!id) {
+        setBlock("");
+        return setSubCategorias([]);
+      }
+
+      const response = await api.get(`v1/listLotes/${id}?todos=all`);
+      setSubCategorias(response.data.data);
+      setBlock(id);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getCategorias() {
+    try {
+      const response = await api.get('v1/listCategoria/1?todos=all');
+      setCategorias(response.data.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+
   return (
     <div className="dashboard">
+      {/*modal*/}
+      <Modal show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}>
+        <Modal.Header closeButton className='border-0'>
+          <h5 className='mt-3'>Adicionar usuário</h5>
+        </Modal.Header>
+        <Modal.Body className='pt-0'>
+          <form id="form-add">
+            <label className='mt-2 mb-2'><b>Nome *</b></label>
+            <Form.Control
+              type="text"
+              placeholder="Nome"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <label className='mt-2 mb-2'><b>Telefone *</b></label>
+            <Form.Control type="number"
+              value={tel}
+              placeholder="Telefone"
+              onChange={(e) => setTel(e.target.value)}
+            />
+            <label className='mt-2 mb-2'><b>Quadra *</b></label>
+            <Form.Select
+              value={block}
+              onChange={(event) => { handleChangeBlockId(event.target.value); }}
+            >
+              <option value="">Todas quadra</option>
+              {
+                categorias?.cat?.map(categoria => (
+                  <option value={categoria.id}>{categoria.quadra}</option>
+                ))
+              }
+            </Form.Select>
+
+            <label className='mt-2 mb-2'><b>Lote *</b></label>
+            <Form.Select
+              value={lote}
+              onChange={(event) => { setLote(event.target.value); }}
+            >
+              <option value="">Todos lotes</option>
+              {
+                subcategorias?.sub_cat?.map(subcategoria => (
+                  <option value={subcategoria.id}>{subcategoria.lote}</option>
+                ))
+              }
+            </Form.Select>
+          </form>
+        </Modal.Body>
+        <Modal.Footer className='border-0'>
+          {
+            !isSubmitted ? <>
+              <Button variant="secondary" onClick={handleClose} className='btn-sm'>
+                Cancelar
+              </Button>
+              <Button variant="primary" onClick={() => handleSubmitUser()} className='btn-sm'>
+                Adicionar
+              </Button>
+            </>
+              :
+              <>
+                <Button variant="secondary" disabled className='btn-sm'>
+                  Cancelar
+                </Button>
+                <Button variant="primary" disabled className='btn-sm'>
+                  Adicionando...
+                </Button>
+              </>
+          }
+
+        </Modal.Footer>
+      </Modal>
+      {/*modal*/}
+
       <main className='d-flex'>
         <Menu />
         <section className='w-100 h-100 height-overflow'>
@@ -238,7 +428,7 @@ function Residentsc() {
                     <HiRefresh />
                   </Button>
                   <Button className='btn-sm ms-1' onClick={handleShow}>
-                  <HiOutlinePlusSm/>
+                    <HiOutlinePlusSm />
                   </Button>
                 </div>
               </div>
@@ -248,14 +438,14 @@ function Residentsc() {
                     <div className='d-flex'>
                       <div className='input-group input-group-sm  me-3 rounded mt-2 w-100px input-group-data'>
                         <span className="input-group-text" id="basic-addon1"><b>Estado</b></span>
-                        <Form.Select className='border-0 '  onChange={(event) => { setStatus(event.target.value); }} aria-label="Default select example">
+                        <Form.Select className='border-0 ' onChange={(event) => { setStatus(event.target.value); }} aria-label="Default select example">
                           <option value="">Todas</option>
                           <option value="0">Activo</option>
                           <option value="1">Desativado</option>
                         </Form.Select>
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                      <Form.Select className='border-0' onChange={(event) => { listSubCat(event.target.value); setCat(event.target.value);}} aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { listSubCat(event.target.value); setCat(event.target.value); }} aria-label="Default select example">
                           <option value="">Todas quadra</option>
                           {
                             categorias?.cat?.map(categoria => (
@@ -263,9 +453,9 @@ function Residentsc() {
                             ))
                           }
                         </Form.Select>
-                        <Form.Select className='border-0' onChange={(event) => { setSubCat(event.target.value);}}  aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { setSubCat(event.target.value); }} aria-label="Default select example">
                           <option value="">Todos lotes</option>
-                          
+
                           {
                             subcategorias?.sub_cat?.map(subcategoria => (
                               <option value={subcategoria.id}>{subcategoria.lote}</option>
@@ -279,7 +469,7 @@ function Residentsc() {
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
                         <input type="text" className="form-control" onKeyUp={(event) => { setTelefone(event.target.value); }} placeholder="Pesquisar telefone" />
                       </div>
-                      
+
                       <div className='mt-2 ms-2'>
                         <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
@@ -419,39 +609,7 @@ function Residentsc() {
           </div>
         </section>
       </main>
-       {/*modal*/} 
-    <Modal show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}>
-        <Modal.Header closeButton className='border-0'>
-          <h5 className='mt-3'>Adicionar agregado</h5>
-        </Modal.Header>
-        <Modal.Body className='pt-0'>
-          <form action="">
-            <label className='mt-2 mb-2'><b>Nome *</b></label>
-            <Form.Control type="text" placeholder="Nome de administrador"  />
-            <label className='mt-2 mb-2'><b>Telefone *</b></label>
-            <Form.Control type="number" placeholder="Telefone" />
-            <label className='mt-2 mb-2'><b>Email *</b></label>
-            <Form.Control type="email" placeholder="Email" />
-            <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
-            <Form.Select aria-label="Default select example">
-              <option>Pricipal</option>
-              <option>Agregado</option>
-            </Form.Select>
-          </form>
-        </Modal.Body>
-        <Modal.Footer className='border-0'>
-          <Button variant="secondary" onClick={handleClose} className='btn-sm'>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={handleClose} className='btn-sm'>
-            Adicional
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    {/*modal*/}
+
     </div>
   );
 }

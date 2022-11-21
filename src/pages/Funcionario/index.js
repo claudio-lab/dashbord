@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Menu } from '../../components/Menu';
-import { 
+import {
   Link
 } from "react-router-dom";
-import { 
-  HiOutlineUserGroup, 
+import {
+  HiOutlineUserGroup,
   HiOutlineUsers,
   HiOutlineHome,
   HiOutlineViewGrid,
@@ -18,7 +18,7 @@ import {
   HiOutlinePlusSm,
   HiOutlineUserCircle
 } from "react-icons/hi";
-import { 
+import {
   IoEllipsisHorizontal,
   IoCalendarOutline,
   IoPeopleOutline,
@@ -26,17 +26,18 @@ import {
   IoClipboardOutline,
   IoTimeOutline,
   IoAlertCircleOutline,
-  IoPersonOutline 
+  IoPersonOutline
 } from "react-icons/io5";
 import { MenuTop } from '../../components/MenuTop';
-import {Card, 
-        Table,
-        Dropdown, 
-        Spinner,
-        Collapse,
-        Form,
-        Modal,
-        Button  
+import {
+  Card,
+  Table,
+  Dropdown,
+  Spinner,
+  Collapse,
+  Form,
+  Modal,
+  Button
 } from 'react-bootstrap';
 import marisa from './../../assets/photos/marisa.jpg'
 import chiao from './../../assets/photos/chiao.jpg'
@@ -57,7 +58,7 @@ function Funcionario() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  
+
   const [status, setStatus] = useState('');
   const [cat, setCat] = useState('');
   const [subcat, setSubCat] = useState('');
@@ -74,7 +75,7 @@ function Funcionario() {
   }, []);
 
   async function handleChangeFilterByDateFromTo() {
-    console.log('ok', status, telefone, cat, subcat,nome);
+    console.log('ok', status, telefone, cat, subcat, nome);
     try {
       setLoading(true);
 
@@ -85,19 +86,19 @@ function Funcionario() {
 
       if (subcat) {
 
-        if(cat){}else{
-         setLoading(false);
-         return;
+        if (cat) { } else {
+          setLoading(false);
+          return;
         }
-         
-       }
+
+      }
 
       const response = await api.get(`v1/list_funcionario/1?nome=${nome}&telefone=${telefone}&status=${status}&categoria=${cat}&sub_categoria=${subcat}`);
       setAppointments(response.data);
       console.log(response.data);
-      
+
       setLoading(false);
-  
+
     } catch (error) {
       if (error.message === "Network Error") {
         console.log("Por favor verifique sua conexão com a internet!");
@@ -113,7 +114,7 @@ function Funcionario() {
   }
 
   async function listSubCat(id) {
-    
+
     try {
       console.log(id);
       setSubCategorias([]);
@@ -139,7 +140,7 @@ function Funcionario() {
     try {
       const response = await api.get('v1/listCategoria/1?todos=all');
       setCategorias(response.data.data);
-     
+
       setLoading(false);
     } catch (error) {
       if (error.message === "Network Error") {
@@ -254,46 +255,46 @@ function Funcionario() {
 
   return (
     <div className="dashboard">
-    <main className='d-flex'>
-      <Menu/>
-      <section className='w-100 h-100 height-overflow'>
-        <MenuTop/>
-      <div className="p-4">
-          <div className="container">
-          <div className='d-flex w-max-1200 justify-content-between'>
-          <div><h4 className=''>Moradores</h4></div>
-           <div>
-           <Button
-          onClick={() => setOpen1(!open1)}
-          className='btn-sm'
-          aria-expanded={open1}
-        >
-          <HiAdjustments/>
-        </Button>
+      <main className='d-flex'>
+        <Menu />
+        <section className='w-100 h-100 height-overflow'>
+          <MenuTop />
+          <div className="p-4">
+            <div className="container">
+              <div className='d-flex w-max-1200 justify-content-between'>
+                <div><h4 className=''>Moradores</h4></div>
+                <div>
+                  <Button
+                    onClick={() => setOpen1(!open1)}
+                    className='btn-sm'
+                    aria-expanded={open1}
+                  >
+                    <HiAdjustments />
+                  </Button>
 
-        <Button className='btn-sm ms-1'>
-          <HiRefresh/>
-        </Button>
-        <Button className='btn-sm ms-1' onClick={handleShow}>
+                  <Button className='btn-sm ms-1'>
+                    <HiRefresh />
+                  </Button>
+                  {/*<Button className='btn-sm ms-1' onClick={handleShow}>
         <HiOutlinePlusSm/>
-        </Button>
-          </div>            
-          </div>
+        </Button>*/}
+                </div>
+              </div>
 
-          <Collapse className='w-max-1200' in={open1}>
+              <Collapse className='w-max-1200' in={open1}>
                 <div id="example-collapse-text">
                   <div className="d-flex flex-row-reverse">
                     <div className='d-flex'>
                       <div className='input-group input-group-sm  me-3 rounded mt-2 w-100px input-group-data'>
                         <span className="input-group-text" id="basic-addon1"><b>Estado</b></span>
-                        <Form.Select className='border-0 '  onChange={(event) => { setStatus(event.target.value); }} aria-label="Default select example">
+                        <Form.Select className='border-0 ' onChange={(event) => { setStatus(event.target.value); }} aria-label="Default select example">
                           <option value="">Todas</option>
                           <option value="1">Activo</option>
                           <option value="0">Desativado</option>
                         </Form.Select>
                       </div>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                      <Form.Select className='border-0' onChange={(event) => { listSubCat(event.target.value); setCat(event.target.value);}} aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { listSubCat(event.target.value); setCat(event.target.value); }} aria-label="Default select example">
                           <option value="">Todas quadra</option>
                           {
                             categorias?.cat?.map(categoria => (
@@ -301,9 +302,9 @@ function Funcionario() {
                             ))
                           }
                         </Form.Select>
-                        <Form.Select className='border-0' onChange={(event) => { setSubCat(event.target.value);}}  aria-label="Default select example">
+                        <Form.Select className='border-0' onChange={(event) => { setSubCat(event.target.value); }} aria-label="Default select example">
                           <option value="">Todos lotes</option>
-                          
+
                           {
                             subcategorias?.sub_cat?.map(subcategoria => (
                               <option value={subcategoria.id}>{subcategoria.lote}</option>
@@ -317,7 +318,7 @@ function Funcionario() {
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
                         <input type="text" className="form-control" onKeyUp={(event) => { setTelefone(event.target.value); }} placeholder="Pesquisar telefone" />
                       </div>
-                      
+
                       <div className='mt-2 ms-2'>
                         <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
@@ -329,37 +330,37 @@ function Funcionario() {
                 </div>
               </Collapse>
 
-          <div className='mt-4'>
-          <div className="btn-group border-botton-right-0">
-              <Link to="/residentsc" className="btn border-botton-right-0 btn-light-tabs" >Principal</Link>
-              <Link to="/agregado" className="btn border-botton-right-0 btn-light-tabs ">Agregado</Link>
-              <Link to="/funcionario" className="btn border-botton-right-0 btn-light-tabs active">Funcionário</Link>
-            </div>
-            <div className="card border-0 border-botton-right-left-0 card-table">
-          <div className="card-body pb-2"></div>
-              <div className='table-h'>
-                <table className="table">
-                <thead>
-                    <tr>
-                    <th className='ps-4'>Avatar</th>
-                      <th>Nome</th>
-                      <th>Residencia</th>
-                      <th>Cargo</th>
-                      <th>Telefone</th>
-                      <th>Morador</th>
-                      <th>Estado</th>
-                      <th className='text-right pe-4'>Detalhes</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+              <div className='mt-4'>
+                <div className="btn-group border-botton-right-0">
+                  <Link to="/residentsc" className="btn border-botton-right-0 btn-light-tabs" >Principal</Link>
+                  <Link to="/agregado" className="btn border-botton-right-0 btn-light-tabs ">Agregado</Link>
+                  <Link to="/funcionario" className="btn border-botton-right-0 btn-light-tabs active">Funcionário</Link>
+                </div>
+                <div className="card border-0 border-botton-right-left-0 card-table">
+                  <div className="card-body pb-2"></div>
+                  <div className='table-h'>
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th className='ps-4'>Avatar</th>
+                          <th>Nome</th>
+                          <th>Residencia</th>
+                          <th>Cargo</th>
+                          <th>Telefone</th>
+                          <th>Morador</th>
+                          <th>Estado</th>
+                          <th className='text-right pe-4'>Detalhes</th>
+                        </tr>
+                      </thead>
+                      <tbody>
                         {
                           !loading ?
                             appointments?.data?.map(appointment => (
                               <tr>
                                 <th scope="row" className='ps-4'>
-                                <div className="vatar-tab">
-                                  <img src={appointment.foto} alt="" />
-                                </div>
+                                  <div className="vatar-tab">
+                                    <img src={appointment.foto} alt="" />
+                                  </div>
                                 </th>
                                 <td>{appointment.nome}</td>
                                 <td>Q {appointment.quadra} - L {appointment.lote}</td>
@@ -375,17 +376,17 @@ function Funcionario() {
                                 </td>
                                 <td className='text-right pe-4'>
                                   <Dropdown>
-                                  <Dropdown.Toggle className="btn btn-light p-0 m-0 " id="dropdown-basic">
-                                    <IoEllipsisHorizontal/>
-                                  </Dropdown.Toggle>
+                                    <Dropdown.Toggle className="btn btn-light p-0 m-0 " id="dropdown-basic">
+                                      <IoEllipsisHorizontal />
+                                    </Dropdown.Toggle>
 
-                                  <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
-                                    <Dropdown.Item href="#/action-1">Reenviar senha</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-2">Activar</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-3">Desativa</Dropdown.Item>
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                                  </td>
+                                    <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
+                                      <Dropdown.Item href="#/action-1">Reenviar senha</Dropdown.Item>
+                                      <Dropdown.Item href="#/action-2">Activar</Dropdown.Item>
+                                      <Dropdown.Item href="#/action-3">Desativa</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </td>
                               </tr>
                             ))
                             :
@@ -410,10 +411,10 @@ function Funcionario() {
                         }
 
 
-                  </tbody>
-                </table>
-              </div>
-              <div className="card-body pt-0">
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="card-body pt-0">
                     <div className="d-flex justify-content-between">
                       <div className='pt-2'> {
                         !loading ?
@@ -453,36 +454,36 @@ function Funcionario() {
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
           </div>
-          </div>
-        </div>
-      </div>
-      </section>
-    </main>     
-    {/*modal*/} 
-    <Modal show={show}
+        </section>
+      </main>
+      {/*modal*/}
+      <Modal show={show}
         onHide={handleClose}
         backdrop="static"
         keyboard={false}>
-        <Modal.Header closeButton className='border-0'> 
+        <Modal.Header closeButton className='border-0'>
           <h5 className='mt-3'>Adicionar Funcionario</h5>
         </Modal.Header>
         <Modal.Body className='pt-0'>
           <form action="">
             <label className='mt-2 mb-2'><b>Nome *</b></label>
-            <Form.Control type="text" placeholder="Nome de administrador"  required onChange={(event) => setAppointments(event.target.oo)}/>
+            <Form.Control type="text" placeholder="Nome de administrador" required onChange={(event) => setAppointments(event.target.oo)} />
             <label className='mt-2 mb-2'><b>Telefone *</b></label>
-            <Form.Control type="number" placeholder="Telefone" required onChange={(event) => setAppointments(event.target.oo)}/>
+            <Form.Control type="number" placeholder="Telefone" required onChange={(event) => setAppointments(event.target.oo)} />
             <label className='mt-2 mb-2'><b>Email *</b></label>
-            <Form.Control type="email" placeholder="Email" required onChange={(event) => setAppointments(event.target.oo)}/>
+            <Form.Control type="email" placeholder="Email" required onChange={(event) => setAppointments(event.target.oo)} />
             <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
             <Form.Select aria-label="Default select example" required onChange={(event) => setAppointments(event.target.oo)}>
               <option>Selecione *</option>
             </Form.Select>
             <label className='mt-2 mb-2'><b>Senha *</b></label>
-            <Form.Control type="password" placeholder="Senha" required onChange={(event) => setAppointments(event.target.oo)}/>
+            <Form.Control type="password" placeholder="Senha" required onChange={(event) => setAppointments(event.target.oo)} />
             <label className='mt-2 mb-2'><b>Confirma senha *</b></label>
-            <Form.Control type="password" placeholder="Confirma Senha" required onChange={(event) => setAppointments(event.target.oo)}/>
+            <Form.Control type="password" placeholder="Confirma Senha" required onChange={(event) => setAppointments(event.target.oo)} />
           </form>
         </Modal.Body>
         <Modal.Footer className='border-0'>
@@ -490,7 +491,7 @@ function Funcionario() {
             Cancelar
           </Button>
           <Button variant="primary" onClick={() => handleSaveAppointments(1)} className='btn-sm'>
-            Adicional 
+            Adicional
           </Button>
           {/*
             !loadingSubmitTypology
@@ -503,8 +504,8 @@ function Funcionario() {
              */}
         </Modal.Footer>
       </Modal>
-    {/*modal*/}
-  </div>
+      {/*modal*/}
+    </div>
   );
 }
 
