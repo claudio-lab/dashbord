@@ -27,12 +27,8 @@ import {
   Collapse,
   Form
 } from 'react-bootstrap';
-import marisa from './../../assets/photos/marisa.jpg'
-import chiao from './../../assets/photos/chiao.jpg'
-import cassia from './../../assets/photos/cassia.jpg'
-import matheus from './../../assets/photos/matheus.jpg'
-import paula from './../../assets/photos/paula.jpg'
 
+import user from './../../assets/photos/user.png'
 import { api } from './../../services/api';
 import ShowVisitorDetails from '../../components/modal/ShowVisitorDetails';
 
@@ -53,7 +49,7 @@ function NoCondominio() {
 
   const [appointments, setAppointments] = useState([]);
   const [appointmentId, setAppointmentId] = useState(''); 
-  const [appointmentStaus, setAppointmentStatus] = useState(''); 
+ 
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [cat, setCat] = useState('');
@@ -395,7 +391,7 @@ function NoCondominio() {
                               <tr key={appointment.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
-                                    <FaUserCheck />
+                                  <img src={appointment.foto ? appointment.foto : user} alt="" />
                                   </div>
                                 </th>
                                 <td>{appointment.nome_morador}</td>
@@ -407,7 +403,7 @@ function NoCondominio() {
                                 </td>
                                 <td className='text-right pe-4'>
                                   <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id)}>
-                                    <IoEllipsisHorizontal />
+                                    <HiOutlineEye />
                                   </Button>
                                 </td>
                               </tr>

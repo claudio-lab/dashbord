@@ -30,7 +30,7 @@ import {
 } from "react-icons/io5";
 import { MenuTop } from '../../components/MenuTop';
 import { Modal, Button, } from 'react-bootstrap';
-
+import user from './../../assets/photos/user.png';
 import {
   Card,
   Table,
@@ -256,7 +256,8 @@ function Agregado() {
         telefone: tel,
         quadra: block,
         lote: lote,
-        condominio_id: 1
+        condominio_id: 1,
+        type: 1
       }
 
       const response = await api.post('v1/addMorador', data);
@@ -509,7 +510,7 @@ function Agregado() {
                               <tr key={appointment.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
-                                    <img src={appointment.foto} alt="" />
+                                    <img src={user} alt="" />
                                   </div>
                                 </th>
                                 <td>{appointment.nome}</td>

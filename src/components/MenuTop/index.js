@@ -5,7 +5,7 @@ import {
   HiUser,
   HiOutlineLogin
 } from "react-icons/hi";
-import matheus from './../../assets/photos/matheus.jpg'
+import usr from './../../assets/photos/user.png'
 import { api } from '../../services/api';
 import { AuthContext, signOut } from './../contexts/AuthContext';
 
@@ -58,7 +58,7 @@ export function MenuTop() {
       </div>
       <div className="d-flex" role="search">
         <div className='avatar-mini me-2'>
-          <img src={matheus} alt="" />
+          <img src={usr} alt="" />
         </div>
         <Dropdown>
           <Dropdown.Toggle className='nameUser mt-2' id="dropdown-basic">

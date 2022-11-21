@@ -35,15 +35,11 @@ import {
   Collapse,
   Form
 } from 'react-bootstrap';
-import marisa from './../../assets/photos/marisa.jpg'
-import chiao from './../../assets/photos/chiao.jpg'
-import cassia from './../../assets/photos/cassia.jpg'
-import matheus from './../../assets/photos/matheus.jpg'
-import paula from './../../assets/photos/paula.jpg'
+import user from './../../assets/photos/user.png'
 
 import { api } from './../../services/api';
 
-
+import ShowVisitorDetails from '../../components/modal/ShowVisitorDetails';
 
 function Expiradas() {
   const [open1, setOpen1] = useState(false);
@@ -52,7 +48,16 @@ function Expiradas() {
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
 
+  const [show4, setShow4] = useState(false);
+  const handleClose4 = () => setShow4(false);
+  function handleShow4(appointmentID) {
+    setAppointmentId(appointmentID);
+
+    setShow4(true);
+  }
+
   const [appointments, setAppointments] = useState([]);
+  const [appointmentId, setAppointmentId] = useState(''); 
   const [loading, setLoading] = useState(false);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
@@ -389,7 +394,7 @@ function Expiradas() {
                               <tr key={appointment.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
-                                    <FaUserCheck />
+                                    <img src={appointment.foto ? appointment.foto : user} alt="" />
                                   </div>
                                 </th>
                                 <td>{appointment.nome_morador}</td>
@@ -400,8 +405,8 @@ function Expiradas() {
                                   <span className="badge rounded-pill estado-bg-warning">Expirado</span>
                                 </td>
                                 <td className='text-right pe-4'>
-                                  <Button className="btn btn-light p-0 m-0 " onClick={handleShow2}>
-                                    <IoEllipsisHorizontal />
+                                  <Button className="btn btn-light p-0 m-0 " onClick={() => handleShow4(appointment.id)}>
+                                    <HiOutlineEye />
                                   </Button>
                                 </td>
                               </tr>
@@ -472,41 +477,18 @@ function Expiradas() {
         </section>
       </main>
 
-      <Modal show={show2} size="lg" backdrop="static" centered onHide={handleClose2} className='border-0'>
-        <Modal.Header closeButton className='border-0 pb-1'>
-          <div>
-            <h5 className='mt-1'>Detalhes</h5>
-            <div className="ss"><span className="badge rounded-pill estado-bg-warning">Expirado</span></div>
-          </div>
-        </Modal.Header>
-        <Modal.Body className='border-0'>
-          <div className="container p-0">
-            <div className="row">
-              <div className="col-lg-4">
-                <div className="card border">
-                  <div className="card-body">
-                    <div className=""><span className="badge rounded-pill estado-bg-primary">Agendado</span></div>
-                    <div className='d-flex mt-3 mb-3'>
-                      <div className="avatar-mini">
-                        <img src={cassia} alt="" />
-                      </div>
-                      <div className=' ms-2'>
-                        <b>Cassia Fernandes</b><br />
-                        <div className='font-size-12'>Morador</div>
-                      </div>
-                    </div>
-                    <IoCalendarOutline /> <font className='font-size-14'>24/05/2022</font> <IoTimeOutline className='ms-3' /> <font className='font-size-14'> 13h:30m</font><br />
-                    <IoPersonOutline /> <font className='font-size-14'>Carla Fernandes</font><br />
-                    <IoAlertCircleOutline /> <font className='font-size-14'>visita familiar</font><br />
-                    <IoClipboardOutline /> <font className='font-size-14'>Sem obs</font>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
-
+      {
+        show4 ?
+          <ShowVisitorDetails
+            isOpen={show4}
+            handleClose={handleClose4}
+            appointmentId={appointmentId}
+            status="Expirados"
+            status_n="1"
+          />
+          :
+          <></>
+      }
     </div>
   );
 }

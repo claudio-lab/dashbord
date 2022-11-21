@@ -23,7 +23,7 @@ import {
   Collapse,
   Form
 } from 'react-bootstrap';
-import user from './../../assets/photos/user.png'
+import user from './../../assets/photos/user.png';
 import { api } from './../../services/api';
 function Residentsc() {
   const [open1, setOpen1] = useState(false);
@@ -258,7 +258,8 @@ function Residentsc() {
         telefone: tel,
         quadra: block,
         lote: lote,
-        condominio_id: 1
+        condominio_id: 1,
+        type: 0
       }
 
       const response = await api.post('v1/addMorador', data);
