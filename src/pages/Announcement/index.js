@@ -3,8 +3,9 @@ import { Menu } from '../../components/Menu';
 import {
   Link
 } from "react-router-dom";
+import { toast } from 'react-toastify';
 import {
-  HiOutlineUserGroup, 
+  HiOutlineUserGroup,
   HiOutlineUsers,
   HiOutlineHome,
   HiOutlineViewGrid,
@@ -51,28 +52,31 @@ function Announcement() {
   const [loadingSubmitTypology, setLoadingSubmitTypology] = useState(false);
   const [loading, setLoading] = useState(false);
   {/*--------------------------------------------*/ }
-  const [show5, setShow5] = useState(false);
-  const handleClose5 = () => setShow5(false);
-  const handleShow5 = () => setShow5(true);
+  const [show, setShow] = useState(false);
+  const handleClose5 = () => setShow(false);
+  const handleShow = () => setShow(true);
   {/*--------------------------------------------*/ }
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [titulo, setTitulo] = useState('');
-  const [morad, setMorador] = useState('');
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
+  const [userId, setUserId] = useState('');
+  const [playersId, setPlayersId] = useState([]);
   const [moradores, setMoradores] = useState([]);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     getAnnouncements();
     getMoradores();
 
-  }, []);
+  }, [isSubmitted]);
 
   async function getMoradores() {
     try {
       const response = await api.get('v1/list_moradores/1/0000?todos=all');
       setMoradores(response);
-      console.log(response);
 
       setLoading(false);
     } catch (error) {
@@ -89,28 +93,27 @@ function Announcement() {
     }
   }
 
-
   async function handleChangeFilterByDateFromTo() {
     console.log('ok', from, to, titulo);
     try {
-    
+
       setLoading(true);
 
       if (to) {
 
-       if(from){}else{
-        setLoading(false);
-        return;
-       }
-        
+        if (from) { } else {
+          setLoading(false);
+          return;
+        }
+
       }
 
       const response = await api.get(`v1/list_comunicados/1?data_de=${from}&data_ate=${to}&titulo=${titulo}`);
       setAnnouncements(response.data.data?.comunicado);
       console.log(response.data.data?.comunicado);
-      
+
       setLoading(false);
-  
+
     } catch (error) {
       if (error.message === "Network Error") {
         console.log("Por favor verifique sua conexão com a internet!");
@@ -219,6 +222,76 @@ function Announcement() {
     }
   }
 
+  async function handleSubmitUser() {
+    try {
+
+      setIsSubmitted(true);
+
+      if (!title) {
+        toast.error('O title é obrigatório');
+        setIsSubmitted(false);
+        return;
+      }
+
+      if (!userId) {
+        toast.error('Deve selecionar os usuários');
+        setIsSubmitted(false);
+        return;
+      }
+
+      if (!message) {
+        toast.error('O comunicado é obrigatório');
+        setIsSubmitted(false);
+        return;
+      }
+
+      if (userId === 'todos') {
+
+        for (var i = 0; i <= moradores?.data?.length; i++) {
+          const data = {
+            title,
+            message,
+            morador_id: moradores.id
+          }
+
+          const response = await api.post('v1/add_comunicado/1', data);
+
+        }
+
+        toast.success('Usuários notificados com sucesso');
+        setIsSubmitted(false);
+        handleClose5();
+        return;
+      }
+
+      const data = {
+        title,
+        message,
+        morador_id: userId
+      }
+
+      const response = await api.post('v1/add_comunicado/1', data);
+
+      toast.success('Usuário notificado com sucesso');
+
+
+      setIsSubmitted(false);
+      handleClose5();
+
+    } catch (error) {
+      if (error.message === "Network Error") {
+        toast.error("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        toast.error("Erro ao notificar o usuário, por favor, tente adicionar mais tarde!");
+      } else if (error.message === "Request failed with status code 400") {
+        toast.error("Erro ao notificar usuários, por favor, tente adicionar mais tarde!");
+      } else if (error.status === 500) {
+        toast.error("Erro interno, por favor, contactar o suporte!");
+      }
+      setIsSubmitted(false);
+    }
+  }
+
   return (
     <div className="dashboard">
       <main className='d-flex'>
@@ -240,7 +313,7 @@ function Announcement() {
                   <Button className='btn-sm ms-1'>
                     <HiRefresh />
                   </Button>
-                  <Button className='btn-sm ms-1' onClick={handleShow5}>
+                  <Button className='btn-sm ms-1' onClick={handleShow}>
                     <HiOutlinePlusSm />
                   </Button>
                 </div>
@@ -362,8 +435,8 @@ function Announcement() {
           </div>
         </section>
       </main>
-                  {/*modal*/}
-                  <Modal show={show5}
+      {/*modal*/}
+      <Modal show={show}
         onHide={handleClose5}
         backdrop="static"
         keyboard={false}>
@@ -372,36 +445,61 @@ function Announcement() {
         </Modal.Header>
         <Modal.Body className='pt-0'>
           <form action="">
-          <label className='mt-2 mb-2'><b>Para  *</b></label>
-            <Form.Select className='form-control' onChange={(event) => { setMorador(event.target.value);}} aria-label="Default select example">
-                <option value="">Todos moradores</option>
-                {
-                  moradores?.data?.map(morador => (
+            <label className='mt-2 mb-2'><b>Para  *</b></label>
+            <Form.Select className='form-control' onChange={(event) => { setUserId(event.target.value); }} aria-label="Default select example">
+              <option value="">Selecionar</option>
+              <option value="todos">Todos moradores</option>
+              {
+                moradores?.data?.map(morador => (
                   <option value={morador.id}>{morador.nome}</option>
-                  ))
-                }
+                ))
+              }
             </Form.Select>
             <label className='mt-2 mb-2'><b>Assunto  *</b></label>
-            <Form.Control type="text" placeholder="Comunicado" required onChange={(event) => setAnnouncement(event.target.title)}/>
+            <Form.Control
+              type="text"
+              placeholder="Comunicado"
+              required onChange={(event) => setTitle(event.target.value)}
+              value={title}
+            />
             <label className='mt-2 mb-2'><b>Comunicado  *</b></label>
-            <textarea className="form-control" placeholder="Discrição do comunicado" rows="3" required onChange={(event) => setAnnouncement(event.target.message)}></textarea>
-           
+            <textarea
+              className="form-control"
+              placeholder="Discrição do comunicado"
+              rows="3"
+              value={message}
+              required
+              onChange={(event) => setMessage(event.target.value)}>
+            </textarea>
+
           </form>
         </Modal.Body>
         <Modal.Footer className='border-0'>
-          <Button variant="secondary" onClick={handleClose5} className='btn-sm'>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={() => handleSaveAnnouncement(1)} className='btn-sm'> Adicionar </Button>
-          {/*
-            !loadingSubmitTypology
-              ?<Button variant="primary" onClick={handleClose5} onClick={() => handleSaveAnnouncement(1)} className='btn-sm'>
-              Adicional
-              </Button> 
-              : <Button variant="primary" disabled className='btn-sm'>
-                Adicionando...
-              </Button>
-             */}
+          {
+            !isSubmitted
+              ?
+              <>
+                <Button variant="secondary" onClick={handleClose5} className='btn-sm'>
+                  Cancelar
+                </Button>
+
+                <Button variant="primary" onClick={() => handleSubmitUser()} className='btn-sm'>
+                  Enviar
+                </Button>
+              </>
+              :
+              <>
+
+                <Button variant="secondary" disabled className='btn-sm'>
+                  Cancelar
+                </Button>
+
+                <Button variant="primary" disabled className='btn-sm'>
+                  Enviando...
+                </Button>
+
+              </>
+          }
         </Modal.Footer>
       </Modal>
       {/*modal*/}
