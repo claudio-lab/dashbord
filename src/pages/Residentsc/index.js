@@ -26,7 +26,7 @@ import {
 import user from './../../assets/photos/user.png';
 import { api } from './../../services/api';
 function Residentsc() {
-  const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
 
   const [appointments, setAppointments] = useState([]);
   const [categorias, setCategorias] = useState([]);
@@ -34,7 +34,6 @@ function Residentsc() {
 
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [change, setChange] = useState(false);
 
   const [name, setName] = useState("");
   const [tel, setTel] = useState("");
@@ -57,7 +56,7 @@ function Residentsc() {
     getAppointments();
     getCategorias();
 
-  }, [show, change]);
+  }, [show]);
 
   async function handleChangeFilterByDateFromTo() {
     console.log('ok', status, telefone, cat, subcat, nome);
@@ -237,7 +236,7 @@ function Residentsc() {
       }
 
       if (!tel) {
-        toast.error('O telefone é obrigatório');
+        toast.error('O quadra é obrigatório');
         setIsSubmitted(false);
         return;
       }
@@ -249,7 +248,7 @@ function Residentsc() {
       }
 
       if (!lote) {
-        toast.error('O email é obrigatório');
+        toast.error('O lote é obrigatório');
         setIsSubmitted(false);
         return;
       }
@@ -260,12 +259,21 @@ function Residentsc() {
         quadra: block,
         lote: lote,
         condominio_id: 1,
-        type: 0
+        tipo: '0'
       }
 
       const response = await api.post('v1/addMorador', data);
 
-      toast.success('Usuário registado com sucesso');
+      console.log(response);
+      if (response.data.data.success == false) {
+        toast.error(response.data.data.msg);
+        setIsSubmitted(false);
+        handleClose();
+        return;
+      }
+
+      toast.success(response.data.data.msg);
+      //toast.success('Usuário registado com sucesso');
 
 
       setIsSubmitted(false);
@@ -329,57 +337,6 @@ function Residentsc() {
         console.log("Erro interno, por favor, contactar o suporte!");
       }
       setLoading(false);
-    }
-  }
-
-  async function handleChangePin(userId) {
-    try {
-      setChange(true);
-      if (!userId) {
-        toast.error('user id is required');
-        return;
-      }
-
-      const response = await api.get('v1/redefinir_senha_morador/' + userId);
-      toast.success('Senha reenviada com sucesso!');
-      setChange(false);
-
-    } catch (error) {
-      if (error.message === "Network Error") {
-        toast.error("Por favor verifique sua conexão com a internet!");
-      } else if (error.message === "Request failed with status code 401") {
-        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
-      } else if (error.message === "Request failed with status code 400") {
-        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
-      } else if (error.status === 500) {
-        toast.error("Erro interno, por favor, contactar o suporte!");
-      }
-    }
-  }
-
-  async function handleChangeStatus(userId) {
-    try {
-
-      setChange(true);
-      if (!userId) {
-        toast.error('user id is required');
-        return;
-      }
-
-      const response = await api.put('v1/status_funcionario/' + userId);
-      toast.success('Status de usuário alterado com sucesso!');
-
-      setChange(false);
-    } catch (error) {
-      if (error.message === "Network Error") {
-        toast.error("Por favor verifique sua conexão com a internet!");
-      } else if (error.message === "Request failed with status code 401") {
-        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
-      } else if (error.message === "Request failed with status code 400") {
-        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
-      } else if (error.status === 500) {
-        toast.error("Erro interno, por favor, contactar o suporte!");
-      }
     }
   }
 
@@ -471,9 +428,9 @@ function Residentsc() {
                 <div><h4 className=''>Moradores</h4></div>
                 <div>
                   <Button
-                    onClick={() => setOpen(!open)}
+                    onClick={() => setOpen1(!open1)}
                     className='btn-sm'
-                    aria-expanded={open}
+                    aria-expanded={open1}
                   >
                     <HiAdjustments />
                   </Button>
@@ -485,7 +442,7 @@ function Residentsc() {
                   </Button>
                 </div>
               </div>
-              <Collapse className='w-max-1200' in={open}>
+              <Collapse className='w-max-1200' in={open1}>
                 <div id="example-collapse-text">
                   <div className="d-flex flex-row-reverse">
                     <div className='d-flex'>
@@ -582,7 +539,7 @@ function Residentsc() {
 
                                     <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
                                       <Dropdown.Item onClick={
-                                        () => { handleChangePin(appointment.id) }
+                                        () => { " handleChangePassword(appointment.id)" }
                                       }>Reenviar senha</Dropdown.Item>
                                       <Dropdown.Item href="#/action-2">Activar</Dropdown.Item>
                                       <Dropdown.Item href="#/action-3">Desativa</Dropdown.Item>
