@@ -49,7 +49,7 @@ import user from './../../assets/photos/user.png';
 import { api } from './../../services/api';
 
 function Funcionario() {
-  const [open1, setOpen1] = useState(false);
+  const [open, setOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -267,9 +267,9 @@ function Funcionario() {
                 <div><h4 className=''>Moradores</h4></div>
                 <div>
                   <Button
-                    onClick={() => setOpen1(!open1)}
+                    onClick={() => setOpen(!open)}
                     className='btn-sm'
-                    aria-expanded={open1}
+                    aria-expanded={open}
                   >
                     <HiAdjustments />
                   </Button>
@@ -283,7 +283,7 @@ function Funcionario() {
                 </div>
               </div>
 
-              <Collapse className='w-max-1200' in={open1}>
+              <Collapse className='w-max-1200' in={open}>
                 <div id="example-collapse-text">
                   <div className="d-flex flex-row-reverse">
                     <div className='d-flex'>
