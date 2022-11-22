@@ -40,8 +40,8 @@ import {
 } from 'react-bootstrap';
 import { format } from 'date-fns';
 import { api } from './../../services/api';
+import user from './../../assets/photos/user.png';
 
-import marisa from './../../assets/photos/marisa.jpg'
 function Documents_() {
   const [open, setOpen] = useState(false);
   const [documents, setDocuments] = useState([]);
@@ -221,7 +221,7 @@ function Documents_() {
                               <tr key={document.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
-                                    <img src={marisa} alt="" />
+                                    <img src={user} alt="" />
                                   </div>
                                 </th>
                                 <td>Marisa Francisco</td>

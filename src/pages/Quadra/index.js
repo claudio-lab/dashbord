@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu } from '../../components/Menu';
+import { toast } from 'react-toastify';
 import {
   Link
 } from "react-router-dom";
@@ -14,7 +15,8 @@ import {
   HiRefresh,
   HiOutlineSearch,
   HiOutlineEye,
-  HiOutlineUserCircle
+  HiOutlineUserCircle,
+  HiOutlinePlusSm,
 } from "react-icons/hi";
 import {
   IoEllipsisHorizontal,
@@ -24,7 +26,8 @@ import {
   IoClipboardOutline,
   IoTimeOutline,
   IoAlertCircleOutline,
-  IoPersonOutline
+  IoPersonOutline,
+  
 } from "react-icons/io5";
 import { MenuTop } from '../../components/MenuTop';
 import { Modal, Button, } from 'react-bootstrap';
@@ -50,9 +53,17 @@ import paula from './../../assets/photos/paula.jpg'
 function Quadra() {
   const [open1, setOpen1] = useState(false);
 
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [open, setOpen] = useState(false);
+  const [loadingSubmitQuadra, setLoadingSubmitQuadra] = useState(false);
+
+  const [quadra, setQuadra] = useState("");
   const [blocks, setBlocks] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const [cat, setCat] = useState('');
 
   useEffect(() => {
@@ -60,6 +71,51 @@ function Quadra() {
     getBlocks();
 
   }, []);
+
+  async function handleSaveQuadra(condominio_id) {
+    try {
+      setLoadingSubmitQuadra(true);
+
+      if (!quadra) {
+        toast.error('Quadra é obrigatório!');
+        setLoadingSubmitQuadra(false);
+        return;
+      }
+
+      const data = {
+        quadra: quadra,
+        id_condominio: condominio_id
+      }
+
+      const response = await api.post('v1/addQuadra', data);
+
+      console.log(response.data.data.success)
+      if (response.data.data.success == false) {
+        toast.error(response.data.data.msg);
+        setLoadingSubmitQuadra(false);
+        handleClose();
+        return;
+      }
+
+      toast.success(response.data.data.msg);
+
+      handleClose();
+      getBlocks();
+      setLoadingSubmitQuadra(false);
+
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoadingSubmitQuadra(false);
+    }
+  }
 
   async function handleChangeFilterByDateFromTo() {
     console.log('ok', cat);
@@ -175,9 +231,14 @@ function Quadra() {
                   <Button className='btn-sm ms-1'>
                     <HiRefresh />
                   </Button>
+
+                  <Button className='btn-sm ms-1' onClick={handleShow}>
+                    <HiOutlinePlusSm />
+                  </Button>
+
                 </div>
-              </div>
-              <Collapse className='w-max-1200' in={open1}>
+              </div> 
+              <Collapse className='w-max-1200' in={open}>
                 <div id="example-collapse-text">
                   <div className="d-flex flex-row-reverse">
                     <div className='d-flex'>
@@ -198,8 +259,8 @@ function Quadra() {
               <div className='mt-4'>
                 <div className="btn-group border-botton-right-0">
                   <Link to="/typology" className="btn border-botton-right-0 btn-light-tabs " >Tipologias</Link>
-                  <Link to="/lote" className="btn border-botton-right-0 btn-light-tabs ">Lote</Link>
                   <Link to="/quadra" className="btn border-botton-right-0 btn-light-tabs active">Quadra</Link>
+                  <Link to="/lote" className="btn border-botton-right-0 btn-light-tabs ">Lote</Link>
                 </div>
                 <div className="card border-0 border-botton-right-left-0 card-table">
                   <div className="card-body pb-2"></div>
@@ -299,6 +360,44 @@ function Quadra() {
           </div>
         </section>
       </main>
+        {/*modal*/}
+        <Modal show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}>
+        <Modal.Header closeButton className='border-0'>
+          <h5 className='mt-3'>Adicionar Quadra</h5>
+        </Modal.Header>
+        <Modal.Body className='pt-0'>
+          <form action="">
+            <label className='mt-2 mb-2'><b>Quadra *</b></label>
+            <Form.Control
+              type="text"
+              required
+              placeholder="Quadra"
+              onChange={(event) => setQuadra(event.target.value)}
+            />
+          </form>
+        </Modal.Body>
+        <Modal.Footer className='border-0'>
+          <Button variant="secondary" onClick={handleClose} className='btn-sm'>
+            Cancelar
+          </Button>
+
+          {
+
+            !loadingSubmitQuadra
+              ? <Button variant="primary" onClick={() => handleSaveQuadra(1)} className='btn-sm'>
+                Adicionar
+              </Button>
+              : <Button variant="primary" disabled className='btn-sm'>
+                Adicionando...
+              </Button>
+
+          }
+        </Modal.Footer>
+      </Modal>
+      {/*modal*/}
     </div>
   );
 }

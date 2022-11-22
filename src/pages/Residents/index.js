@@ -409,7 +409,7 @@ function Residents() {
                           <th>Residência</th>
                           <th>Data de registo</th>
                           <th>Estado</th>
-                          <th className='text-right pe-4'>Detalhes</th>
+                          {/*<th className='text-right pe-4'>Detalhes</th>*/}
                         </tr>
                       </thead>
                       <tbody>
@@ -432,18 +432,18 @@ function Residents() {
                                      : <span className="badge rounded-pill estado-bg-danger">Fora do condomínio</span>
                                   }
                                 </td>
-                                <td className='text-right pe-4'>
-                                  <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
+                                {/*<td className='text-right pe-4'>
+                                  <Button className="btn btn-light p-0 m-0 " onClick={ handleShow }>
                                     <IoEllipsisHorizontal />
                                   </Button>
-                                </td>
+                                </td>*/}
                               </tr>
                             ))
                             :
                             <>
                               <tr>
                                 <td
-                                  colSpan={7}
+                                  colSpan={6}
                                   className="text-center"
                                 >
                                   <Spinner

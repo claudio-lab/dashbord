@@ -395,7 +395,7 @@ function Funcionario() {
                             <>
                               <tr>
                                 <td
-                                  colSpan={7}
+                                  colSpan={8}
                                   className="text-center"
                                 >
                                   <Spinner

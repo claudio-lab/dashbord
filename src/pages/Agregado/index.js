@@ -236,7 +236,7 @@ function Agregado() {
       }
 
       if (!tel) {
-        toast.error('O telefone é obrigatório');
+        toast.error('O quadra é obrigatório');
         setIsSubmitted(false);
         return;
       }
@@ -248,7 +248,7 @@ function Agregado() {
       }
 
       if (!lote) {
-        toast.error('O email é obrigatório');
+        toast.error('O lote é obrigatório');
         setIsSubmitted(false);
         return;
       }
@@ -259,13 +259,19 @@ function Agregado() {
         quadra: block,
         lote: lote,
         condominio_id: 1,
-        type: 1
+        tipo: '1'
       }
 
       const response = await api.post('v1/addMorador', data);
+      console.log(response.data);
+      if (response.data.data.success == false) {
+        toast.error(response.data.data.msg);
+        setIsSubmitted(false);
+        handleClose();
+        return;
+      }
 
-      toast.success('Usuário registado com sucesso');
-
+      toast.success(response.data.data.msg);
 
       setIsSubmitted(false);
       handleClose();

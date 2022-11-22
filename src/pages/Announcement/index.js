@@ -40,8 +40,8 @@ import {
   Form,
   Spinner
 } from 'react-bootstrap';
-import marisa from './../../assets/photos/marisa.jpg'
 
+import user from './../../assets/photos/user.png';
 import { api } from './../../services/api';
 
 function Announcement() {
@@ -360,7 +360,7 @@ function Announcement() {
                               <tr key={announcement.id}>
                                 <th scope="row" className='ps-4'>
                                   <div className="vatar-tab">
-                                    <img src={marisa} alt="" />
+                                    <img src={user} alt="" />
                                   </div>
                                 </th>
                                 <td>{announcement.adm}</td>

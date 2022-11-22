@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu } from '../../components/Menu';
+import { toast } from 'react-toastify';
 import {
   Link
 } from "react-router-dom";
@@ -48,27 +49,107 @@ import paula from './../../assets/photos/paula.jpg'
 function Lote() {
   const [open, setOpen] = useState(false);
 
-  const [typologies, setTypologies] = useState([]);
+  const [lotes, setLote] = useState([]);
+  
+  const [catsearch, setCatSearch] = useState('');
+  const [lotsearch, setloteSearch] = useState('');
+  
+  const [cat, setCat] = useState('');
+  const [lot, Setlot] = useState('');
+  const [type, setType] = useState('');
+  
+  const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loadingSubmitTypology, setLoadingSubmitTypology] = useState(false);
-
+  const [loadingSubmitLote, setLoadingSubmitLote] = useState(false);
+  const [typologies, setTypologies] = useState([]);
   const [typology, setTypology] = useState("");
 
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   useEffect(() => {
     setLoading(true);
+    getLote();
+    getCategorias();
     getTypologies();
-
   }, []);
+
+  async function handleChangeFilterByDateFromTo() {
+    console.log('ok', cat);
+    try {
+      setLoading(true);
+
+      /*if (!from || !to) {
+        setLoading(false);
+        return;
+      }*/
+
+      const response = await api.get(`v1/listLotes/1?categoria=${catsearch}&sub_categoria=${lotsearch}`);
+      setLote(response.data);
+      console.log(response.data);
+      
+      setLoading(false);
+  
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
 
   async function getTypologies() {
     try {
-      const response = await api.get('v1/listLotes/34');
+      const response = await api.get('v1/listTipologias/1?todos=all');
       setTypologies(response.data);
+      console.log(response.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function getCategorias() {
+    try {
+      const response = await api.get('v1/listCategoria/1?todos=all');
+      setCategorias(response.data.data);
+
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar agendamento, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+  
+  async function getLote() {
+    try {
+      const response = await api.get('v1/listLotes/1');
+      setLote(response.data);
 
       setLoading(false);
     } catch (error) {
@@ -89,7 +170,7 @@ function Lote() {
     try {
       setLoading(true);
       const response = await api.get(link);
-      setTypologies(response.data);
+      setLote(response.data);
 
       setLoading(false);
     } catch (error) {
@@ -110,7 +191,7 @@ function Lote() {
     try {
       setLoading(true);
       const response = await api.get(link);
-      setTypologies(response.data);
+      setLote(response.data);
 
       setLoading(false);
     } catch (error) {
@@ -127,26 +208,59 @@ function Lote() {
     }
   }
 
-  async function handleSaveTypology(condominio_id) {
+  async function handleSaveLote(condominio_id) {
     try {
-      setLoadingSubmitTypology(true);
+   
+    setLoadingSubmitLote(true);
 
-      if (!typology) return alert('Tipologia é obrigatório!');
+    if (!cat) {
+      toast.error('Quadra é obrigatório!');
+      setLoadingSubmitLote(false);
+      return;
+    }
+
+    if (!lot) {
+      toast.error('Lote é obrigatório!');
+      setLoadingSubmitLote(false);
+      return;
+    }
+
+    if (!type) {
+      toast.error('Tipo é obrigatório!');
+      setLoadingSubmitLote(false);
+      return;
+    }
+
+    if (!typology) {
+      toast.error('Tipologia é obrigatório!');
+      setLoadingSubmitLote(false);
+      return;
+    }
 
       const data = {
-        tipologia: typology,
-        condominio_id: condominio_id
+        quadra_id: cat,
+        lote: lot,
+        tipologia_id: typology,
+        tipo:type,
+        condominio_id: condominio_id,
+        codigo_utola:''
       }
 
-      const response = await api.post('v1/addTipologia', data);
+      const response = await api.post('v1/addLote', data);
 
-      if (response.data.success) {
-        alert(response.data.msg);
+      console.log(response.data.data.success)
+      if (response.data.data.success == false) {
+        toast.error(response.data.data.msg);
+        setLoadingSubmitLote(false);
+        handleClose();
+        return;
       }
+
+      toast.success(response.data.data.msg);
 
       handleClose();
-      getTypologies();
-      setLoadingSubmitTypology(false);
+      getLote();
+      setLoadingSubmitLote(false);
     } catch (error) {
       if (error.message === "Network Error") {
         console.log("Por favor verifique sua conexão com a internet!");
@@ -157,9 +271,10 @@ function Lote() {
       } else if (error.status === 500) {
         console.log("Erro interno, por favor, contactar o suporte!");
       }
-      setLoadingSubmitTypology(false);
+      setLoadingSubmitLote(false);
     }
   }
+
   return (
     <div className="dashboard">
       <main className='d-flex'>
@@ -192,14 +307,22 @@ function Lote() {
                   <div className="d-flex flex-row-reverse">
                     <div className='d-flex'>
                       <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
-                        <input type="search" className="form-control border-0" placeholder="Pesquisar" />
+                        <Form.Select className='form-control border-0' onChange={(event) => {setCatSearch(event.target.value); }} aria-label="Default select example">
+                            <option value="">Todas quadra</option>
+                            {
+                              categorias?.cat?.map(categoria => (
+                                <option value={categoria.id}>{categoria.quadra}</option>
+                              ))
+                            }
+                        </Form.Select>
+                      </div>
+                      <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
+                        <input type="search" className="form-control border-0" onKeyUp={(event) => {setloteSearch(event.target.value); }} placeholder="Pesquisar" />
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
-                      <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
-                      </div>
+                      
                     </div>
                   </div>
                 </div>
@@ -228,7 +351,7 @@ function Lote() {
 
                         {
                           !loading ?
-                            typologies?.data?.map(lote => (
+                          lotes?.data?.map(lote => (
                               <tr key={lote.id}>
                                 <th scope="row" className='ps-4'>
                                   {lote.lote}
@@ -261,7 +384,7 @@ function Lote() {
                             <>
                               <tr>
                                 <td
-                                  colSpan={3}
+                                  colSpan={5}
                                   className="text-center"
                                 >
                                   <Spinner
@@ -286,7 +409,7 @@ function Lote() {
                         {
                           !loading ?
 
-                            typologies?.from + ' - ' + typologies?.to + '- ' + typologies?.total : '0 - 0 itens '
+                            lotes?.from + ' - ' + lotes?.to + '- ' + lotes?.total : '0 - 0 itens '
 
                         }
                         itens
@@ -297,8 +420,8 @@ function Lote() {
                             {
                               !loading ?
 
-                                typologies?.prev_page_url ?
-                                  <li className="page-item"><button className="page-link" onClick={() => handlePrevPage(typologies?.prev_page_url)} href="#">&laquo;</button></li>
+                                lotes?.prev_page_url ?
+                                  <li className="page-item"><button className="page-link" onClick={() => handlePrevPage(lotes?.prev_page_url)} href="#">&laquo;</button></li>
                                   : <li className="page-item"><button className="page-link">&laquo;</button></li>
                                 :
                                 <>
@@ -307,8 +430,8 @@ function Lote() {
                             }
 
                             {
-                              typologies?.next_page_url ?
-                                <li className="page-item"><button className="page-link" onClick={() => handleNextPage(typologies?.next_page_url)}>&raquo;</button></li>
+                              lotes?.next_page_url ?
+                                <li className="page-item"><button className="page-link" onClick={() => handleNextPage(lotes?.next_page_url)}>&raquo;</button></li>
                                 : <li className="page-item"><button className="page-link" >&raquo;</button></li>
                             }
                           </ul>
@@ -329,17 +452,50 @@ function Lote() {
         backdrop="static"
         keyboard={false}>
         <Modal.Header closeButton className='border-0'>
-          <h5 className='mt-3'>Adicionar tipologia</h5>
+          <h5 className='mt-3'>Adicionar Lote</h5>
         </Modal.Header>
         <Modal.Body className='pt-0'>
           <form action="">
-            <label className='mt-2 mb-2'><b>Tipologia *</b></label>
+            
+            <label className='mt-2 mb-2'><b>Quadra *</b></label>
+
+            <Form.Select className='' onChange={(event) => {setCat(event.target.value); }} aria-label="Default select example">
+                <option value="">Todas quadra</option>
+                {
+                  categorias?.cat?.map(categoria => (
+                    <option value={categoria.id}>{categoria.quadra}</option>
+                  ))
+                }
+            </Form.Select>
+                  
+            <label className='mt-2 mb-2'><b>Lote *</b></label>
+
             <Form.Control
               type="text"
               required
-              placeholder="Tipologia"
-              onChange={(event) => setTypology(event.target.value)}
+              placeholder="Lote"
+              onChange={(event) => Setlot(event.target.value)}
             />
+
+            <label className='mt-2 mb-2'><b>Tipo *</b></label>
+            <Form.Select className='' onChange={(event) => {setType(event.target.value); }} aria-label="Default select example">
+                <option value="" selected> -- Selecione -- </option>
+                <option value="0"> Residência </option>
+                <option value="1"> Estabelecimento </option>
+              
+               
+            </Form.Select>
+            
+            <label className='mt-2 mb-2'><b>Tipologia *</b></label>
+            <Form.Select className='' onChange={(event) => {setTypology(event.target.value); }} aria-label="Default select example">
+                <option value=""> -- Selecione -- </option>
+                {
+                  typologies.map(typolog => (
+                    <option value={typolog.id}>{typolog.name}</option>
+                  ))
+                }
+            </Form.Select>
+
           </form>
         </Modal.Body>
         <Modal.Footer className='border-0'>
@@ -349,8 +505,8 @@ function Lote() {
 
           {
 
-            !loadingSubmitTypology
-              ? <Button variant="primary" onClick={() => handleSaveTypology(1)} className='btn-sm'>
+            !loadingSubmitLote
+              ? <Button variant="primary" onClick={() => handleSaveLote(1)} className='btn-sm'>
                 Adicionar
               </Button>
               : <Button variant="primary" disabled className='btn-sm'>

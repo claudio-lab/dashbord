@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu } from '../../components/Menu';
+import { toast } from 'react-toastify';
 import {
   Link
 } from "react-router-dom";
@@ -46,6 +47,7 @@ function Typology() {
   const [typologies, setTypologies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingSubmitTypology, setLoadingSubmitTypology] = useState(false);
+ 
 
   const [typology, setTypology] = useState("");
 
@@ -158,7 +160,12 @@ function Typology() {
     try {
       setLoadingSubmitTypology(true);
 
-      if (!typology) return alert('Tipologia é obrigatório!');
+      if (!typology) {
+        toast.error('Tipologia é obrigatório!');
+        setLoadingSubmitTypology(false);
+        return;
+      }
+      
 
       const data = {
         tipologia: typology,
@@ -167,9 +174,16 @@ function Typology() {
 
       const response = await api.post('v1/addTipologia', data);
 
-      if (response.data.success) {
-        alert(response.data.msg);
+      console.log(response.data.data.success)
+      if (response.data.data.success == false) {
+        toast.error(response.data.data.msg);
+        setLoadingSubmitTypology(false);
+        handleClose();
+        return;
       }
+
+      toast.success(response.data.data.msg);
+      //toast.success(response.data.data.msg);
 
       handleClose();
       getTypologies();
@@ -232,13 +246,14 @@ function Typology() {
                     </div>
                   </div>
                 </div>
-              </Collapse>
+              </Collapse> 
 
               <div className='mt-4'>
                 <div className="btn-group border-botton-right-0">
                   <Link to="/typology" className="btn border-botton-right-0 btn-light-tabs active" >Tipologias</Link>
-                  <Link to="/lote" className="btn border-botton-right-0 btn-light-tabs ">Lote</Link>
                   <Link to="/quadra" className="btn border-botton-right-0 btn-light-tabs ">Quadra</Link>
+                  
+                  <Link to="/lote" className="btn border-botton-right-0 btn-light-tabs ">Lote</Link>
                 </div>
                 <div className="card border-0 border-botton-right-left-0 card-table">
                   <div className="card-body pb-2"></div>
