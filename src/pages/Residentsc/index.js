@@ -34,6 +34,7 @@ function Residentsc() {
 
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [change, setChange] = useState(false);
 
   const [name, setName] = useState("");
   const [tel, setTel] = useState("");
@@ -56,7 +57,7 @@ function Residentsc() {
     getAppointments();
     getCategorias();
 
-  }, [show]);
+  }, [show, change]);
 
   async function handleChangeFilterByDateFromTo() {
     console.log('ok', status, telefone, cat, subcat, nome);
@@ -331,6 +332,57 @@ function Residentsc() {
     }
   }
 
+  async function handleChangePin(userId) {
+    try {
+      setChange(true);
+      if (!userId) {
+        toast.error('user id is required');
+        return;
+      }
+
+      const response = await api.get('v1/redefinir_senha_morador/' + userId);
+      toast.success('Senha reenviada com sucesso!');
+      setChange(false);
+
+    } catch (error) {
+      if (error.message === "Network Error") {
+        toast.error("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.message === "Request failed with status code 400") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.status === 500) {
+        toast.error("Erro interno, por favor, contactar o suporte!");
+      }
+    }
+  }
+
+  async function handleChangeStatus(userId) {
+    try {
+
+      setChange(true);
+      if (!userId) {
+        toast.error('user id is required');
+        return;
+      }
+
+      const response = await api.put('v1/status_funcionario/' + userId);
+      toast.success('Status de usuário alterado com sucesso!');
+
+      setChange(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        toast.error("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.message === "Request failed with status code 400") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.status === 500) {
+        toast.error("Erro interno, por favor, contactar o suporte!");
+      }
+    }
+  }
+
 
   return (
     <div className="dashboard">
@@ -530,7 +582,7 @@ function Residentsc() {
 
                                     <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
                                       <Dropdown.Item onClick={
-                                        () => { " handleChangePassword(appointment.id)" }
+                                        () => { handleChangePin(appointment.id) }
                                       }>Reenviar senha</Dropdown.Item>
                                       <Dropdown.Item href="#/action-2">Activar</Dropdown.Item>
                                       <Dropdown.Item href="#/action-3">Desativa</Dropdown.Item>

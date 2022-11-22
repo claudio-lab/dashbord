@@ -382,11 +382,11 @@ function Funcionario() {
                                       <IoEllipsisHorizontal />
                                     </Dropdown.Toggle>
 
-                                    <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
+                                    {/*<Dropdown.Menu className='border-0 shadow-sm font-size-14'>
                                       <Dropdown.Item href="#/action-1">Reenviar senha</Dropdown.Item>
                                       <Dropdown.Item href="#/action-2">Activar</Dropdown.Item>
                                       <Dropdown.Item href="#/action-3">Desativa</Dropdown.Item>
-                                    </Dropdown.Menu>
+                                    </Dropdown.Menu>*/}
                                   </Dropdown>
                                 </td>
                               </tr>
