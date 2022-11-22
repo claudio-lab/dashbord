@@ -76,7 +76,7 @@ function DetalhesComunicado() {
       const response = await api.get(`v1/show_comunicado/${id}`);
       setComunicado(response.data.data);
       console.log(response.data.data);
-    
+
 
       setLoading(false);
     } catch (error) {
@@ -264,14 +264,14 @@ function DetalhesComunicado() {
                               <tr>
                                 <th className='ps-4'>Avatar</th>
                                 <th>Nome</th>
-                               
+
                                 <th className='text-right pe-4'>Estado</th>
                               </tr>
                             </thead>
                             <tbody>
                               {
                                 !loadingList ?
-                                comunicado?.list_user?.data?.map((user) => (
+                                  comunicado?.list_user?.data?.map((user) => (
                                     <tr key={user.id}>
                                       <th scope="row" className='ps-4'>
                                         <div className="vatar-tab">
@@ -279,7 +279,7 @@ function DetalhesComunicado() {
                                         </div>
                                       </th>
                                       <td>{user.nome}</td>
-                                     
+
                                       {
                                         (user.status === '0') ?
                                           <td className='text-right pe-4'><span className="badge bg-secondary rounded-pill">Não visualizou</span></td>
@@ -319,7 +319,7 @@ function DetalhesComunicado() {
                             <div className='pt-2'>{
                               !loadingList ?
 
-                              comunicado?.list_user?.from + ' - ' + comunicado?.list_user?.to + '- ' + comunicado?.list_user?.total + ' ' : '0 - 0 itens '
+                                comunicado?.list_user?.from + ' - ' + comunicado?.list_user?.to + '- ' + comunicado?.list_user?.total + ' ' : '0 - 0 itens '
 
                             } itens</div>
                             <div>

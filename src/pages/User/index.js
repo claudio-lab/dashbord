@@ -39,6 +39,7 @@ function User() {
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [show, setShow] = useState(false);
+  const [change, setChange] = useState(false);
 
   const [name, setName] = useState("");
   const [tel, setTel] = useState("");
@@ -54,11 +55,12 @@ function User() {
   const [telefone, setTelefone] = useState('');
   const [email, setEmail] = useState('');
 
+
   useEffect(() => {
     setLoading(true);
     getAppointments();
 
-  }, [show]);
+  }, [show, change]);
 
   async function handleChangeFilterByDateFromTo() {
     //console.log('ok', status, telefone, cat, subcat,nome);
@@ -228,6 +230,57 @@ function User() {
         toast.error("Erro interno, por favor, contactar o suporte!");
       }
       setIsSubmitted(false);
+    }
+  }
+
+  async function handleChangePin(userId) {
+    try {
+      setChange(true);
+      if (!userId) {
+        toast.error('user id is required');
+        return;
+      }
+
+      const response = await api.put('v1/changPassword_user/' + userId);
+      toast.success('Senha reenviada com sucesso!');
+      setChange(false);
+
+    } catch (error) {
+      if (error.message === "Network Error") {
+        toast.error("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.message === "Request failed with status code 400") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.status === 500) {
+        toast.error("Erro interno, por favor, contactar o suporte!");
+      }
+    }
+  }
+
+  async function handleChangeStatus(userId) {
+    try {
+
+      setChange(true);
+      if (!userId) {
+        toast.error('user id is required');
+        return;
+      }
+
+      const response = await api.put('v1/status_funcionario/' + userId);
+      toast.success('Status de usuário alterado com sucesso!');
+
+      setChange(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        toast.error("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.message === "Request failed with status code 400") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.status === 500) {
+        toast.error("Erro interno, por favor, contactar o suporte!");
+      }
     }
   }
 
@@ -414,9 +467,8 @@ function User() {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
-                                      <Dropdown.Item href="#/action-1">Reenviar senha</Dropdown.Item>
-                                      <Dropdown.Item href="#/action-2">Activar</Dropdown.Item>
-                                      <Dropdown.Item href="#/action-3">Desativa</Dropdown.Item>
+                                      <Dropdown.Item onClick={() => handleChangePin(appointment.id)}>Reenviar senha</Dropdown.Item>
+                                      <Dropdown.Item onClick={() => handleChangeStatus(appointment.id)}>Mudar estado</Dropdown.Item>
                                     </Dropdown.Menu>
                                   </Dropdown>
                                 </td>
