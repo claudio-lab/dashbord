@@ -48,7 +48,7 @@ import paula from './../../assets/photos/paula.jpg'
 
 
 function Quadra() {
-  const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
 
   const [blocks, setBlocks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -165,9 +165,9 @@ function Quadra() {
                 <div><h4 className=''>Estrutura</h4></div>
                 <div>
                   <Button
-                    onClick={() => setOpen(!open)}
+                    onClick={() => setOpen1(!open1)}
                     className='btn-sm'
-                    aria-expanded={open}
+                    aria-expanded={open1}
                   >
                     <HiAdjustments />
                   </Button>
@@ -177,7 +177,7 @@ function Quadra() {
                   </Button>
                 </div>
               </div>
-              <Collapse className='w-max-1200' in={open}>
+              <Collapse className='w-max-1200' in={open1}>
                 <div id="example-collapse-text">
                   <div className="d-flex flex-row-reverse">
                     <div className='d-flex'>
