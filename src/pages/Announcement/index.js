@@ -51,9 +51,9 @@ function Announcement() {
   const [loadingSubmitTypology, setLoadingSubmitTypology] = useState(false);
   const [loading, setLoading] = useState(false);
   {/*--------------------------------------------*/ }
-  const [show5, setShow5] = useState(false);
-  const handleClose5 = () => setShow5(false);
-  const handleShow5 = () => setShow5(true);
+  const [show, setShow] = useState(false);
+  const handleClose5 = () => setShow(false);
+  const handleShow = () => setShow(true);
   {/*--------------------------------------------*/ }
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
@@ -240,7 +240,7 @@ function Announcement() {
                   <Button className='btn-sm ms-1'>
                     <HiRefresh />
                   </Button>
-                  <Button className='btn-sm ms-1' onClick={handleShow5}>
+                  <Button className='btn-sm ms-1' onClick={handleShow}>
                     <HiOutlinePlusSm />
                   </Button>
                 </div>
@@ -363,7 +363,7 @@ function Announcement() {
         </section>
       </main>
                   {/*modal*/}
-                  <Modal show={show5}
+                  <Modal show={show}
         onHide={handleClose5}
         backdrop="static"
         keyboard={false}>
