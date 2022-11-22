@@ -43,7 +43,7 @@ import { api } from './../../services/api';
 import user from './../../assets/photos/user.png';
 
 function Documents_() {
-  const [open1, setOpen1] = useState(false);
+  const [open, setOpen] = useState(false);
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [from, setFrom] = useState('');
@@ -163,9 +163,9 @@ function Documents_() {
                 <div><h4 className=''>Documentos</h4></div>
                 <div>
                   <Button
-                    onClick={() => setOpen1(!open1)}
+                    onClick={() => setOpen(!open)}
                     className='btn-sm'
-                    aria-expanded={open1}
+                    aria-expanded={open}
                   >
                     <HiAdjustments />
                   </Button>
@@ -175,7 +175,7 @@ function Documents_() {
                 </div>
               </div>
 
-              <Collapse className='w-max-1200' in={open1}>
+              <Collapse className='w-max-1200' in={open}>
                 <div id="example-collapse-text">
                   <div className="d-flex flex-row-reverse">
                     <div className='d-flex'>
@@ -229,28 +229,12 @@ function Documents_() {
                                 <td>{format(new Date(document.created_at), 'dd/MM/yyyy')}</td>
                                 <td><HiOutlinePaperClip className='HiDD' /></td>
                                 <td className='text-right pe-4'>
-                                  <Link to={`/documents/${document.id}`} className='btn btn-light p-0 rounded-pill'><HiOutlineEye /></Link>
+                                  <Link  className='btn btn-light p-0 rounded-pill'><HiOutlineEye /></Link>
                                 </td>
                               </tr>
                             ))
                             :
                             <>
-                              <tr>
-                                <td
-                                  colSpan={7}
-                                  className="text-center"
-                                >
-                                  <Spinner
-                                    as="span"
-                                    animation="border"
-                                    size="sm"
-                                    role="status"
-                                    aria-hidden="true"
-                                  />
-                                  Carregando...
-                                </td>
-
-                              </tr>
                             </>
                         }
                       </tbody>

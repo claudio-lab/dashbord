@@ -51,6 +51,7 @@ import paula from './../../assets/photos/paula.jpg'
 
 
 function Quadra() {
+  const [open1, setOpen1] = useState(false);
 
   const [show, setShow] = useState(false);
 
@@ -220,9 +221,9 @@ function Quadra() {
                 <div><h4 className=''>Estrutura</h4></div>
                 <div>
                   <Button
-                    onClick={() => setOpen(!open)}
+                    onClick={() => setOpen1(!open1)}
                     className='btn-sm'
-                    aria-expanded={open}
+                    aria-expanded={open1}
                   >
                     <HiAdjustments />
                   </Button>

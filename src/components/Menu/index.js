@@ -120,6 +120,7 @@ export function Menu() {
                       <></>
                   }
                   <Link className="nav-link p-1" to="/user">Usuário do Sistema</Link>
+                  <Link className="nav-link p-1" to="/porters">Porteiro</Link>
                 </nav>
               </div>
             </Collapse>

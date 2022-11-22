@@ -34,7 +34,7 @@ import user from './../../assets/photos/user.png'
 import { api } from './../../services/api';
 
 function User() {
-  const [open1, setOpen1] = useState(false);
+  const [open, setOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -378,9 +378,9 @@ function User() {
                 <div><h4 className=''>Usuário do Sistema</h4></div>
                 <div>
                   <Button
-                    onClick={() => setOpen1(!open1)}
+                    onClick={() => setOpen(!open)}
                     className='btn-sm'
-                    aria-expanded={open1}
+                    aria-expanded={open}
                   >
                     <HiAdjustments />
                   </Button>
@@ -392,7 +392,7 @@ function User() {
                   </Button>
                 </div>
               </div>
-              <Collapse className='w-max-1200' in={open1}>
+              <Collapse className='w-max-1200' in={open}>
                 <div id="example-collapse-text">
                   <div className="d-flex flex-row-reverse">
                     <div className='d-flex'>
