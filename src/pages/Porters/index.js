@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu } from '../../components/Menu';
+import { toast } from 'react-toastify';
 import {
   Link
 } from "react-router-dom";
@@ -55,6 +56,12 @@ function Porters() {
 
 
   const [concierges, setConcierges] = useState([]);
+  const [portnam, setNome] = useState('');
+  const [portte, setTelefone] = useState('');
+  const [stat, setStatus] = useState('');
+  
+  const [portname, setName] = useState('');
+  const [pottel, setTel] = useState('');
   const [loading, setLoading] = useState(false);
 
   const [show5, setShow5] = useState(false);
@@ -66,10 +73,118 @@ function Porters() {
     getConcierges();
   }, []);
 
+  async function handleChangeFilterByDateFromTo() {
+    //console.log('ok', status, telefone, cat, subcat,nome);
+    try {
+      setLoading(true);
+
+      /*if (!from || !to) {
+        setLoading(false);
+        return;
+      }*/
+
+      const response = await api.get(`v1/list_porteiros_condominio/1?nome=${portnam}&telefone=${portte}&status=${stat}`);
+      setConcierges(response.data);
+      console.log(response.data);
+
+      setLoading(false);
+
+    } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.message === "Request failed with status code 400") {
+        console.log("Erro ao carregar cursos, por favor, tente recarregar a página!");
+      } else if (error.status === 500) {
+        console.log("Erro interno, por favor, contactar o suporte!");
+      }
+      setLoading(false);
+    }
+  }
+
+  async function handleDeletd(userId) {
+    try {
+
+      setLoading(true);
+      if (!userId) {
+        toast.error('user id is required');
+        return;
+      }
+
+      const response = await api.delete('v1/delete_porteiro/' + userId);
+      toast.success('Usuário deletado com sucesso!');
+      getConcierges();
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        toast.error("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.message === "Request failed with status code 400") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.status === 500) {
+        toast.error("Erro interno, por favor, contactar o suporte!");
+      }
+    }
+  }
+
+  async function handleChangePin(userId) {
+    try {
+      setLoading(true);
+      if (!userId) {
+        toast.error('user id is required');
+        return;
+      }
+
+      const response = await api.put('v1/changPassword_porteiro/' + userId);
+      toast.success('Senha reenviada com sucesso!');
+      setLoading(false);
+
+    } catch (error) {
+      if (error.message === "Network Error") {
+        toast.error("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.message === "Request failed with status code 400") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.status === 500) {
+        toast.error("Erro interno, por favor, contactar o suporte!");
+      }
+    }
+  }
+
+  async function handleChangeStatus(userId) {
+    try {
+
+      setLoading(true);
+      if (!userId) {
+        toast.error('user id is required');
+        return;
+      }
+
+      const response = await api.put('v1/status_porteiro/' + userId);
+      toast.success('Status de usuário alterado com sucesso!');
+      getConcierges();
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        toast.error("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.message === "Request failed with status code 400") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.status === 500) {
+        toast.error("Erro interno, por favor, contactar o suporte!");
+      }
+    }
+  }
+
   async function getConcierges() {
     try {
-      const response = await api.get('v1/getSessionPorteiro/1');
+      const response = await api.get('v1/list_porteiros_condominio/1');
       setConcierges(response.data);
+      console.log(response.data);
 
       setLoading(false);
     } catch (error) {
@@ -128,24 +243,36 @@ function Porters() {
     }
   }
 
-
-  async function handleSaveConcierges(morador_id) {
+  async function handleSaveConcierges() {
     try {
+      console.log(portname);
       setLoadingSubmitConcierges(true);
-      if (!concierge) return alert('obrigatório!');
+      if (!portname) {
+        toast.error('O nome é obrigatório');
+        setLoadingSubmitConcierges(false);
+        return;
+      }
+
+      if (!pottel) {
+        toast.error('O telefone é obrigatório');
+        setLoadingSubmitConcierges(false);
+        return;
+      }
 
       const data = {
-        title: concierge,
-        morador_id: morador_id
+        name: portname,
+        telefone: pottel,
+        condominio_id: 1
       }
 
       const response = await api.post('v1/add_porteiro', data);
-
+      console.log(response.data.success);
+      toast.success('Porteiro adicionado com sucesso!');
       if (response.data.success) {
         alert(response.data.msg);
       }
 
-      handleClose();
+      handleClose5();
       getConcierges();
       setLoadingSubmitConcierges(false);
     } catch (error) {
@@ -161,7 +288,6 @@ function Porters() {
       setLoadingSubmitConcierges(false);
     }
   }
-
 
   return (
     <div className="dashboard">
@@ -181,18 +307,18 @@ function Porters() {
                   >
                     <HiAdjustments />
                   </Button>
-                  <Button
+                  {/*<Button
                     onClick={() => setOpen2(!open2)}
                     className='btn-sm ms-1'
                     aria-expanded={open2}
                   >
                     <HiOutlineUserCircle />
-                  </Button>
+                  </Button>*/}
                   <Button className='btn-sm ms-1'>
                     <HiRefresh />
                   </Button>
                   <Button className='btn-sm ms-1' onClick={handleShow5}>
-                  <HiOutlinePlusSm/>
+                    <HiOutlinePlusSm />
                   </Button>
                 </div>
               </div>
@@ -202,24 +328,24 @@ function Porters() {
                     <div className='d-flex'>
                       <div className='input-group input-group-sm  me-3 rounded mt-2 w-100px input-group-data'>
                         <span className="input-group-text" id="basic-addon1"><b>Estado</b></span>
-                        <Form.Select className='border-0 ' aria-label="Default select example">
-                          <option value="">Todas</option>
-                          <option value="1">Entrou no condomínio</option>
-                          <option value="2">Saiu do condomínio</option>
+                        <Form.Select className='border-0 ' onChange={(event) => { setStatus(event.target.value); }} aria-label="Default select example">
+                          <option value="">Todos</option>
+                          <option value="0">Activo</option>
+                          <option value="1">Desactivado</option>
                         </Form.Select>
                       </div>
-                      <div className="input-group input-group-sm rounded mt-2 input-group-data">
-                        <span className="input-group-text" id="basic-addon1"><b>De</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
-                        <span className="input-group-text" id="basic-addon1"><b>Ate</b></span>
-                        <input type="date" className="form-control" placeholder="Username" />
+                      <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
+                        <input type="text" className="form-control" onKeyUp={(event) => { setNome(event.target.value); }} placeholder="Pesquisar nome" />
+                      </div>
+                      <div className="input-group ms-3 input-group-sm rounded mt-2 input-group-data">
+                        <input type="text" className="form-control" onKeyUp={(event) => { setTelefone(event.target.value); }} placeholder="Pesquisar telefone" />
                       </div>
                       <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
+                        <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }}  className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
-                      <div className='mt-2 ms-2'>
+                      {/*<div className='mt-2 ms-2'>
                         <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
-                      </div>
+                      </div>*/}
                     </div>
                   </div>
                 </div>
@@ -249,8 +375,7 @@ function Porters() {
                         <tr>
                           <th className='ps-4'>Avatar</th>
                           <th>Nome</th>
-                          <th>Hora</th>
-                          <th>Data</th>
+                          <th>Telefone</th>
                           <th>Estado</th>
                           <th className='text-right pe-4'>Detalhes</th>
                         </tr>
@@ -267,18 +392,30 @@ function Porters() {
                                   </div>
                                 </th>
                                 <td>{employee.nome}</td>
-                                {
-                                  //<td>{"Q" + employee.quadra + " L" + employee.lote}</td>
-                                }
-                                <td>-</td>
-                                <td>-</td>
+
+                                <td>{employee.telefone}</td>
+
                                 <td>
-                                  <span className="badge rounded-pill estado-bg-success">Em serviço</span>
+                                  {
+                                    (employee.status == '0') ?
+                                      <span className="badge rounded-pill estado-bg-success">Ativado</span>
+
+                                      : <span className="badge rounded-pill estado-bg-danger">Desativado</span>
+                                  }
+
                                 </td>
                                 <td className='text-right pe-4'>
-                                  <Button className="btn btn-light p-0 m-0 " onClick={handleShow}>
-                                    <IoEllipsisHorizontal />
-                                  </Button>
+                                  <Dropdown>
+                                    <Dropdown.Toggle className="btn btn-light p-0 m-0 " id="dropdown-basic">
+                                      <IoEllipsisHorizontal />
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
+                                      <Dropdown.Item onClick={() => handleChangePin(employee.id)}>Reenviar senha</Dropdown.Item>
+                                      <Dropdown.Item onClick={() => handleChangeStatus(employee.id)}>Mudar estado</Dropdown.Item>
+                                      <Dropdown.Item onClick={() => handleDeletd(employee.id)}>Deletar</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
                                 </td>
                               </tr>
                             ))
@@ -379,8 +516,8 @@ function Porters() {
           </div>
         </Modal.Body>
       </Modal>
-      {/*modal*/} 
-    <Modal show={show5}
+      {/*modal*/}
+      <Modal show={show5}
         onHide={handleClose5}
         backdrop="static"
         keyboard={false}>
@@ -390,40 +527,29 @@ function Porters() {
         <Modal.Body className='pt-0'>
           <form action="">
             <label className='mt-2 mb-2'><b>Nome *</b></label>
-            <Form.Control type="text" placeholder="Nome de administrador" required onChange={(event) => setConcierges(event.target.oo)}/>
+            <Form.Control type="text" placeholder="Nome do Porteiro" required onChange={(event) => setName(event.target.value)} />
             <label className='mt-2 mb-2'><b>Telefone *</b></label>
-            <Form.Control type="number" placeholder="Telefone" required onChange={(event) => setConcierges(event.target.oo)}/>
-            <label className='mt-2 mb-2'><b>Email *</b></label>
-            <Form.Control type="email" placeholder="Email" required onChange={(event) => setConcierges(event.target.oo)}/>
-            <label className='mt-2 mb-2'><b>Nível de Acesso *</b></label>
-            <Form.Select aria-label="Default select example" required onChange={(event) => setConcierges(event.target.oo)}>
-              <option>Selecione</option>
-            </Form.Select>
-            <label className='mt-2 mb-2'><b>Senha *</b></label>
-            <Form.Control type="password" placeholder="Senha" required onChange={(event) => setConcierges(event.target.oo)}/>
-            <label className='mt-2 mb-2'><b>Confirma senha *</b></label>
-            <Form.Control type="password" placeholder="Confirma Senha" required onChange={(event) => setConcierges(event.target.oo)}/>
+            <Form.Control type="number" placeholder="Telefone" required onChange={(event) => setTel(event.target.value)} />
+
           </form>
         </Modal.Body>
         <Modal.Footer className='border-0'>
           <Button variant="secondary" onClick={handleClose5} className='btn-sm'>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={() => handleSaveConcierges(1)} className='btn-sm'>
-            Adicional
-          </Button>
-          {/*
-            !loadingSubmitTypology
-              ?<Button variant="primary" onClick={handleClose5} onClick={() => handleSaveAnnouncement(1)} className='btn-sm'>
-              Adicional
-              </Button> 
+
+          {
+            !loadingSubmitConcierges
+              ? <Button variant="primary" onClick={() => handleSaveConcierges()} className='btn-sm'>
+                Adicional
+              </Button>
               : <Button variant="primary" disabled className='btn-sm'>
                 Adicionando...
               </Button>
-             */}
+          }
         </Modal.Footer>
       </Modal>
-    {/*modal*/}
+      {/*modal*/}
     </div>
   );
 }

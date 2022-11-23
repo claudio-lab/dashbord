@@ -110,8 +110,10 @@ export function Menu() {
               <div id="collapse-portaria">
                 <nav className="nav flex-column menu-sub">
                   <Link className="nav-link p-1" to="/typology">Estrutura</Link>
-                  {/*<Link className="nav-link p-1" to="/area">Área</Link>*/}
+                  {/*<Link className="nav-link p-1" to="/area">Área</Link>
                   <Link className="nav-link p-1" to="/services_">Serviços</Link>
+                  */}
+                  
                   {
                     isSac ?
 
