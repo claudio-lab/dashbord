@@ -324,9 +324,7 @@ function Funcionario() {
                       <div className='mt-2 ms-2'>
                         <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
-                      <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
-                      </div>
+                    
                     </div>
                   </div>
                 </div>
@@ -351,7 +349,7 @@ function Funcionario() {
                           <th>Telefone</th>
                           <th>Morador</th>
                           <th>Estado</th>
-                          <th className='text-right pe-4'>Detalhes</th>
+                           {/*<th className='text-right pe-4'>Detalhes</th>*/}
                         </tr>
                       </thead>
                       <tbody>
@@ -376,19 +374,19 @@ function Funcionario() {
                                       : <span className="badge rounded-pill estado-bg-danger">Desativado</span>
                                   }
                                 </td>
-                                <td className='text-right pe-4'>
+                                 {/*<td className='text-right pe-4'>
                                   <Dropdown>
                                     <Dropdown.Toggle className="btn btn-light p-0 m-0 " id="dropdown-basic">
                                       <IoEllipsisHorizontal />
                                     </Dropdown.Toggle>
 
-                                    {/*<Dropdown.Menu className='border-0 shadow-sm font-size-14'>
+                                   <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
                                       <Dropdown.Item href="#/action-1">Reenviar senha</Dropdown.Item>
                                       <Dropdown.Item href="#/action-2">Activar</Dropdown.Item>
                                       <Dropdown.Item href="#/action-3">Desativa</Dropdown.Item>
-                                    </Dropdown.Menu>*/}
+                                    </Dropdown.Menu>
                                   </Dropdown>
-                                </td>
+                                </td>*/}
                               </tr>
                             ))
                             :

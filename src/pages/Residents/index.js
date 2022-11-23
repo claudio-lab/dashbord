@@ -310,13 +310,13 @@ function Residents() {
                   >
                     <HiAdjustments />
                   </Button>
-                  <Button
-                    onClick={() => setOpen2(!open2)}
+                  {/*<Button
+                    onClick={() => set Open2 (! open2)}
                     className='btn-sm ms-1'
-                    aria-expanded={open2}
+                    aria-expanded={ open2}
                   >
                     <HiOutlineUserCircle />
-                  </Button>
+                  </Button>*/}
                   <Button className='btn-sm ms-1'>
                     <HiRefresh />
                   </Button>

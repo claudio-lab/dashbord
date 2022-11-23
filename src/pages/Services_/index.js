@@ -230,9 +230,7 @@ function Services_() {
                       <div className='mt-2 ms-2'>
                         <button type="button" onClick={() => { handleChangeFilterByDateFromTo(); console.log("passou..."); }} className="btn btn-primary btn-sm"><HiOutlineSearch /></button>
                       </div>
-                      <div className='mt-2 ms-2'>
-                        <button type="button" className="btn btn-primary btn-sm"><HiOutlineEye /></button>
-                      </div>
+                    
                     </div>
                   </div>
                 </div>

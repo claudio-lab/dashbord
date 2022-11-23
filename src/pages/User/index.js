@@ -269,7 +269,7 @@ function User() {
 
       const response = await api.put('v1/status_funcionario/' + userId);
       toast.success('Status de usuário alterado com sucesso!');
-
+      getAppointments();
       setChange(false);
     } catch (error) {
       if (error.message === "Network Error") {

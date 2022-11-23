@@ -72,6 +72,32 @@ function Quadra() {
 
   }, []);
 
+  async function handleDeletd(quadraId) {
+    try {
+
+      setLoading(true);
+      if (!quadraId) {
+        toast.error('lote id is required');
+        return;
+      }
+
+      const response = await api.delete('v1/destroyQuadra/' + quadraId);
+      toast.success('Deletado com sucesso!');
+      getBlocks();
+      setLoading(false);
+    } catch (error) {
+      if (error.message === "Network Error") {
+        toast.error("Por favor verifique sua conexão com a internet!");
+      } else if (error.message === "Request failed with status code 401") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.message === "Request failed with status code 400") {
+        toast.error("Erro ao add , por favor, tente adicionar mais tarde!");
+      } else if (error.status === 500) {
+        toast.error("Erro interno, por favor, contactar o suporte!");
+      }
+    }
+  }
+
   async function handleSaveQuadra(condominio_id) {
     try {
       setLoadingSubmitQuadra(true);
@@ -287,7 +313,7 @@ function Quadra() {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu className='border-0 shadow-sm font-size-14'>
-                                      <Dropdown.Item href="#/action-1">Apagar</Dropdown.Item>
+                                      <Dropdown.Item onClick={() => handleDeletd(block.id)}>Deletar</Dropdown.Item>
                                       <Dropdown.Item href="#/action-2">Editar</Dropdown.Item>
                                       <Dropdown.Item href="#/action-3">Detalhes</Dropdown.Item>
                                     </Dropdown.Menu>
